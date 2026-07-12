@@ -1,5 +1,9 @@
 minimumReleaseAge: 10080
 blockExoticSubdeps: true
+
 packages:
-  - 'apps/*'
-  - 'packages/*'
+  - "apps/*"
+  - "packages/*"
+
+catalog:
+  "typescript": "^6.0.3"
