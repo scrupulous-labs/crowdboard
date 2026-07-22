@@ -1,0 +1,17 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node ./scripts/build-server.mjs",
+    "dev": "node ./scripts/watch-server.mjs"
+  },
+  "dependencies": {
+    "fastify": "^5.10.0"
+  },
+  "devDependencies": {
+    "@crowdboard/tsconfig": "workspace:*",
+    "esbuild": "^0.28.1",
+    "typescript": "catalog:"
+  }
+}

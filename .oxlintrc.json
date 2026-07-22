@@ -6,6 +6,7 @@
   },
   "plugins": ["import", "typescript", "unicorn", "react", "react-perf"],
   "rules": {
+    "no-unused-expressions": "off",
     "no-extra-boolean-cast": "off",
     "react/exhaustive-deps": "off",
     "typescript/no-extra-non-null-assertion": "error",
