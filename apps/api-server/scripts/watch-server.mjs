@@ -4,22 +4,19 @@ import { join } from "node:path";
 import * as esbuild from "esbuild";
 
 const entryFile = join(import.meta.dirname, "../src/index.ts");
-const outputFile = join(import.meta.dirname, "../dist/index.js");
+const outputFile = join(import.meta.dirname, "../dist/index.mjs");
 
 let server;
 async function restartServer() {
   !!server &&
     (await new Promise((resolve) => {
-      server.once("exit", () => resolve());
-      server.kill("SIGTERM");
+      server.once("exit", () => resolve()).kill("SIGTERM");
     }));
 
   server = spawn("node", [outputFile], {
     stdio: "inherit",
     env: process.env,
-  });
-
-  server.on("exit", (code) => {
+  }).on("exit", (code) => {
     !!code && console.error(`Server exited with code ${code}`);
   });
 }

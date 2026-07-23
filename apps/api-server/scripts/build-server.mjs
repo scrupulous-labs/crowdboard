@@ -1,5 +1,5 @@
-import { join } from "node:path";
 import { rmSync } from "node:fs";
+import { join } from "node:path";
 
 import * as esbuild from "esbuild";
 
@@ -19,9 +19,9 @@ await esbuild.build({
       name: "clear-output",
       setup(build) {
         build.onStart(() => {
-          rmSync(outputDir, { recursive: true, force: true })
-        })
-      }
-    }
-  ]
+          rmSync(outputDir, { recursive: true, force: true });
+        });
+      },
+    },
+  ],
 });
