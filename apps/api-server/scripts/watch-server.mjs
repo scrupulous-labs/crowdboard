@@ -7,17 +7,18 @@ const entryFile = join(import.meta.dirname, "../src/index.ts");
 const outputFile = join(import.meta.dirname, "../dist/index.mjs");
 
 let server;
-async function restartServer() {
-  !!server &&
-    (await new Promise((resolve) => {
+const restartServer = async () => {
+  if (!!server) {
+    await new Promise((resolve) => {
       server.once("exit", () => resolve()).kill("SIGTERM");
-    }));
+    });
+  }
 
   server = spawn("node", [outputFile], {
     stdio: "inherit",
     env: process.env,
   }).on("exit", (code) => {
-    !!code && console.error(`Server exited with code ${code}`);
+    console.error(`Server exited with code - ${code}\n\n`);
   });
 }
 

@@ -9,7 +9,11 @@
 
     "noEmit": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "noUnusedLocals": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
   },
   "exclude": ["node_modules", "dist"]
 }
