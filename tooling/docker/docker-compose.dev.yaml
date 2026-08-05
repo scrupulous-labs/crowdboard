@@ -1,0 +1,29 @@
+name: crowdboard-dev
+
+services:
+  db:
+    image: postgres:17
+    ports:
+      - 5433:5432
+    volumes:
+      - dev-db:/var/lib/postgresql/data
+    networks:
+      - dev-network
+    environment:
+      POSTGRES_DB: crowdboard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: "pg_isready -U postgres -h localhost -d crowdboard"
+      interval: 1m
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  dev-db:
+
+networks:
+  dev-network:
+    driver: bridge
