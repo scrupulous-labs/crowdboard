@@ -1,0 +1,17 @@
+{
+  "name": "@crowdboard/db-migration",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@crowdboard/server-config": "workspace:*",
+    "effect": "catalog:",
+    "node-pg-migrate": "^9.0.0",
+    "pg": "catalog:"
+  },
+  "devDependencies": {
+    "@crowdboard/tsconfig": "workspace:*",
+    "@types/node": "catalog:"
+  }
+}

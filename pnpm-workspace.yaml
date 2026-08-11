@@ -4,10 +4,16 @@ blockExoticSubdeps: true
 packages:
   - "apps/*"
   - "packages/*"
+  - "packages/backend/*"
+  - "packages/frontend/*"
+  - "packages/shared/*"
   - "tooling/tsconfig"
 
 catalog:
-  "typescript": "^6.0.3"
+  '@types/node': ^26.1.2
+  effect: ^3.22.1
+  pg: ^8.22.0
+  typescript: "^6.0.3"
 
 allowBuilds:
   esbuild: true

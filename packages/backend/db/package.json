@@ -1,0 +1,15 @@
+{
+  "name": "@crowdboard/db",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@crowdboard/server-config": "workspace:*",
+    "effect": "catalog:",
+    "pg": "catalog:"
+  },
+  "devDependencies": {
+    "@crowdboard/tsconfig": "workspace:*"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@crowdboard/server-config",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@crowdboard/tsconfig": "workspace:*"
+  }
+}

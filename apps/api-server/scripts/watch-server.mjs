@@ -20,7 +20,7 @@ const restartServer = async () => {
   }).on("exit", (code) => {
     console.error(`Server exited with code - ${code}\n\n`);
   });
-}
+};
 
 const esbuildContext = await esbuild.context({
   entryPoints: [entryFile],
