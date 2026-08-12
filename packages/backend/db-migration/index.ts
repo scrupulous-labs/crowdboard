@@ -21,7 +21,10 @@ export class DbMigration extends Effect.Service<DbMigration>()("@app/db-migratio
               migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
             });
           },
-          catch: (cause) => new DbMigrationError({ cause }),
+          catch: (cause) => {
+            console.log(cause);
+            return new DbMigrationError({ cause });
+          },
         });
       },
     };
