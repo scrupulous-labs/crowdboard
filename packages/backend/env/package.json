@@ -1,5 +1,6 @@
 {
-  "name": "@crowdboard/server-config",
+  "name": "@crowdboard-backend/env",
+  "private": true,
   "type": "module",
   "exports": {
     ".": "./index.ts"
@@ -8,6 +9,6 @@
     "effect": "catalog:"
   },
   "devDependencies": {
-    "@crowdboard/tsconfig": "workspace:*"
+    "@crowdboard-tooling/tsconfig": "workspace:*"
   }
 }

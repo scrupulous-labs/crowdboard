@@ -1,43 +1,34 @@
-import { ServerConfig } from "@crowdboard/server-config";
-import { Effect, Redacted } from "effect";
-import { runner } from 'node-pg-migrate';
-import { join } from 'node:path';
+import { join } from "node:path";
+
+import { Env } from "@crowdboard-backend/env";
+import { Effect, Data, Redacted } from "effect";
+import { runner } from "node-pg-migrate";
 
 export class DbMigration extends Effect.Service<DbMigration>()("@app/db-migration", {
   effect: Effect.gen(function* () {
-    const { pgUrl } = yield* ServerConfig
-    const migrationDir = join(import.meta.url, './migrations')
-    const migtationTable = "crowdboard_migrations"
+    const { pgUrl } = yield* Env;
 
     return {
-      migrateUp: () => {
+      runMigrations: () => {
         return Effect.tryPromise({
           try: async () => {
             await runner({
-              databaseUrl: Redacted.value(pgUrl),
-              dir: migrationDir,
-              migrationsTable: migtationTable,
               direction: "up",
-            })
-          },
-          catch: (error) => {}
-        })
-      },
-
-      migrateDown: () => {
-        return Effect.tryPromise({
-          try: async () => {
-            await runner({
+              dir: join(import.meta.dirname, "./migrations"),
               databaseUrl: Redacted.value(pgUrl),
-              dir: migrationDir,
-              migrationsTable: migtationTable,
-              direction: "down",
-            })
+              migrationsTable: "crowdboard_migrations",
+              advisoryLockMode: "wait",
+              migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
+            });
           },
-          catch: (error) => {}
-        })
+          catch: (cause) => new DbMigrationError({ cause }),
+        });
       },
-    }
+    };
   }),
-  dependencies: [ServerConfig.Default]
+  dependencies: [Env.Default],
 }) {}
+
+export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
+  readonly cause: unknown;
+}> {}

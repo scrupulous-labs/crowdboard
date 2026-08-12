@@ -7,10 +7,12 @@
     "dev": "node ./scripts/watch-server.mjs"
   },
   "dependencies": {
+    "@crowdboard-backend/db-migration": "workspace:*",
+    "effect": "catalog:",
     "fastify": "^5.10.0"
   },
   "devDependencies": {
-    "@crowdboard/tsconfig": "workspace:*",
+    "@crowdboard-tooling/tsconfig": "workspace:*",
     "esbuild": "^0.28.1",
     "typescript": "catalog:"
   }

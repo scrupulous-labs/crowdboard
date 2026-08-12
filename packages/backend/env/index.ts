@@ -1,8 +1,8 @@
 import { Config, Redacted, Effect } from "effect";
 
-export class ServerConfig extends Effect.Service<ServerConfig>()("@app/server-config", {
+export class Env extends Effect.Service<Env>()("@app/env", {
   effect: Effect.gen(function* () {
-    const config = yield* Config.all([
+    return yield* Config.all([
       Config.nested(
         Config.all([
           Config.string("HOST").pipe(Config.withDefault("localhost")),
@@ -18,7 +18,5 @@ export class ServerConfig extends Effect.Service<ServerConfig>()("@app/server-co
         pgUrl: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`),
       })),
     );
-
-    return config;
   }),
 }) {}
