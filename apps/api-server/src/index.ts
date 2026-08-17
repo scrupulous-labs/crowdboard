@@ -4,6 +4,13 @@ import { Effect } from "effect";
 const program = Effect.gen(function* () {
   const { runMigrations } = yield* DbMigration;
   yield* runMigrations();
-});
+}).pipe(
+  Effect.provide(DbMigration.layer),
+  Effect.catch((error) =>
+    Effect.sync(() => {
+      console.log(error);
+    }),
+  ),
+);
 
-Effect.runFork(program.pipe(Effect.provide(DbMigration.Default)));
+void Effect.runPromise(program);

@@ -1,11 +1,11 @@
 import { join } from "node:path";
 
 import { Env } from "@crowdboard-backend/env";
-import { Effect, Data, Redacted } from "effect";
+import { Effect, Data, Redacted, Context, Layer } from "effect";
 import { runner } from "node-pg-migrate";
 
-export class DbMigration extends Effect.Service<DbMigration>()("@app/db-migration", {
-  effect: Effect.gen(function* () {
+export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
+  make: Effect.gen(function* () {
     const { pgUrl } = yield* Env;
 
     return {
@@ -21,16 +21,14 @@ export class DbMigration extends Effect.Service<DbMigration>()("@app/db-migratio
               migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
             });
           },
-          catch: (cause) => {
-            console.log(cause);
-            return new DbMigrationError({ cause });
-          },
+          catch: (cause) => new DbMigrationError({ cause }),
         });
       },
     };
   }),
-  dependencies: [Env.Default],
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(Env.layer));
+}
 
 export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
   readonly cause: unknown;

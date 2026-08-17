@@ -9,9 +9,13 @@ packages:
 
 catalog:
   "@types/node": ^26.1.2
-  effect: ^3.22.1
-  pg: ^8.22.0
-  typescript: "^6.0.3"
+  "effect": 4.0.0-rc.110
+  "pg": ^8.22.0
+  "typescript": "^6.0.3"
 
 allowBuilds:
-  esbuild: true
+  "esbuild": true
+  "msgpackr-extract": false
+
+minimumReleaseAgeExclude:
+  - "effect"
