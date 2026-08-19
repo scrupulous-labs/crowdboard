@@ -4,6 +4,9 @@
   "exports": {
     ".": "./index.ts"
   },
+  "scripts": {
+    "generate:auth-migrations": "auth generate --config ./auth-config.ts --output ./migrations/0000_RENAME-ME.sql --yes"
+  },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
     "effect": "catalog:",
@@ -12,6 +15,9 @@
   },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*",
-    "@types/node": "catalog:"
+    "@types/node": "catalog:",
+    "@types/pg": "catalog:",
+    "auth": "catalog:",
+    "better-auth": "catalog:"
   }
 }

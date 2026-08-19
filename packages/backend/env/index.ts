@@ -6,7 +6,7 @@ export class Env extends Context.Service<Env>()("@app/env", {
       Config.nested(
         Config.all([
           Config.string("HOST").pipe(Config.withDefault("localhost")),
-          Config.number("PORT").pipe(Config.withDefault(5433)),
+          Config.int("PORT").pipe(Config.withDefault(5433)),
           Config.string("USER").pipe(Config.withDefault("postgres")),
           Config.string("PASSWORD").pipe(Config.withDefault("postgres")),
           Config.string("DATABASE").pipe(Config.withDefault("crowdboard")),
