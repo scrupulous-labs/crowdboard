@@ -1,0 +1,17 @@
+{
+  "name": "@crowdboard-backend/auth",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.6.26",
+    "@crowdboard-backend/db": "workspace:*",
+    "better-auth": "catalog:",
+    "effect": "catalog:"
+  },
+  "devDependencies": {
+    "@crowdboard-tooling/tsconfig": "workspace:*"
+  }
+}

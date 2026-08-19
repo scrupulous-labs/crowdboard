@@ -1,6 +1,6 @@
 {
   "extends": "@crowdboard-tooling/tsconfig/base.server.json",
-  "include": ["index.ts", "auth-config.ts"],
+  "include": ["index.ts", "config/*"],
   "compilerOptions": {
     "types": ["node"]
   }

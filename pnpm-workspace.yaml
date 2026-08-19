@@ -12,7 +12,8 @@ catalog:
   "@types/pg": ^8.21.0
   "auth": ^1.6.26
   "better-auth": ^1.6.26
-  "effect": 4.0.0-rc.110
+  "drizzle-orm": 1.0.0-rc.5-169397b
+  "effect": 4.0.0-beta.105
   "pg": ^8.22.0
   "typescript": "^6.0.3"
 
@@ -22,3 +23,4 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - "effect"
+  - "drizzle-orm"
