@@ -190,6 +190,19 @@ importers:
         specifier: workspace:*
         version: link:../../../tooling/tsconfig
 
+  packages/backend/models:
+    dependencies:
+      '@crowdboard-backend/db-schema':
+        specifier: workspace:*
+        version: link:../db-schema
+      effect:
+        specifier: catalog:effect
+        version: 4.0.0-beta.105
+    devDependencies:
+      '@crowdboard-tooling/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/tsconfig
+
   tooling/tsconfig: {}
 
 packages:

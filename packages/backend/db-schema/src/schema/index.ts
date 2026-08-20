@@ -6,13 +6,13 @@ import { verifications } from "./verifications";
 import { workspaceMembers } from "./workspace-members";
 import { workspaces } from "./workspaces";
 
-export { userAccounts } from "./user-accounts";
-export { userSessions } from "./user-sessions";
-export { users } from "./users";
-export { verifications } from "./verifications";
-export { invitations } from "./invitations";
-export { workspaces } from "./workspaces";
-export { workspaceMembers } from "./workspace-members";
+export * from "./user-accounts";
+export * from "./user-sessions";
+export * from "./users";
+export * from "./verifications";
+export * from "./invitations";
+export * from "./workspaces";
+export * from "./workspace-members";
 
 export const schema = {
   users,

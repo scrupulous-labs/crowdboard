@@ -1,3 +1,4 @@
+import { createSelectSchema } from "drizzle-orm/effect-schema";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -12,3 +13,5 @@ export const users = pgTable("users", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const UserRow = createSelectSchema(users);
