@@ -6,7 +6,7 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "effect": "catalog:"
+    "effect": "catalog:effect"
   },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*"

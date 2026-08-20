@@ -5,20 +5,21 @@
     ".": "./index.ts"
   },
   "scripts": {
-    "generate:auth-migrations": "auth generate --config ./config/auth.ts --output ./migrations/0000_RENAME-ME.sql --yes"
+    "generate:auth-migrations": "auth generate --config ./config/auth-config.ts --output ./migrations/0000_RENAME-ME.sql --yes",
+    "update": "auth upgrade"
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
-    "effect": "catalog:",
+    "effect": "catalog:effect",
     "node-pg-migrate": "^9.0.0",
     "pg": "catalog:"
   },
   "devDependencies": {
     "@crowdboard-backend/auth": "workspace:*",
     "@crowdboard-tooling/tsconfig": "workspace:*",
-    "@types/node": "catalog:",
-    "@types/pg": "catalog:",
-    "auth": "catalog:",
-    "better-auth": "catalog:"
+    "@types/node": "catalog:types",
+    "@types/pg": "catalog:types",
+    "auth": "catalog:better-auth",
+    "better-auth": "catalog:better-auth"
   }
 }

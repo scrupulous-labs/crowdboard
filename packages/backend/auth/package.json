@@ -6,10 +6,10 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "^1.6.26",
+    "@better-auth/drizzle-adapter": "catalog:better-auth",
     "@crowdboard-backend/db": "workspace:*",
-    "better-auth": "catalog:",
-    "effect": "catalog:"
+    "better-auth": "catalog:better-auth",
+    "effect": "catalog:effect"
   },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*"

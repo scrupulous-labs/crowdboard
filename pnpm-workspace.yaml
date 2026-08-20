@@ -7,20 +7,35 @@ packages:
   - "packages/backend/*"
   - "tooling/tsconfig"
 
-catalog:
-  "@types/node": ^26.1.2
-  "@types/pg": ^8.21.0
-  "auth": ^1.6.26
-  "better-auth": ^1.6.26
-  "drizzle-orm": 1.0.0-rc.5-169397b
-  "effect": 4.0.0-beta.105
-  "pg": ^8.22.0
-  "typescript": "^6.0.3"
+minimumReleaseAgeExclude:
+  - "effect"
+  - "@effect/*"
+  - "drizzle-orm"
+  - "auth"
+  - "better-auth"
+  - "@better-auth/*"
 
 allowBuilds:
   "esbuild": true
   "msgpackr-extract": false
 
-minimumReleaseAgeExclude:
-  - "effect"
-  - "drizzle-orm"
+catalog:
+  pg: ^8.23.0
+  typescript: ^7.0.2
+
+catalogs:
+  better-auth:
+    "auth": 1.7.1
+    "better-auth": 1.7.1
+    "@better-auth/drizzle-adapter": 1.7.1
+
+  drizzle:
+    "drizzle-orm": 1.0.0-rc.5-169397b
+
+  effect:
+    "effect": 4.0.0-beta.105
+    "@effect/sql-pg": 4.0.0-beta.105
+
+  types:
+    "@types/node": ^26.2.0
+    "@types/pg": ^8.21.0

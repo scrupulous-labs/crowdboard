@@ -7,13 +7,13 @@
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
-    "@effect/sql-pg": "4.0.0-beta.105",
-    "drizzle-orm": "catalog:",
-    "effect": "catalog:",
+    "@effect/sql-pg": "catalog:effect",
+    "drizzle-orm": "catalog:drizzle",
+    "effect": "catalog:effect",
     "pg": "catalog:"
   },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*",
-    "@types/pg": "catalog:"
+    "@types/pg": "catalog:types"
   }
 }

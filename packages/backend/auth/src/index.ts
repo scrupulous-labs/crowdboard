@@ -8,9 +8,14 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
     const db = yield* Db;
 
     return betterAuth({
+      advanced: {
+        database: {
+          joins: true,
+        },
+      },
       database: drizzleAdapter(db, {
         provider: "pg",
-      }),
+      })
     });
   }),
 }) {

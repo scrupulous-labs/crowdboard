@@ -7,21 +7,19 @@ import { Pool } from "pg";
 export const auth = await Effect.gen(function* () {
   const env = yield* Env;
   const auth = yield* Auth;
-  const pgPool = new Pool({
+  auth.options.database = new Pool({
     connectionString: Redacted.value(env.pgUrl),
-  }) satisfies BetterAuthOptions["database"]
+  }) satisfies BetterAuthOptions["database"];
 
-  auth.options.database = pgPool;
   return auth;
-}).pipe(
-  Effect.provide(Layer.merge(Auth.layer, Env.layer)),
-  Effect.runPromiseExit
-).then(
-   Exit.match({
-    onSuccess: identity,
-    onFailure: (cause) => {
-      console.log(Cause.pretty(cause));
-      process.exit(1);
-    }
-  }),
-);
+})
+  .pipe(Effect.provide(Layer.merge(Auth.layer, Env.layer)), Effect.runPromiseExit)
+  .then(
+    Exit.match({
+      onSuccess: identity,
+      onFailure: (cause) => {
+        console.log(Cause.pretty(cause));
+        process.exit(1);
+      },
+    }),
+  );
