@@ -2,6 +2,7 @@ import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { Db } from "@crowdboard-backend/db";
 import { schema } from "@crowdboard-backend/db-schema";
 import { betterAuth } from "better-auth";
+import { organization } from "better-auth/plugins";
 import { Context, Effect, Layer } from "effect";
 
 export class Auth extends Context.Service<Auth>()("@app/auth", {
@@ -22,6 +23,24 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
       session: { modelName: "userSessions" },
       account: { modelName: "userAccounts" },
       verification: { modelName: "verifications" },
+      emailAndPassword: {
+        enabled: true,
+      },
+      plugins: [
+        organization({
+          schema: {
+            organization: { modelName: "workspaces" },
+            member: {
+              modelName: "workspaceMembers",
+              fields: { organizationId: "workspaceId" },
+            },
+            invitation: {
+              modelName: "invitations",
+              fields: { organizationId: "workspaceId" },
+            },
+          },
+        }),
+      ],
     });
   }),
 }) {

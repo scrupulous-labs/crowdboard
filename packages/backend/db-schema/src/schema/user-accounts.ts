@@ -1,7 +1,4 @@
-import { defineRelationsPart } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-
-import { users } from "./users";
 
 export const userAccounts = pgTable("userAccounts", {
   id: text().primaryKey(),
@@ -21,12 +18,3 @@ export const userAccounts = pgTable("userAccounts", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
-
-export const userAccountRelations = defineRelationsPart({ users, userAccounts }, (r) => ({
-  userAccounts: {
-    user: r.one.users({
-      from: r.userAccounts.userId,
-      to: r.users.id,
-    }),
-  },
-}));
