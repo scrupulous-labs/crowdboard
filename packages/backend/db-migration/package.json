@@ -5,8 +5,7 @@
     ".": "./index.ts"
   },
   "scripts": {
-    "generate:auth-migrations": "auth generate --config ./config/auth-config.ts --output ./migrations/0000_RENAME-ME.sql --yes",
-    "update": "auth upgrade"
+    "generate:auth-migrations": "auth generate --config ./config/auth-config.ts --output ./migrations/0000_CHANGE-ME.sql --yes"
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",

@@ -1,51 +1,53 @@
-create table "user" (
+create table "users" (
 	"id" text not null primary key,
 	"name" text not null,
+	"image" text,
 	"email" text not null unique,
 	"emailVerified" boolean not null,
-	"image" text,
 	"createdAt" timestamptz default CURRENT_TIMESTAMP not null,
 	"updatedAt" timestamptz default CURRENT_TIMESTAMP not null
 );
 
-create table "session" (
+
+create table "userSessions" (
 	"id" text not null primary key,
-	"expiresAt" timestamptz not null,
+	"userId" text not null references "users" ("id") on delete cascade,
 	"token" text not null unique,
-	"createdAt" timestamptz default CURRENT_TIMESTAMP not null,
-	"updatedAt" timestamptz not null,
+	"expiresAt" timestamptz not null,
 	"ipAddress" text,
 	"userAgent" text,
-	"userId" text not null references "user" ("id") on delete cascade
-);
-
-create table "account" (
-	"id" text not null primary key,
-	"accountId" text not null,
-	"providerId" text not null,
-	"userId" text not null references "user" ("id") on delete cascade,
-	"accessToken" text,
-	"refreshToken" text,
-	"idToken" text,
-	"accessTokenExpiresAt" timestamptz,
-	"refreshTokenExpiresAt" timestamptz,
-	"scope" text,
-	"password" text,
 	"createdAt" timestamptz default CURRENT_TIMESTAMP not null,
 	"updatedAt" timestamptz not null
 );
+create index "userSessions_userId_idx" on "userSessions" ("userId");
 
-create table "verification" (
+
+create table "userAccounts" (
 	"id" text not null primary key,
-	"identifier" text not null,
+	"userId" text not null references "users" ("id") on delete cascade,
+	"issuer" text not null,
+	"accountId" text not null,
+	"providerId" text not null,
+	"scope" text,
+	"password" text,
+	"idToken" text,
+	"accessToken" text,
+	"refreshToken" text,
+	"accessTokenExpiresAt" timestamptz,
+	"refreshTokenExpiresAt" timestamptz,
+	"createdAt" timestamptz default CURRENT_TIMESTAMP not null,
+	"updatedAt" timestamptz not null
+);
+create index "userAccounts_userId_idx" on "userAccounts" ("userId");
+create unique index "userAccounts_issuer_accountId_uidx" on "userAccounts" ("issuer", "accountId");
+
+
+create table "verifications" (
+	"id" text not null primary key,
 	"value" text not null,
+	"identifier" text not null,
 	"expiresAt" timestamptz not null,
 	"createdAt" timestamptz default CURRENT_TIMESTAMP not null,
 	"updatedAt" timestamptz default CURRENT_TIMESTAMP not null
 );
-
-create index "session_userId_idx" on "session" ("userId");
-
-create index "account_userId_idx" on "account" ("userId");
-
-create index "verification_identifier_idx" on "verification" ("identifier");
+create index "verifications_identifier_idx" on "verifications" ("identifier");

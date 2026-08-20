@@ -6,6 +6,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@crowdboard-backend/db-schema": "workspace:*",
     "@crowdboard-backend/env": "workspace:*",
     "@effect/sql-pg": "catalog:effect",
     "drizzle-orm": "catalog:drizzle",

@@ -16,7 +16,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
               direction: "up",
               dir: join(import.meta.dirname, "./migrations"),
               databaseUrl: Redacted.value(pgUrl),
-              migrationsTable: "crowdboard_migrations",
+              migrationsTable: "migrations",
               advisoryLockMode: "wait",
               migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
             });

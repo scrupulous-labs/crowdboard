@@ -1,12 +1,11 @@
-minimumReleaseAge: 10080
-blockExoticSubdeps: true
-
 packages:
   - "apps/*"
   - "packages/*"
   - "packages/backend/*"
   - "tooling/tsconfig"
 
+blockExoticSubdeps: true
+minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - "effect"
   - "@effect/*"
@@ -28,14 +27,11 @@ catalogs:
     "auth": 1.7.1
     "better-auth": 1.7.1
     "@better-auth/drizzle-adapter": 1.7.1
-
   drizzle:
     "drizzle-orm": 1.0.0-rc.5-169397b
-
   effect:
     "effect": 4.0.0-beta.105
     "@effect/sql-pg": 4.0.0-beta.105
-
   types:
     "@types/node": ^26.2.0
     "@types/pg": ^8.21.0
