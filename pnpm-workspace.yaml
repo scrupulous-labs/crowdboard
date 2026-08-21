@@ -19,8 +19,9 @@ allowBuilds:
   "msgpackr-extract": false
 
 catalog:
-  pg: ^8.23.0
-  typescript: ^7.0.2
+  "@paralleldrive/cuid2": ^3.3.0
+  "pg": ^8.23.0
+  "typescript": ^7.0.2
 
 catalogs:
   better-auth:

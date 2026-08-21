@@ -1,6 +1,7 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { Db } from "@crowdboard-backend/db";
 import { schema } from "@crowdboard-backend/db-schema";
+import { createId } from "@paralleldrive/cuid2";
 import { betterAuth } from "better-auth";
 import { organization } from "better-auth/plugins";
 import { Context, Effect, Layer } from "effect";
@@ -16,8 +17,11 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
         camelCase: true,
       }),
       advanced: {
-        database: { joins: true },
         cookiePrefix: "cb",
+        database: {
+          joins: true,
+          generateId: createId,
+        },
       },
       user: { modelName: "users" },
       session: { modelName: "userSessions" },

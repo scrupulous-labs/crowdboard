@@ -9,6 +9,7 @@
     "@better-auth/drizzle-adapter": "catalog:better-auth",
     "@crowdboard-backend/db": "workspace:*",
     "@crowdboard-backend/db-schema": "workspace:*",
+    "@paralleldrive/cuid2": "catalog:",
     "better-auth": "catalog:better-auth",
     "effect": "catalog:effect"
   },
