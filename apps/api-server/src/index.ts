@@ -1,18 +1,16 @@
-import Fastify from "fastify";
+import { DbMigration } from "@crowdboard-backend/db-migration";
+import { Effect } from "effect";
 
-const fastify = Fastify({
-  logger: true,
-});
+const program = Effect.gen(function* () {
+  const { runMigrations } = yield* DbMigration;
+  yield* runMigrations();
+}).pipe(
+  Effect.provide(DbMigration.layer),
+  Effect.catch((error) =>
+    Effect.sync(() => {
+      console.log(error);
+    }),
+  ),
+);
 
-// Declare a route
-fastify.get("/", function (request, reply) {
-  reply.send({ hello: "world" });
-});
-
-// Run the server!
-fastify.listen({ port: 3000 }, function (err, address) {
-  if (err) {
-    fastify.log.error(err);
-  }
-  console.log(`Server is now listening on ${address}`);
-});
+void Effect.runPromise(program);

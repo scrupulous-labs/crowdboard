@@ -30,7 +30,6 @@ const esbuildContext = await esbuild.context({
   target: "node26",
   outfile: outputFile,
   packages: "external",
-  sourcemap: true,
   plugins: [
     {
       name: "restart-server",

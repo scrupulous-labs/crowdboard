@@ -1,15 +1,20 @@
 {
-  "name": "@crowdboard/db",
+  "name": "@crowdboard-backend/db",
+  "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    ".": "./src/index.ts"
   },
   "dependencies": {
-    "@crowdboard/server-config": "workspace:*",
-    "effect": "catalog:",
+    "@crowdboard-backend/db-schema": "workspace:*",
+    "@crowdboard-backend/env": "workspace:*",
+    "@effect/sql-pg": "catalog:effect",
+    "drizzle-orm": "catalog:drizzle",
+    "effect": "catalog:effect",
     "pg": "catalog:"
   },
   "devDependencies": {
-    "@crowdboard/tsconfig": "workspace:*"
+    "@crowdboard-tooling/tsconfig": "workspace:*",
+    "@types/pg": "catalog:types"
   }
 }

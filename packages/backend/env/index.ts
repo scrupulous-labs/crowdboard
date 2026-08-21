@@ -1,12 +1,12 @@
-import { Config, Redacted, Effect } from "effect";
+import { Config, Redacted, Context, Effect, Layer } from "effect";
 
-export class ServerConfig extends Effect.Service<ServerConfig>()("@app/server-config", {
-  effect: Effect.gen(function* () {
-    const config = yield* Config.all([
+export class Env extends Context.Service<Env>()("@app/env", {
+  make: Effect.gen(function* () {
+    return yield* Config.all([
       Config.nested(
         Config.all([
           Config.string("HOST").pipe(Config.withDefault("localhost")),
-          Config.integer("PORT").pipe(Config.withDefault(5433)),
+          Config.int("PORT").pipe(Config.withDefault(5433)),
           Config.string("USER").pipe(Config.withDefault("postgres")),
           Config.string("PASSWORD").pipe(Config.withDefault("postgres")),
           Config.string("DATABASE").pipe(Config.withDefault("crowdboard")),
@@ -18,7 +18,7 @@ export class ServerConfig extends Effect.Service<ServerConfig>()("@app/server-co
         pgUrl: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`),
       })),
     );
-
-    return config;
   }),
-}) {}
+}) {
+  static readonly layer = Layer.effect(this, this.make);
+}

@@ -1,4 +1,0 @@
-{
-  "extends": "@crowdboard/tsconfig/base.server.json",
-  "include": ["*"]
-}

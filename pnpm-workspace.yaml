@@ -1,19 +1,38 @@
-minimumReleaseAge: 10080
-blockExoticSubdeps: true
-
 packages:
   - "apps/*"
   - "packages/*"
   - "packages/backend/*"
-  - "packages/frontend/*"
-  - "packages/shared/*"
   - "tooling/tsconfig"
 
-catalog:
-  '@types/node': ^26.1.2
-  effect: ^3.22.1
-  pg: ^8.22.0
-  typescript: "^6.0.3"
+blockExoticSubdeps: true
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - "effect"
+  - "@effect/*"
+  - "drizzle-orm"
+  - "auth"
+  - "better-auth"
+  - "@better-auth/*"
 
 allowBuilds:
-  esbuild: true
+  "esbuild": true
+  "msgpackr-extract": false
+
+catalog:
+  "@paralleldrive/cuid2": ^3.3.0
+  "pg": ^8.23.0
+  "typescript": ^7.0.2
+
+catalogs:
+  better-auth:
+    "auth": 1.7.1
+    "better-auth": 1.7.1
+    "@better-auth/drizzle-adapter": 1.7.1
+  drizzle:
+    "drizzle-orm": 1.0.0-rc.5-169397b
+  effect:
+    "effect": 4.0.0-beta.105
+    "@effect/sql-pg": 4.0.0-beta.105
+  types:
+    "@types/node": ^26.2.0
+    "@types/pg": ^8.21.0
