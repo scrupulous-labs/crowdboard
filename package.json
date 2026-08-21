@@ -7,9 +7,12 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix"
+    "lint:fix": "oxlint --fix",
+    "patch:oxlint": "effect-tsgo patch --oxlint",
+    "unpatch:oxlint": "effect-tsgo unpatch --oxlint"
   },
   "devDependencies": {
+    "@effect/tsgo": "^0.36.5",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
     "oxlint-tsgolint": "^7.0.2001"

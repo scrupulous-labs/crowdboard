@@ -11,7 +11,7 @@
     "@crowdboard-backend/env": "workspace:*",
     "effect": "catalog:effect",
     "node-pg-migrate": "^9.0.0",
-    "pg": "catalog:"
+    "pg": "catalog:drivers"
   },
   "devDependencies": {
     "@crowdboard-backend/auth": "workspace:*",

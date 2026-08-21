@@ -9,21 +9,19 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
     const { pgUrl } = yield* Env;
 
     return {
-      runMigrations: () => {
-        return Effect.tryPromise({
-          try: async () => {
-            await runner({
-              direction: "up",
-              dir: join(import.meta.dirname, "./migrations"),
-              databaseUrl: Redacted.value(pgUrl),
-              migrationsTable: "migrations",
-              advisoryLockMode: "wait",
-              migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
-            });
-          },
-          catch: (cause) => new DbMigrationError({ cause }),
-        });
-      },
+      runMigrations: Effect.tryPromise({
+        try: async () => {
+          await runner({
+            direction: "up",
+            dir: join(import.meta.dirname, "./migrations"),
+            databaseUrl: Redacted.value(pgUrl),
+            migrationsTable: "migrations",
+            advisoryLockMode: "wait",
+            migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
+          });
+        },
+        catch: (cause) => new DbMigrationError({ cause }),
+      }),
     };
   }),
 }) {

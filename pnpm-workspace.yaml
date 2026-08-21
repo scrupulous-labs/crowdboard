@@ -19,15 +19,17 @@ allowBuilds:
   "msgpackr-extract": false
 
 catalog:
-  "@paralleldrive/cuid2": ^3.3.0
-  "pg": ^8.23.0
-  "typescript": ^7.0.2
 
 catalogs:
   better-auth:
     "auth": 1.7.1
     "better-auth": 1.7.1
     "@better-auth/drizzle-adapter": 1.7.1
+  build:
+    "typescript": ^7.0.2
+    "esbuild": ^0.28.2
+  drivers:
+    "pg": ^8.23.0
   drizzle:
     "drizzle-orm": 1.0.0-rc.5-169397b
   effect:
@@ -36,3 +38,6 @@ catalogs:
   types:
     "@types/node": ^26.2.0
     "@types/pg": ^8.21.0
+  utils:
+    "@paralleldrive/cuid2": ^3.3.0
+    "@sindresorhus/slugify": ^3.0.0
