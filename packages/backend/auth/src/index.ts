@@ -1,5 +1,5 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { Db } from "@crowdboard-backend/db";
+import { DbAuth } from "@crowdboard-backend/db";
 import { schema } from "@crowdboard-backend/db-schema";
 import { createId } from "@paralleldrive/cuid2";
 import { betterAuth } from "better-auth";
@@ -8,7 +8,7 @@ import { Context, Effect, Layer } from "effect";
 
 export class Auth extends Context.Service<Auth>()("@app/auth", {
   make: Effect.gen(function* () {
-    const db = yield* Db;
+    const db = yield* DbAuth;
 
     return betterAuth({
       database: drizzleAdapter(db, {
@@ -48,5 +48,5 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
     });
   }),
 }) {
-  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(Db.layer));
+  static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(DbAuth.layer));
 }

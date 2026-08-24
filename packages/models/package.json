@@ -1,5 +1,5 @@
 {
-  "name": "@crowdboard-backend/models",
+  "name": "@crowdboard/models",
   "private": true,
   "type": "module",
   "exports": {
