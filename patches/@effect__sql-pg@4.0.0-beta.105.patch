@@ -1,0 +1,13 @@
+diff --git a/src/PgClient.ts b/src/PgClient.ts
+index 9003a925aec765bb4ac4a1f8ca201450add6ed27..bdfbd6bf1dcef5a719a78868ebc4d5f62043b00d 100644
+--- a/src/PgClient.ts
++++ b/src/PgClient.ts
+@@ -438,7 +438,7 @@ export const fromPool = Effect.fnUntraced(function*(
+     password: typeof pool.options.password === "string" ? Redacted.make(pool.options.password) : undefined,
+     ssl: pool.options.ssl,
+     applicationName: pool.options.application_name,
+-    types: pool.options.types
++    types: options.types ?? pool.options.types
+   }
+   if (pool.options.connectionString) {
+     // @effect-diagnostics-next-line tryCatchInEffectGen:off
