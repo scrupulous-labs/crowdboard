@@ -1,0 +1,12 @@
+{
+  "extends": "@crowdboard-tooling/tsconfig/base.browser.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "#/*": ["./src/*"],
+      "@/*": ["./src/*"]
+    },
+    "types": ["vite/client"]
+  }
+}

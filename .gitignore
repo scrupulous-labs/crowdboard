@@ -1,5 +1,14 @@
-node_modules/
-.vscode/
-.DS_Store
+node_modules
 dist
+dist-ssr
+*.local
+.vscode
+.DS_Store
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
 erl_crash.dump

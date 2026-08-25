@@ -16,6 +16,7 @@ minimumReleaseAgeExclude:
 
 allowBuilds:
   "esbuild": true
+  "lightningcss": true
   "msgpackr-extract": false
 
 catalogs:
@@ -24,8 +25,10 @@ catalogs:
     "better-auth": 1.7.1
     "@better-auth/drizzle-adapter": 1.7.1
   build:
-    "typescript": ^7.0.2
+    "vite": ^8.2.1
     "esbuild": ^0.28.2
+    "typescript": ^7.0.2
+    "@vitejs/plugin-react": ^6.0.5
   drivers:
     "pg": ^8.23.0
   drizzle:
@@ -34,9 +37,23 @@ catalogs:
     "effect": 4.0.0-beta.105
     "@effect/sql-pg": 4.0.0-beta.105
     "@effect/platform-node": 4.0.0-beta.105
+  react:
+    "react": ^19.2.8
+    "react-dom": ^19.2.8
+  tailwindcss:
+    "@tailwindcss/vite": ^4.3.3
+    tailwindcss: ^4.3.3
+  tanstack:
+    "@tanstack/react-router": ^1.170.30
+    "@tanstack/devtools-vite": ^0.8.3
+    "@tanstack/router-plugin": ^1.168.33
+    "@tanstack/react-devtools": ^0.10.10
+    "@tanstack/react-router-devtools": ^1.167.1
   types:
-    "@types/node": ^26.2.0
     "@types/pg": ^8.21.0
+    "@types/node": ^26.2.0
+    "@types/react": ^19.2.18
+    "@types/react-dom": ^19.2.4
   utils:
     "@paralleldrive/cuid2": ^3.3.0
     "@sindresorhus/slugify": ^3.0.0

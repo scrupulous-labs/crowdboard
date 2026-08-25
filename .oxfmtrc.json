@@ -3,7 +3,6 @@
   "endOfLine": "lf",
   "singleQuote": false,
   "sortImports": true,
-  "sortPackageJson": {
-    "sortScripts": true
-  }
+  "ignorePatterns": ["**/routeTree.gen.ts"],
+  "sortPackageJson": { "sortScripts": true }
 }
