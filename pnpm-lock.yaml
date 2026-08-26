@@ -268,9 +268,6 @@ importers:
       auth:
         specifier: catalog:better-auth
         version: 1.7.1(@better-fetch/fetch@1.3.1)(better-call@1.4.0(zod@4.4.3))(chokidar@5.0.0)(drizzle-orm@1.0.0-rc.5-169397b(@effect/sql-pg@4.0.0-beta.105(patch_hash=c5340a993b0c190ef27e57557b6e23d3d9005ccd5cadb577ae2bf202ccd4a132)(effect@4.0.0-beta.105))(@types/pg@8.21.0)(effect@4.0.0-beta.105)(pg@8.23.0)(zod@4.4.3))(giget@3.3.1)(jose@6.2.8)(kysely@0.29.5)(nanostores@1.4.2)(pg@8.23.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(solid-js@1.9.15)
-      better-auth:
-        specifier: catalog:better-auth
-        version: 1.7.1(drizzle-orm@1.0.0-rc.5-169397b(@effect/sql-pg@4.0.0-beta.105(patch_hash=c5340a993b0c190ef27e57557b6e23d3d9005ccd5cadb577ae2bf202ccd4a132)(effect@4.0.0-beta.105))(@types/pg@8.21.0)(effect@4.0.0-beta.105)(pg@8.23.0)(zod@4.4.3))(pg@8.23.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(solid-js@1.9.15)
 
   packages/backend/db-schema:
     dependencies:
@@ -281,15 +278,9 @@ importers:
         specifier: catalog:effect
         version: 4.0.0-beta.105
     devDependencies:
-      '@crowdboard-backend/auth':
-        specifier: workspace:*
-        version: link:../auth
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
         version: link:../../../tooling/tsconfig
-      auth:
-        specifier: catalog:better-auth
-        version: 1.7.1(@better-fetch/fetch@1.3.1)(better-call@1.4.0(zod@4.4.3))(chokidar@5.0.0)(drizzle-orm@1.0.0-rc.5-169397b(@effect/sql-pg@4.0.0-beta.105(patch_hash=c5340a993b0c190ef27e57557b6e23d3d9005ccd5cadb577ae2bf202ccd4a132)(effect@4.0.0-beta.105))(@types/pg@8.21.0)(effect@4.0.0-beta.105)(pg@8.23.0)(zod@4.4.3))(giget@3.3.1)(jose@6.2.8)(kysely@0.29.5)(nanostores@1.4.2)(pg@8.23.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(solid-js@1.9.15)
 
   packages/backend/env:
     dependencies:

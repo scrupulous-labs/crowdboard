@@ -4,18 +4,13 @@
   "description": "",
   "author": "Pavan Varma",
   "scripts": {
-    "docker:reset": "make -C ./tooling/docker reset-dev-services",
-    "docker:start": "make -C ./tooling/docker start-dev-services",
-    "docker:stop": "make -C ./tooling/docker stop-dev-services",
+    "docker": "make -C ./tooling/docker",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "oxlint:patch": "effect-tsgo patch --oxlint",
-    "oxlint:unpatch": "effect-tsgo unpatch --oxlint",
-    "psql": "make -C ./tooling/docker connect-dev-db",
-    "psql:reset": "pnpm run docker:reset && pnpm run docker:start && pnpm run psql",
-    "psql:start": "pnpm run docker:start && pnpm run psql"
+    "oxlint:unpatch": "effect-tsgo unpatch --oxlint"
   },
   "devDependencies": {
     "@effect/tsgo": "^0.36.5",

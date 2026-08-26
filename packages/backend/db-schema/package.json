@@ -4,16 +4,11 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "scripts": {
-    "generate:auth-schema": "auth generate --config ./config/auth-config.ts --output ./src/0000_CHANGE-ME.ts --yes"
-  },
   "dependencies": {
     "drizzle-orm": "catalog:drizzle",
     "effect": "catalog:effect"
   },
   "devDependencies": {
-    "@crowdboard-backend/auth": "workspace:*",
-    "@crowdboard-tooling/tsconfig": "workspace:*",
-    "auth": "catalog:better-auth"
+    "@crowdboard-tooling/tsconfig": "workspace:*"
   }
 }

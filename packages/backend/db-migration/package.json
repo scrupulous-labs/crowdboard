@@ -5,7 +5,9 @@
     ".": "./index.ts"
   },
   "scripts": {
-    "generate:auth-migrations": "auth generate --config ./config/auth-config.ts --output ./migrations/0000_CHANGE-ME.sql --yes"
+    "generate:auth": "pnpm generate:auth-migration && pnpm generate:auth-schema",
+    "generate:auth-migration": "auth generate --config ./config/auth-config.ts --output ./tmp/COPY-TO-MIGRATIONS.sql --yes",
+    "generate:auth-schema": "auth generate --config ./config/auth-config.drizzle.ts --output ./tmp/COPY-TO-DB_SCHEMA.ts --yes"
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
@@ -18,7 +20,6 @@
     "@crowdboard-tooling/tsconfig": "workspace:*",
     "@types/node": "catalog:types",
     "@types/pg": "catalog:types",
-    "auth": "catalog:better-auth",
-    "better-auth": "catalog:better-auth"
+    "auth": "catalog:better-auth"
   }
 }

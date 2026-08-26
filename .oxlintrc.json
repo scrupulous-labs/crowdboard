@@ -6,7 +6,7 @@
     "typeCheck": true
   },
   "plugins": ["import", "typescript", "unicorn", "react", "react-perf"],
-  "ignorePatterns": ["**/routeTree.gen.ts"],
+  "ignorePatterns": ["**/routeTree.gen.ts", "**/tmp/*"],
   "rules": {
     "no-unused-expressions": "off",
     "no-extra-boolean-cast": "off",

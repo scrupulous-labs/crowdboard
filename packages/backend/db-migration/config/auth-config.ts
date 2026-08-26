@@ -1,6 +1,5 @@
 import { Auth } from "@crowdboard-backend/auth";
 import { Env } from "@crowdboard-backend/env";
-import { type BetterAuthOptions } from "better-auth";
 import { Cause, Effect, Exit, identity, Layer, Redacted } from "effect";
 import { Pool } from "pg";
 
@@ -9,7 +8,7 @@ export const auth = await Effect.gen(function* () {
   const auth = yield* Auth;
   auth.options.database = new Pool({
     connectionString: Redacted.value(env.pgUrl),
-  }) satisfies BetterAuthOptions["database"];
+  }) as any;
 
   return auth;
 })

@@ -8,9 +8,9 @@ const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
     devtools(),
+    viteReact(),
     tailwindcss(),
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
-    viteReact(),
   ],
 });
 

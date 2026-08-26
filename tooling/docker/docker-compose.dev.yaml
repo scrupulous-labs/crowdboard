@@ -6,7 +6,7 @@ services:
     ports:
       - 5433:5432
     volumes:
-      - dev-db:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     networks:
       - dev-network
     environment:
@@ -22,8 +22,20 @@ services:
     restart: unless-stopped
     container_name: crowdboard-dev_db
 
+  reverse-proxy:
+    image: caddy:2.11.4
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - dev-network
+    restart: unless-stopped
+    container_name: crowdboard-dev_reverse-proxy
+
 volumes:
-  dev-db:
+  db-data:
+  caddy-data:
+  caddy-config:
 
 networks:
   dev-network:
