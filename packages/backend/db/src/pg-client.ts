@@ -1,5 +1,5 @@
 import { PgClient } from "@effect/sql-pg";
-import { Effect, identity, Layer } from "effect";
+import { Effect, identity } from "effect";
 import { types } from "pg";
 
 import { PgPool } from "./pg-pool";
@@ -18,4 +18,4 @@ export const PgClientLive = PgClient.layerFrom(
       },
     });
   }),
-).pipe(Layer.provide(PgPool.layer));
+);

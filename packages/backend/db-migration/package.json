@@ -6,8 +6,9 @@
   },
   "scripts": {
     "generate:auth": "rm -rf ./tmp && pnpm generate:auth-migration && pnpm generate:auth-schema",
-    "generate:auth-migration": "auth generate --config ./config/auth.ts --output ./tmp/COPY-TO-MIGRATIONS.sql --yes",
-    "generate:auth-schema": "auth generate --config ./config/auth.drizzle.ts --output ./tmp/COPY-TO-DB_SCHEMA.ts --yes"
+    "generate:auth-migration": "auth generate --config ./scripts/auth.ts --output ./tmp/COPY-TO-MIGRATIONS.sql --yes",
+    "generate:auth-schema": "auth generate --config ./scripts/auth.drizzle.ts --output ./tmp/COPY-TO-DB_SCHEMA.ts --yes",
+    "migrate": "node ./scripts/run-migrations.ts"
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",

@@ -4,6 +4,10 @@ import { Env } from "@crowdboard-backend/env";
 import { Effect, Data, Redacted, Context, Layer } from "effect";
 import { runner } from "node-pg-migrate";
 
+export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
+  readonly cause: unknown;
+}> {}
+
 export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
   make: Effect.gen(function* () {
     const { pgUrl } = yield* Env;
@@ -26,8 +30,8 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
   }),
 }) {
   static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(Env.layer));
-}
 
-export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
-  readonly cause: unknown;
-}> {}
+  static readonly layerForMigrationScripts = Layer.effect(this, this.make).pipe(
+    Layer.provide(Env.layerForMigrationScripts),
+  );
+}

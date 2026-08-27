@@ -9,4 +9,8 @@ export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
   }),
 }) {
   static readonly layer = Layer.effect(this, this.make).pipe(Layer.provide(Env.layer));
+
+  static readonly layerForMigrationScripts = Layer.effect(this, this.make).pipe(
+    Layer.provide(Env.layerForMigrationScripts),
+  );
 }

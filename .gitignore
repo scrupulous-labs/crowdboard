@@ -7,7 +7,7 @@ dist-ssr
 .DS_Store
 .env
 .env.*
-!.env.example
+!.env.*.example
 .nitro
 .tanstack
 .wrangler

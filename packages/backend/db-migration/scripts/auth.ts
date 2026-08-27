@@ -9,10 +9,12 @@ export const auth = await Effect.gen(function* () {
   auth.options.database = new Pool({
     connectionString: Redacted.value(env.pgUrl),
   }) as any;
-
   return auth;
 })
-  .pipe(Effect.provide(Layer.merge(Auth.layer, Env.layer)), Effect.runPromiseExit)
+  .pipe(
+    Effect.provide(Layer.merge(Auth.layerForMigrationScripts, Env.layerForMigrationScripts)),
+    Effect.runPromiseExit,
+  )
   .then(
     Exit.match({
       onSuccess: identity,

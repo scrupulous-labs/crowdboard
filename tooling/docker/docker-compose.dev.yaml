@@ -1,5 +1,10 @@
 name: crowdboard-dev
 
+x-build: &build
+  context: ../..
+  dockerfile: ./tooling/docker/Dockerfile.dev
+  target: development
+
 x-develop: &develop
   watch:
     - action: sync
@@ -16,6 +21,27 @@ x-develop: &develop
       path: ../../pnpm-lock.yaml
 
 services:
+  workspace-client:
+    build: *build
+    image: crowdboard-dev:latest
+    networks:
+      - frontend-network
+    command: sh -c "pnpm --filter workspace-client dev"
+    container_name: crowdboard-dev_workspace-client
+    develop: *develop
+
+  api-server:
+    build: *build
+    image: crowdboard-dev:latest
+    networks:
+      - backend-network
+      - frontend-network
+    env_file:
+      - ./.env.dev
+    command: sh -c "pnpm --filter api-server dev"
+    container_name: crowdboard-dev_api-server
+    develop: *develop
+
   caddy:
     image: caddy:2.11.4
     ports:
@@ -29,31 +55,6 @@ services:
       - frontend-network
     restart: unless-stopped
     container_name: crowdboard-dev_caddy
-
-  workspace-client:
-    build:
-      context: ../..
-      dockerfile: ./tooling/docker/Dockerfile.dev
-      target: development
-    image: crowdboard-dev:latest
-    networks:
-      - frontend-network
-    command: sh -c "pnpm --filter workspace-client dev"
-    container_name: crowdboard-dev_workspace-client
-    develop: *develop
-
-  api-server:
-    build:
-      context: ../..
-      dockerfile: ./tooling/docker/Dockerfile.dev
-      target: development
-    image: crowdboard-dev:latest
-    networks:
-      - backend-network
-      - frontend-network
-    command: sh -c "pnpm --filter api-server dev"
-    container_name: crowdboard-dev_api-server
-    develop: *develop
 
   pg:
     image: postgres:17

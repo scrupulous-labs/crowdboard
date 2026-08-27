@@ -199,6 +199,9 @@ importers:
       '@crowdboard-backend/db-schema':
         specifier: workspace:*
         version: link:../db-schema
+      '@crowdboard-backend/env':
+        specifier: workspace:*
+        version: link:../env
       '@paralleldrive/cuid2':
         specifier: catalog:utils
         version: 3.3.0
