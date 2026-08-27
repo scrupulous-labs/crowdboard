@@ -8,6 +8,9 @@ start-dev:
 stop-dev:
 	docker compose -f docker-compose.dev.yaml down --remove-orphans
 
+build:
+	docker compose -f docker-compose.dev.yaml build --no-cache
+
 reset-dev:
 	docker compose -f docker-compose.dev.yaml down -v
 

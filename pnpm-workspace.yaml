@@ -1,7 +1,8 @@
 packages:
   - "apps/*"
   - "packages/*"
-  - "packages/backend/*"
+  - "packages-backend/*"
+  - "packages-frontend/*"
   - "tooling/tsconfig"
 
 blockExoticSubdeps: true

@@ -4,6 +4,6 @@ app.crowdboard.localhost {
 }
 
 api.crowdboard.localhost {
-	tls.internal
+	tls internal
 	reverse_proxy api-server:3000
 }

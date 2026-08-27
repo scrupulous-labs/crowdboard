@@ -121,7 +121,7 @@ importers:
     dependencies:
       '@crowdboard-backend/db-migration':
         specifier: workspace:*
-        version: link:../../packages/backend/db-migration
+        version: link:../../packages-backend/db-migration
       effect:
         specifier: catalog:effect
         version: 4.0.0-beta.105
@@ -191,7 +191,7 @@ importers:
         specifier: catalog:build
         version: 8.2.1(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)
 
-  packages/backend/auth:
+  packages-backend/auth:
     dependencies:
       '@better-auth/drizzle-adapter':
         specifier: catalog:better-auth
@@ -217,9 +217,9 @@ importers:
     devDependencies:
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
-        version: link:../../../tooling/tsconfig
+        version: link:../../tooling/tsconfig
 
-  packages/backend/db:
+  packages-backend/db:
     dependencies:
       '@crowdboard-backend/db-schema':
         specifier: workspace:*
@@ -242,12 +242,12 @@ importers:
     devDependencies:
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
-        version: link:../../../tooling/tsconfig
+        version: link:../../tooling/tsconfig
       '@types/pg':
         specifier: catalog:types
         version: 8.21.0
 
-  packages/backend/db-migration:
+  packages-backend/db-migration:
     dependencies:
       '@crowdboard-backend/db':
         specifier: workspace:*
@@ -270,7 +270,7 @@ importers:
         version: link:../auth
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
-        version: link:../../../tooling/tsconfig
+        version: link:../../tooling/tsconfig
       '@types/node':
         specifier: catalog:types
         version: 26.2.0
@@ -287,7 +287,7 @@ importers:
         specifier: catalog:build
         version: 4.23.12
 
-  packages/backend/db-schema:
+  packages-backend/db-schema:
     dependencies:
       drizzle-orm:
         specifier: catalog:drizzle
@@ -298,9 +298,9 @@ importers:
     devDependencies:
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
-        version: link:../../../tooling/tsconfig
+        version: link:../../tooling/tsconfig
 
-  packages/backend/env:
+  packages-backend/env:
     dependencies:
       effect:
         specifier: catalog:effect
@@ -308,13 +308,13 @@ importers:
     devDependencies:
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
-        version: link:../../../tooling/tsconfig
+        version: link:../../tooling/tsconfig
 
   packages/models:
     dependencies:
       '@crowdboard-backend/db-schema':
         specifier: workspace:*
-        version: link:../backend/db-schema
+        version: link:../../packages-backend/db-schema
       effect:
         specifier: catalog:effect
         version: 4.0.0-beta.105
