@@ -8,18 +8,14 @@ start-dev:
 stop-dev:
 	docker compose -f docker-compose.dev.yaml down --remove-orphans
 
-build:
+rebuild:
 	docker compose -f docker-compose.dev.yaml build --no-cache
 
-reset-dev:
-	docker compose -f docker-compose.dev.yaml down -v
+logs:
+	docker logs -f crowdboard-dev_$(SERVICE)
 
 psql:
 	docker exec -it crowdboard-dev_pg psql -U postgres -d crowdboard
-
-caddy-logs:
-	docker logs -f crowdboard-dev_caddy
-
 
 # =======================================================================================================
 # Add Caddy Root CA to Mac trust store https://caddyserver.com/docs/running#local-https-with-docker

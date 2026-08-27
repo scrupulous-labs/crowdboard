@@ -7,6 +7,7 @@
     "d": "make -C ./tooling/docker",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
+    "logs": "sh -c 'make -C ./tooling/docker logs SERVICE=\"$1\"' --",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "oxlint:patch": "effect-tsgo patch --oxlint",
