@@ -5,15 +5,15 @@
     ".": "./index.ts"
   },
   "scripts": {
-    "generate:auth": "pnpm generate:auth-migration && pnpm generate:auth-schema",
-    "generate:auth-migration": "auth generate --config ./config/auth-config.ts --output ./tmp/COPY-TO-MIGRATIONS.sql --yes",
-    "generate:auth-schema": "auth generate --config ./config/auth-config.drizzle.ts --output ./tmp/COPY-TO-DB_SCHEMA.ts --yes"
+    "generate:auth": "rm -rf ./tmp && pnpm generate:auth-migration && pnpm generate:auth-schema",
+    "generate:auth-migration": "auth generate --config ./config/auth.ts --output ./tmp/COPY-TO-MIGRATIONS.sql --yes",
+    "generate:auth-schema": "auth generate --config ./config/auth.drizzle.ts --output ./tmp/COPY-TO-DB_SCHEMA.ts --yes"
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
     "effect": "catalog:effect",
-    "node-pg-migrate": "^9.0.0",
-    "pg": "catalog:drivers"
+    "node-pg-migrate": "catalog:postgres",
+    "pg": "catalog:postgres"
   },
   "devDependencies": {
     "@crowdboard-backend/auth": "workspace:*",

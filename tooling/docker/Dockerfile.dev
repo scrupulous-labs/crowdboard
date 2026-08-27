@@ -1,0 +1,22 @@
+FROM node:26.5.0-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN npm install -g pnpm@11.11.0
+
+FROM base AS development
+WORKDIR /app
+COPY . .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+VOLUME [ \
+	"/app/node_modules", \
+	"/app/apps/api-server/node_modules", \
+	"/app/apps/workspace-client/node_modules", \
+	"/app/packages/backend/auth/node_modules", \
+	"/app/packages/backend/db/node_modules", \
+	"/app/packages/backend/db-migration/node_modules", \
+	"/app/packages/backend/db-schema/node_modules", \
+	"/app/packages/backend/env/node_modules", \
+	"/app/packages/models/node_modules", \
+	"/app/tooling/tsconfig/node_modules" \
+]

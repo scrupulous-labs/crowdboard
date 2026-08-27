@@ -1,0 +1,9 @@
+app.crowdboard.localhost {
+	tls internal
+	reverse_proxy workspace-client:3000
+}
+
+api.crowdboard.localhost {
+	tls.internal
+	reverse_proxy api-server:3000
+}

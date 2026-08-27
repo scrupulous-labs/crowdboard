@@ -1,0 +1,7 @@
+tooling
+**/node_modules
+**/dist
+**/tmp
+**/.*
+
+!tooling/tsconfig

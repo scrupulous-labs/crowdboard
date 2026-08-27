@@ -15,6 +15,7 @@
     "effecttsgo/global-date": "off",
     "effecttsgo/global-console": "off",
     "effecttsgo/async-function": "off",
+    "effecttsgo/process-env": "off",
     "react/exhaustive-deps": "off",
     "typescript/no-extra-non-null-assertion": "error",
     "typescript/prefer-optional-chain": "error"

@@ -12,7 +12,7 @@ export enum WorkspaceMemberRole {
   Member = "member",
 }
 
-export class WorkspaceMember extends Schema.Class<WorkspaceMember, { readonly brand: unique symbol }>(
+export class WorkspaceMember extends Schema.Class<WorkspaceMember, { readonly _: unique symbol }>(
   "models/db/workspace-member",
 )({
   id: WorkspaceMemberId,

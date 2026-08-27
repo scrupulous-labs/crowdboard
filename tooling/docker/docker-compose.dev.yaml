@@ -1,14 +1,68 @@
 name: crowdboard-dev
 
+x-develop: &develop
+  watch:
+    - action: sync
+      path: ../..
+      target: /app
+      ignore:
+        - "patches/"
+        - "tooling/"
+        - "**/node_modules"
+        - "**/dist"
+        - "**/tmp"
+        - "**/.*"
+    - action: rebuild
+      path: ../../pnpm-lock.yaml
+
 services:
-  db:
+  caddy:
+    image: caddy:2.11.4
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile
+    networks:
+      - frontend-network
+    restart: unless-stopped
+    container_name: crowdboard-dev_caddy
+
+  workspace-client:
+    build:
+      context: ../..
+      dockerfile: ./tooling/docker/Dockerfile.dev
+      target: development
+    image: crowdboard-dev:latest
+    networks:
+      - frontend-network
+    command: sh -c "pnpm --filter workspace-client dev"
+    container_name: crowdboard-dev_workspace-client
+    develop: *develop
+
+  api-server:
+    build:
+      context: ../..
+      dockerfile: ./tooling/docker/Dockerfile.dev
+      target: development
+    image: crowdboard-dev:latest
+    networks:
+      - backend-network
+      - frontend-network
+    command: sh -c "pnpm --filter api-server dev"
+    container_name: crowdboard-dev_api-server
+    develop: *develop
+
+  pg:
     image: postgres:17
     ports:
       - 5433:5432
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     networks:
-      - dev-network
+      - backend-network
     environment:
       POSTGRES_DB: crowdboard
       POSTGRES_USER: postgres
@@ -20,23 +74,15 @@ services:
       retries: 5
       start_period: 30s
     restart: unless-stopped
-    container_name: crowdboard-dev_db
-
-  reverse-proxy:
-    image: caddy:2.11.4
-    volumes:
-      - caddy-data:/data
-      - caddy-config:/config
-    networks:
-      - dev-network
-    restart: unless-stopped
-    container_name: crowdboard-dev_reverse-proxy
+    container_name: crowdboard-dev_pg
 
 volumes:
-  db-data:
+  pg-data:
   caddy-data:
   caddy-config:
 
 networks:
-  dev-network:
+  backend-network:
+    driver: bridge
+  frontend-network:
     driver: bridge

@@ -6,11 +6,12 @@ import { defineConfig } from "vite";
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
+  server: { host: true, port: 3000 },
   plugins: [
     devtools(),
-    viteReact(),
     tailwindcss(),
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
+    viteReact(),
   ],
 });
 

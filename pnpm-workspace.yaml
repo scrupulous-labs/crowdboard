@@ -29,14 +29,15 @@ catalogs:
     "esbuild": ^0.28.2
     "typescript": ^7.0.2
     "@vitejs/plugin-react": ^6.0.5
-  drivers:
-    "pg": ^8.23.0
   drizzle:
     "drizzle-orm": 1.0.0-rc.5-169397b
   effect:
     "effect": 4.0.0-beta.105
     "@effect/sql-pg": 4.0.0-beta.105
     "@effect/platform-node": 4.0.0-beta.105
+  postgres:
+    "pg": ^8.23.0
+    "node-pg-migrate": ^9.0.0
   react:
     "react": ^19.2.8
     "react-dom": ^19.2.8
