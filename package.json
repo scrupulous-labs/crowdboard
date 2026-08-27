@@ -4,7 +4,7 @@
   "description": "",
   "author": "Pavan Varma",
   "scripts": {
-    "docker": "make -C ./tooling/docker",
+    "d": "make -C ./tooling/docker",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",

@@ -7,7 +7,7 @@ export const auth = await Effect.gen(function* () {
   const env = yield* Env;
   const auth = yield* Auth;
   auth.options.database = new Pool({
-    connectionString: Redacted.value(env.pgUrl),
+    connectionString: Redacted.value(env.pg.url),
   }) as any;
   return auth;
 })

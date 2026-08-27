@@ -3,6 +3,6 @@
   "endOfLine": "lf",
   "singleQuote": false,
   "sortImports": true,
-  "ignorePatterns": ["**/routeTree.gen.ts", "**/tmp/*"],
+  "ignorePatterns": ["**/routeTree.gen.ts", "**/dist/**", "**/tmp/**"],
   "sortPackageJson": { "sortScripts": true }
 }

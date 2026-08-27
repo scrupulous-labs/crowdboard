@@ -2,6 +2,12 @@ import { Config, Redacted, Context, Layer } from "effect";
 
 export class Env extends Context.Service<Env>()("@app/env", {
   make: Config.all([
+    Config.int("PORT"),
+    Config.nonEmptyString("HOSTNAME"),
+    Config.nested(
+      Config.all([Config.nonEmptyString("CLIENT_ID"), Config.nonEmptyString("CLIENT_SECRET")]),
+      "AUTH_GOOGLE",
+    ),
     Config.nested(
       Config.all([
         Config.nonEmptyString("HOST"),
@@ -13,25 +19,38 @@ export class Env extends Context.Service<Env>()("@app/env", {
       ]),
       "PG",
     ),
-    Config.nonEmptyString("HOSTNAME"),
   ]).pipe(
-    Config.map(([[pgHost, pgPort, pgUser, pgPassword, pgDatabase, pgAutoMigrate], hostname]) => ({
-      pgUrl: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`),
-      pgAutoMigrate,
-      hostname,
-    })),
+    Config.map(
+      ([
+        port,
+        hostname,
+        [googleClientId, googleClientSecret],
+        [pgHost, pgPort, pgUser, pgPassword, pgDatabase, pgAutoMigrate],
+      ]) => ({
+        port,
+        hostname,
+        google: { clientId: googleClientId, clientSecret: googleClientSecret },
+        pg: {
+          url: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`),
+          autoMigrate: pgAutoMigrate,
+        },
+      }),
+    ),
   ),
 }) {
   static readonly layer = Layer.effect(this, this.make);
 
+  // only `pg.url` required, rest of the properties are immaterial
   static readonly layerForMigrationScripts = Layer.succeed(
     this,
     this.of({
-      pgUrl: Redacted.make("postgresql://postgres:postgres@$localhost:5433/crowdboard"),
-
-      // these are immaterial for db migration scripts
-      pgAutoMigrate: false,
+      port: 0,
       hostname: "",
+      google: { clientId: "", clientSecret: "" },
+      pg: {
+        url: Redacted.make("postgresql://postgres:postgres@localhost:5433/crowdboard"),
+        autoMigrate: false,
+      },
     }),
   );
 }

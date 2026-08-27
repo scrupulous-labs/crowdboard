@@ -14,5 +14,4 @@ dist-ssr
 .output
 .vinxi
 .pnpm-store
-__unconfig*
 erl_crash.dump

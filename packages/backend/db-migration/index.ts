@@ -10,7 +10,7 @@ export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
 
 export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
   make: Effect.gen(function* () {
-    const { pgUrl } = yield* Env;
+    const env = yield* Env;
 
     return {
       runMigrations: Effect.tryPromise({
@@ -18,7 +18,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
           await runner({
             direction: "up",
             dir: join(import.meta.dirname, "./migrations"),
-            databaseUrl: Redacted.value(pgUrl),
+            databaseUrl: Redacted.value(env.pg.url),
             migrationsTable: "migrations",
             advisoryLockMode: "wait",
             migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],

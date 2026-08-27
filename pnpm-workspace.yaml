@@ -25,6 +25,7 @@ catalogs:
     "better-auth": 1.7.1
     "@better-auth/drizzle-adapter": 1.7.1
   build:
+    "tsx": ^4.23.12
     "vite": ^8.2.1
     "esbuild": ^0.28.2
     "typescript": ^7.0.2
