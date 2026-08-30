@@ -1,27 +1,33 @@
 # =========================================================
 # Local Development Services
-# Run these from the root: pnpm docker <cmd>
+# Run these from the root: pnpm d <cmd>
 # =========================================================
-start-dev:
-	docker compose -f docker-compose.dev.yaml watch
+start:
+	docker compose -f compose.dev.yaml watch
 
-stop-dev:
-	docker compose -f docker-compose.dev.yaml down --remove-orphans
+stop:
+	docker compose -f compose.dev.yaml down --remove-orphans
 
 rebuild:
-	docker compose -f docker-compose.dev.yaml build --no-cache
+	docker compose -f compose.dev.yaml build --no-cache
 
 logs:
 	docker logs -f crowdboard-dev_$(SERVICE)
 
-psql:
+connect-pg:
 	docker exec -it crowdboard-dev_pg psql -U postgres -d crowdboard
+
+
 
 # =======================================================================================================
 # Add Caddy Root CA to Mac trust store https://caddyserver.com/docs/running#local-https-with-docker
-#.  Delete a CA - sudo security delete-certificate -Z <SHA-1_hash> /Library/Keychains/System.keychain
-#   List caddy CAs - security find-certificate -a -c "Caddy" -Z /Library/Keychains/System.keychain
+#   List caddy CA - security find-certificate -a -c "Caddy" -Z /Library/Keychains/System.keychain
+#   Delete a CA   - security delete-certificate -Z <SHA-1_hash> /Library/Keychains/System.keychain
 # =======================================================================================================
 install-caddy-ca:
-	docker compose -f docker-compose.dev.yaml cp caddy:/data/caddy/pki/authorities/local/root.crt /tmp/root.crt && \
+	docker compose -f compose.dev.yaml cp caddy:/data/caddy/pki/authorities/local/root.crt /tmp/root.crt && \
 	sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/root.crt
+
+# Remove anonymous volumes
+prune-volumes:
+	docker volume prune

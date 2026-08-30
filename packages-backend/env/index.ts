@@ -2,6 +2,7 @@ import { Config, Redacted, Context, Layer } from "effect";
 
 export class Env extends Context.Service<Env>()("@app/env", {
   make: Config.all([
+    Config.literals(["production", "development"], "NODE_ENV"),
     Config.int("PORT"),
     Config.nonEmptyString("HOSTNAME"),
     Config.nested(
@@ -22,11 +23,13 @@ export class Env extends Context.Service<Env>()("@app/env", {
   ]).pipe(
     Config.map(
       ([
+        nodeEnv,
         port,
         hostname,
         [googleClientId, googleClientSecret],
         [pgHost, pgPort, pgUser, pgPassword, pgDatabase, pgAutoMigrate],
       ]) => ({
+        nodeEnv,
         port,
         hostname,
         google: { clientId: googleClientId, clientSecret: googleClientSecret },
@@ -44,6 +47,7 @@ export class Env extends Context.Service<Env>()("@app/env", {
   static readonly layerForMigrationScripts = Layer.succeed(
     this,
     this.of({
+      nodeEnv: "development",
       port: 0,
       hostname: "",
       google: { clientId: "", clientSecret: "" },
