@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import * as esbuild from "esbuild";
 
-const entryFile = join(import.meta.dirname, "../src/index.ts");
+const entryFile = join(import.meta.dirname, "./index.ts");
 const outputDir = join(import.meta.dirname, "../dist");
 const outputFile = join(outputDir, "./index.cjs");
 const migrationsOutputDir = join(outputDir, "./migrations");

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsx ./scripts/build-server.ts",
+    "build": "tsx ./src/build.ts",
     "dev": "tsx watch ./src/index.ts",
     "type-check": "tsc --noEmit"
   },
