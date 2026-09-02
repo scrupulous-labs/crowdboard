@@ -3,17 +3,20 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "node ./scripts/build-server.mjs",
-    "dev": "node ./scripts/watch-server.mjs"
+    "build": "tsx ./scripts/build-server.ts",
+    "dev": "tsx watch ./src/index.ts",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@crowdboard-backend/auth": "workspace:*",
     "@crowdboard-backend/db-migration": "workspace:*",
-    "effect": "catalog:effect",
-    "fastify": "^5.11.3"
+    "effect": "catalog:effect"
   },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*",
+    "@types/node": "catalog:types",
     "esbuild": "catalog:build",
+    "tsx": "catalog:build",
     "typescript": "catalog:build"
   }
 }

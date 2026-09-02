@@ -18,7 +18,6 @@ connect-pg:
 	docker exec -it crowdboard-dev_pg psql -U postgres -d crowdboard
 
 
-
 # =======================================================================================================
 # Add Caddy Root CA to Mac trust store https://caddyserver.com/docs/running#local-https-with-docker
 #   List caddy CA - security find-certificate -a -c "Caddy" -Z /Library/Keychains/System.keychain

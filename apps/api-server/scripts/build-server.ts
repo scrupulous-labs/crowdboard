@@ -20,6 +20,7 @@ await esbuild.build({
   platform: "node",
   target: "node26",
   outfile: outputFile,
+  minify: true,
   define: {
     "import.meta.dirname": "__dirname",
     "import.meta.filename": "__filename",

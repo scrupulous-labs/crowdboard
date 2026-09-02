@@ -1,0 +1,17 @@
+{
+  "name": "@crowdboard/workspace-contract",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@crowdboard-backend/db-schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@crowdboard-tooling/tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "effect": "catalog:effect"
+  }
+}
