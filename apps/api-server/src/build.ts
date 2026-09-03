@@ -15,12 +15,12 @@ const migrationsSourceDir = join(
 
 await esbuild.build({
   entryPoints: [entryFile],
-  bundle: true,
-  format: "cjs",
-  platform: "node",
-  target: "node26",
   outfile: outputFile,
+  bundle: true,
   minify: true,
+  format: "cjs",
+  target: "node26",
+  platform: "node",
   define: {
     "import.meta.dirname": "__dirname",
     "import.meta.filename": "__filename",

@@ -33,9 +33,11 @@ services:
   api-server:
     build: *build
     image: crowdboard-dev:latest
+    ports:
+      - 3001:3001
     networks:
-      - backend-network
       - frontend-network
+      - backend-network
     env_file:
       - ./.env.dev
     command: sh -c "pnpm --filter api-server dev"
@@ -83,7 +85,7 @@ volumes:
   caddy-config:
 
 networks:
-  backend-network:
-    driver: bridge
   frontend-network:
+    driver: bridge
+  backend-network:
     driver: bridge

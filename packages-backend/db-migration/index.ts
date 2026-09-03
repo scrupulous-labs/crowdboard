@@ -11,11 +11,12 @@ export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
 export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
   make: Effect.gen(function* () {
     const env = yield* Env;
+    const enabled = Effect.succeed(env.pg.migrationsEnabled);
 
     return {
       runMigrations: Effect.tryPromise({
         try: async () => {
-          await runner({
+          return runner({
             direction: "up",
             dir: join(import.meta.dirname, "./migrations"),
             databaseUrl: Redacted.value(env.pg.url),
@@ -25,7 +26,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
           });
         },
         catch: (cause) => new DbMigrationError({ cause }),
-      }),
+      }).pipe(Effect.when(enabled)),
     };
   }),
 }) {

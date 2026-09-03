@@ -4,10 +4,10 @@
   "description": "",
   "author": "Pavan Varma",
   "scripts": {
-    "d": "make -C ./tooling/docker",
+    "d": "make -C ./tooling/docker-dev",
     "fmt": "oxfmt",
     "lint": "oxlint",
-    "logs": "sh -c 'make -C ./tooling/docker logs SERVICE=\"$1\"' --",
+    "logs": "sh -c 'make -C ./tooling/docker-dev logs SERVICE=\"$1\"' --",
     "oxlint:patch": "effect-tsgo patch --oxlint",
     "oxlint:unpatch": "effect-tsgo unpatch --oxlint"
   },

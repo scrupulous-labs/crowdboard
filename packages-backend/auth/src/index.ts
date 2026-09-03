@@ -41,13 +41,15 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
 
     return betterAuth({
       baseURL: opts.serverUrl,
+      trustedOrigins: opts.trustedOrigins,
+      emailAndPassword: { enabled: true },
       socialProviders: {
         google: {
           clientId: env.google.clientId,
           clientSecret: env.google.clientSecret,
+          redirectURI: env.google.redirectUri,
         },
       },
-      trustedOrigins: opts.trustedOrigins,
       advanced: {
         database: { joins: true, generateId: createId },
         cookiePrefix: "cb",
@@ -58,7 +60,6 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
           httpOnly: true,
         },
       },
-      emailAndPassword: { enabled: true },
       plugins: [lastLoginMethod, organization],
       ...(yield* SharedOpts),
     });

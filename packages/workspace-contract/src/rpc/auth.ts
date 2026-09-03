@@ -8,7 +8,12 @@ export class AuthGroup extends RpcGroup.make(
       password: Schema.NonEmptyString,
     },
   }),
-  Rpc.make("LogIn", {}),
+  Rpc.make("LogIn", {
+    payload: {
+      email: Schema.NonEmptyString,
+      password: Schema.NonEmptyString,
+    },
+  }),
   Rpc.make("LogOut", {}),
 ) {}
 
