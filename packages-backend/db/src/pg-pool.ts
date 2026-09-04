@@ -9,5 +9,5 @@ export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
   }),
 }) {
   static readonly layerWithoutDeps = Layer.effect(this, this.make);
-  static readonly layer = this.layerWithoutDeps.pipe(Layer.provide(PgEnv.layer));
+  static readonly layer = Layer.provide(this.layerWithoutDeps, PgEnv.layer);
 }

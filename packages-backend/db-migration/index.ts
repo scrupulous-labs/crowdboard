@@ -4,10 +4,6 @@ import { PgEnv } from "@crowdboard-backend/env";
 import { Effect, Data, Redacted, Context, Layer } from "effect";
 import { runner } from "node-pg-migrate";
 
-export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
-  readonly cause: unknown;
-}> {}
-
 export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
   make: Effect.gen(function* () {
     const pg = yield* PgEnv;
@@ -33,3 +29,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
   static readonly layerWithoutDeps = Layer.effect(this, this.make);
   static readonly layer = this.layerWithoutDeps.pipe(Layer.provide(PgEnv.layer));
 }
+
+export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
+  readonly cause: unknown;
+}> {}

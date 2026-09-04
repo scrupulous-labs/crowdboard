@@ -1,26 +1,16 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { DbNative } from "@crowdboard-backend/db";
+import { DbAsync } from "@crowdboard-backend/db";
 import { schema } from "@crowdboard-backend/db-schema";
 import { AuthEnv, Env, PgEnv, ServerEnv } from "@crowdboard-backend/env";
 import { createId } from "@paralleldrive/cuid2";
-import { betterAuth, type BetterAuthOptions } from "better-auth";
+import { betterAuth } from "better-auth";
 import { Context, Effect, Layer } from "effect";
 
 import { lastLoginMethod, organization } from "./plugins";
 
-const SharedOpts = Effect.gen(function* () {
-  const db = yield* DbNative;
-  return {
-    database: drizzleAdapter(db, { schema: schema, provider: "pg", camelCase: true }),
-    user: { modelName: "users", fields: { image: "avatarUrl" } },
-    account: { modelName: "accounts" },
-    session: { modelName: "userSessions" },
-    verification: { modelName: "verifications" },
-  } satisfies Pick<BetterAuthOptions, "database" | "user" | "account" | "session" | "verification">;
-});
-
 export class Auth extends Context.Service<Auth>()("@app/auth", {
   make: Effect.gen(function* () {
+    const db = yield* DbAsync;
     const env = yield* Env;
     const auth = yield* AuthEnv;
     const server = yield* ServerEnv;
@@ -41,6 +31,7 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
 
     return betterAuth({
       baseURL: server.origin,
+      trustedOrigins: [opts.workspaceOrigin, server.origin, server.originLocalhost],
       emailAndPassword: { enabled: true },
       socialProviders: {
         google: {
@@ -59,14 +50,18 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
           httpOnly: true,
         },
       },
-      trustedOrigins: [opts.workspaceOrigin, server.origin, server.originLocalhost],
+      database: drizzleAdapter(db, { schema, provider: "pg", camelCase: true }),
+      user: { modelName: "users", fields: { image: "avatarUrl" } },
+      account: { modelName: "accounts" },
+      session: { modelName: "userSessions" },
+      verification: { modelName: "verifications" },
       plugins: [lastLoginMethod, organization],
-      ...(yield* SharedOpts),
     });
   }),
 }) {
-  static readonly layerWithoutDeps = Layer.effect(this, this.make).pipe(
-    Layer.provide(Layer.mergeAll(DbNative.layerWithoutDeps, Env.layer, AuthEnv.layer, ServerEnv.layer)),
+  static readonly layerWithoutDeps = Layer.provide(
+    Layer.effect(this, this.make),
+    Layer.mergeAll(DbAsync.layerWithoutDeps, Env.layer, AuthEnv.layer, ServerEnv.layer),
   );
-  static readonly layer = this.layerWithoutDeps.pipe(Layer.provide(PgEnv.layer));
+  static readonly layer = Layer.provide(this.layerWithoutDeps, PgEnv.layer);
 }

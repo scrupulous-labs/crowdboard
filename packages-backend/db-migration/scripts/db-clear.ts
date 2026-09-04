@@ -1,15 +1,15 @@
-import { Db } from "@crowdboard-backend/db";
+import { DbEffect } from "@crowdboard-backend/db";
 import { PgEnv } from "@crowdboard-backend/env";
 import { sql } from "drizzle-orm";
 import { Cause, Effect, Exit, identity } from "effect";
 
 await Effect.gen(function* () {
-  const db = yield* Db;
+  const db = yield* DbEffect;
   yield* db.execute(sql`DROP SCHEMA public CASCADE`);
   yield* db.execute(sql`CREATE SCHEMA public`);
 })
   .pipe(
-    Effect.provide(Db.layerWithoutDeps),
+    Effect.provide(DbEffect.layerWithoutDeps),
     Effect.provide(PgEnv.layerForMigrationScripts),
     Effect.runPromiseExit,
   )
