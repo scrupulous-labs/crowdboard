@@ -1,7 +1,7 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { DbNative } from "@crowdboard-backend/db";
 import { schema } from "@crowdboard-backend/db-schema";
-import { Env } from "@crowdboard-backend/env";
+import { AuthEnv, Env, PgEnv, ServerEnv } from "@crowdboard-backend/env";
 import { createId } from "@paralleldrive/cuid2";
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { Context, Effect, Layer } from "effect";
@@ -22,32 +22,31 @@ const SharedOpts = Effect.gen(function* () {
 export class Auth extends Context.Service<Auth>()("@app/auth", {
   make: Effect.gen(function* () {
     const env = yield* Env;
+    const auth = yield* AuthEnv;
+    const server = yield* ServerEnv;
     const opts = (() => {
       switch (env.nodeEnv) {
         case "production":
           return {
-            serverUrl: "https://api.crowdboard.io",
             cookieDomain: "crowdboard.io",
-            trustedOrigins: ["https://app.crowdboard.io"],
+            workspaceOrigin: "https://app.crowdboard.io",
           };
         case "development":
           return {
-            serverUrl: "https://api.crowdboard.localhost",
             cookieDomain: "crowdboard.localhost",
-            trustedOrigins: ["https://app.crowdboard.localhost"],
+            workspaceOrigin: "https://app.crowdboard.localhost",
           };
       }
     })();
 
     return betterAuth({
-      baseURL: opts.serverUrl,
-      trustedOrigins: opts.trustedOrigins,
+      baseURL: server.origin,
       emailAndPassword: { enabled: true },
       socialProviders: {
         google: {
-          clientId: env.google.clientId,
-          clientSecret: env.google.clientSecret,
-          redirectURI: env.google.redirectUri,
+          clientId: auth.google.clientId,
+          clientSecret: auth.google.clientSecret,
+          redirectURI: auth.google.redirectUri,
         },
       },
       advanced: {
@@ -60,18 +59,14 @@ export class Auth extends Context.Service<Auth>()("@app/auth", {
           httpOnly: true,
         },
       },
+      trustedOrigins: [opts.workspaceOrigin, server.origin, server.originLocalhost],
       plugins: [lastLoginMethod, organization],
       ...(yield* SharedOpts),
     });
   }),
 }) {
-  static readonly layer = Layer.effect(this, this.make).pipe(
-    Layer.provide(DbNative.layer),
-    Layer.provide(Env.layer),
+  static readonly layerWithoutDeps = Layer.effect(this, this.make).pipe(
+    Layer.provide(Layer.mergeAll(DbNative.layerWithoutDeps, Env.layer, AuthEnv.layer, ServerEnv.layer)),
   );
-
-  static readonly layerForMigrationScripts = Layer.effect(this, this.make).pipe(
-    Layer.provide(DbNative.layerForMigrationScripts),
-    Layer.provide(Env.layerForMigrationScripts),
-  );
+  static readonly layer = this.layerWithoutDeps.pipe(Layer.provide(PgEnv.layer));
 }

@@ -1,18 +1,18 @@
 import { Auth } from "@crowdboard-backend/auth";
-import { Env } from "@crowdboard-backend/env";
+import { PgEnv } from "@crowdboard-backend/env";
 import { Cause, Effect, Exit, identity, Layer, Redacted } from "effect";
 import { Pool } from "pg";
 
 export const auth = await Effect.gen(function* () {
-  const env = yield* Env;
+  const pg = yield* PgEnv;
   const auth = yield* Auth;
   auth.options.database = new Pool({
-    connectionString: Redacted.value(env.pg.url),
+    connectionString: Redacted.value(pg.url),
   }) as any;
   return auth;
 })
   .pipe(
-    Effect.provide(Layer.merge(Auth.layerForMigrationScripts, Env.layerForMigrationScripts)),
+    Effect.provide(Layer.provideMerge(Auth.layerWithoutDeps, PgEnv.layerForMigrationScripts)),
     Effect.runPromiseExit,
   )
   .then(
