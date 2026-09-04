@@ -1,8 +1,17 @@
 import { Config, Redacted, Context, Layer } from "effect";
 
-export class Env extends Context.Service<Env>()("@app/env", {
-  make: Config.all([Config.literals(["production", "development"], "NODE_ENV")]).pipe(
-    Config.map(([nodeEnv]) => ({ nodeEnv })),
+export class AppEnv extends Context.Service<AppEnv>()("@app/app-env", {
+  make: Config.nested(
+    Config.all([
+      Config.nonEmptyString("ROOT_DOMAIN"),
+      Config.url("WORKSPACE_ORIGIN").pipe(Config.map((url) => url.href)),
+    ]),
+    "APP",
+  ).pipe(
+    Config.map(([rootDomain, workspaceOrigin]) => ({
+      rootDomain,
+      workspaceOrigin,
+    })),
   ),
 }) {
   static readonly layer = Layer.effect(this, this.make);
