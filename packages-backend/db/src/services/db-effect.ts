@@ -20,14 +20,13 @@ const PgClientLive = PgClient.layerFrom(
       },
     });
   }),
-);
+).pipe(Layer.provide(PgPool.layer));
 
 export class DbEffect extends Context.Service<DbEffect>()("@app/db", {
   make: PgDrizzle.make({ relations }),
 }) {
-  static readonly layer = Layer.effect(this, this.make).pipe(
-    Layer.provide(PgClientLive),
-    Layer.provide(PgPool.layer),
-    Layer.provide(PgDrizzle.DefaultServices),
+  static readonly layer = Layer.provide(
+    Layer.effect(this, this.make),
+    Layer.mergeAll(PgClientLive, PgDrizzle.DefaultServices),
   );
 }
