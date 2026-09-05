@@ -1,4 +1,4 @@
 {
   "extends": "@crowdboard-tooling/tsconfig/base.server.json",
-  "include": ["index.ts"]
+  "include": ["src/**/*.ts"]
 }

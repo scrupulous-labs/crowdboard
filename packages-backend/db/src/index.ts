@@ -1,3 +1,3 @@
-export * from "./service/db-async";
-export * from "./service/db-effect";
-export * from "./service/pg-pool";
+export * from "./services/db-async";
+export * from "./services/db-effect";
+export * from "./services/pg-pool";

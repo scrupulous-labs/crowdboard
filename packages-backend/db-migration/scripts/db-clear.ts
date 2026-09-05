@@ -1,5 +1,5 @@
 import { DbEffect } from "@crowdboard-backend/db";
-import { PgEnv } from "@crowdboard-backend/env";
+import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
 import { sql } from "drizzle-orm";
 import { Cause, Effect, Exit, identity } from "effect";
 
@@ -9,8 +9,8 @@ await Effect.gen(function* () {
   yield* db.execute(sql`CREATE SCHEMA public`);
 })
   .pipe(
-    Effect.provide(DbEffect.layerWithoutDeps),
-    Effect.provide(PgEnv.layerForMigrationScripts),
+    Effect.provide(DbEffect.layer),
+    Effect.provide(MigrationScriptConfigProvider.layer),
     Effect.runPromiseExit,
   )
   .then(

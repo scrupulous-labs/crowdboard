@@ -1,5 +1,5 @@
 import { DbMigration } from "@crowdboard-backend/db-migration";
-import { PgEnv } from "@crowdboard-backend/env";
+import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
 import { Cause, Effect, Exit, identity } from "effect";
 
 await Effect.gen(function* () {
@@ -7,8 +7,8 @@ await Effect.gen(function* () {
   yield* runMigrations;
 })
   .pipe(
-    Effect.provide(DbMigration.layerWithoutDeps),
-    Effect.provide(PgEnv.layerForMigrationScripts),
+    Effect.provide(DbMigration.layer),
+    Effect.provide(MigrationScriptConfigProvider.layer),
     Effect.runPromiseExit,
   )
   .then(

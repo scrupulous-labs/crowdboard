@@ -1,5 +1,4 @@
 import { relations } from "@crowdboard-backend/db-schema";
-import { PgEnv } from "@crowdboard-backend/env";
 import { PgClient } from "@effect/sql-pg";
 import * as PgDrizzle from "drizzle-orm/effect-postgres";
 import { Context, Effect, Layer, identity } from "effect";
@@ -26,10 +25,9 @@ const PgClientLive = PgClient.layerFrom(
 export class DbEffect extends Context.Service<DbEffect>()("@app/db", {
   make: PgDrizzle.make({ relations }),
 }) {
-  static readonly layerWithoutDeps = Layer.effect(this, this.make).pipe(
+  static readonly layer = Layer.effect(this, this.make).pipe(
     Layer.provide(PgClientLive),
-    Layer.provide(PgPool.layerWithoutDeps),
+    Layer.provide(PgPool.layer),
     Layer.provide(PgDrizzle.DefaultServices),
   );
-  static readonly layer = Layer.provide(this.layerWithoutDeps, PgEnv.layer);
 }

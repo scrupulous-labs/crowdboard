@@ -1,13 +1,13 @@
 import { join } from "node:path";
 
-import { PgEnv } from "@crowdboard-backend/env";
+import { Env } from "@crowdboard-backend/env";
 import { Effect, Data, Redacted, Context, Layer } from "effect";
 import { runner } from "node-pg-migrate";
 
 export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
   make: Effect.gen(function* () {
-    const pg = yield* PgEnv;
-    const enabled = Effect.succeed(pg.migrationsEnabled);
+    const env = yield* Env;
+    const enabled = Effect.succeed(env.pg.migrationsEnabled);
 
     return {
       runMigrations: Effect.tryPromise({
@@ -15,7 +15,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
           return runner({
             direction: "up",
             dir: join(import.meta.dirname, "./migrations"),
-            databaseUrl: Redacted.value(pg.url),
+            databaseUrl: Redacted.value(env.pg.url),
             migrationsTable: "migrations",
             advisoryLockMode: "wait",
             migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
@@ -26,8 +26,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
     };
   }),
 }) {
-  static readonly layerWithoutDeps = Layer.effect(this, this.make);
-  static readonly layer = this.layerWithoutDeps.pipe(Layer.provide(PgEnv.layer));
+  static readonly layer = Layer.provide(Layer.effect(this, this.make), Env.layer);
 }
 
 export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
