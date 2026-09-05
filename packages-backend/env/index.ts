@@ -1,13 +1,11 @@
 import { Config, Redacted, Context, Layer } from "effect";
 
 export class AppEnv extends Context.Service<AppEnv>()("@app/app-env", {
-  make: Config.nested(
-    Config.all([
-      Config.nonEmptyString("ROOT_DOMAIN"),
-      Config.url("WORKSPACE_ORIGIN").pipe(Config.map((url) => url.href)),
-    ]),
-    "APP",
-  ).pipe(
+  make: Config.all([
+    Config.nonEmptyString("ROOT_DOMAIN"),
+    Config.url("WORKSPACE_ORIGIN").pipe(Config.map((url) => url.href)),
+  ]).pipe(
+    Config.nested("APP"),
     Config.map(([rootDomain, workspaceOrigin]) => ({
       rootDomain,
       workspaceOrigin,
@@ -18,14 +16,12 @@ export class AppEnv extends Context.Service<AppEnv>()("@app/app-env", {
 }
 
 export class ServerEnv extends Context.Service<ServerEnv>()("@app/server-env", {
-  make: Config.nested(
-    Config.all([
-      Config.int("PORT"),
-      Config.url("ORIGIN").pipe(Config.map((url) => url.href)),
-      Config.url("ORIGIN_LOCALHOST").pipe(Config.map((url) => url.href)),
-    ]),
-    "SERVER",
-  ).pipe(
+  make: Config.all([
+    Config.int("PORT"),
+    Config.url("ORIGIN").pipe(Config.map((url) => url.href)),
+    Config.url("ORIGIN_LOCALHOST").pipe(Config.map((url) => url.href)),
+  ]).pipe(
+    Config.nested("SERVER"),
     Config.map(([serverPort, serverOrigin, serverOriginLocalhost]) => ({
       port: serverPort,
       origin: serverOrigin,
@@ -37,19 +33,17 @@ export class ServerEnv extends Context.Service<ServerEnv>()("@app/server-env", {
 }
 
 export class AuthEnv extends Context.Service<AuthEnv>()("@app/auth-env", {
-  make: Config.nested(
-    Config.all([
-      Config.nested(
-        Config.all([
-          Config.nonEmptyString("CLIENT_ID"),
-          Config.nonEmptyString("CLIENT_SECRET"),
-          Config.url("REDIRECT_URI").pipe(Config.map((url) => url.href)),
-        ]),
-        "GOOGLE",
-      ),
-    ]),
-    "AUTH",
-  ).pipe(
+  make: Config.all([
+    Config.nested(
+      Config.all([
+        Config.nonEmptyString("CLIENT_ID"),
+        Config.nonEmptyString("CLIENT_SECRET"),
+        Config.url("REDIRECT_URI").pipe(Config.map((url) => url.href)),
+      ]),
+      "GOOGLE",
+    ),
+  ]).pipe(
+    Config.nested("AUTH"),
     Config.map(([[googleClientId, googleClientSecret, googleRedirectUri]]) => ({
       google: {
         clientId: googleClientId,
@@ -63,17 +57,15 @@ export class AuthEnv extends Context.Service<AuthEnv>()("@app/auth-env", {
 }
 
 export class PgEnv extends Context.Service<PgEnv>()("@app/pg-env", {
-  make: Config.nested(
-    Config.all([
-      Config.int("PORT"),
-      Config.nonEmptyString("HOST"),
-      Config.nonEmptyString("USER"),
-      Config.nonEmptyString("PASSWORD"),
-      Config.nonEmptyString("DATABASE"),
-      Config.boolean("MIGRATIONS_ENABLED"),
-    ]),
-    "PG",
-  ).pipe(
+  make: Config.all([
+    Config.int("PORT"),
+    Config.nonEmptyString("HOST"),
+    Config.nonEmptyString("USER"),
+    Config.nonEmptyString("PASSWORD"),
+    Config.nonEmptyString("DATABASE"),
+    Config.boolean("MIGRATIONS_ENABLED"),
+  ]).pipe(
+    Config.nested("PG"),
     Config.map(([pgPort, pgHost, pgUser, pgPassword, pgDatabase, pgMigrationsEnabled]) => ({
       url: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`),
       migrationsEnabled: pgMigrationsEnabled,
