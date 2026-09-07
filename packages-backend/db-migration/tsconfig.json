@@ -1,7 +1,0 @@
-{
-  "extends": "@crowdboard-tooling/tsconfig/base.server.json",
-  "include": ["index.ts", "scripts/*"],
-  "compilerOptions": {
-    "types": ["node"]
-  }
-}

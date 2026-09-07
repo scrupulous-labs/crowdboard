@@ -1,18 +1,14 @@
-import { Auth } from "@crowdboard-backend/auth";
-import { DbMigration } from "@crowdboard-backend/db-migration";
+import { WorkspaceAuth } from "@crowdboard-backend/auth";
 import { Effect } from "effect";
 
 const program = Effect.gen(function* () {
-  const { runMigrations } = yield* DbMigration;
-  yield* runMigrations;
-
-  const auth = yield* Auth;
+  const auth = yield* WorkspaceAuth;
   const value = yield* Effect.promise(async () => {
-    return auth.api.signInSocial({
+    return auth.client.api.signInSocial({
       body: { provider: "google" },
     });
   });
   yield* Effect.log(value);
-}).pipe(Effect.provide(DbMigration.layer), Effect.provide(Auth.layer), Effect.catch(Effect.logError));
+}).pipe(Effect.provide(WorkspaceAuth.layer), Effect.catch(Effect.logError));
 
 void Effect.runPromise(program);

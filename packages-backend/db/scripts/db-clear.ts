@@ -1,7 +1,8 @@
-import { DbEffect } from "@crowdboard-backend/db";
 import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
 import { sql } from "drizzle-orm";
 import { Cause, Effect, Exit, identity } from "effect";
+
+import { DbEffect } from "../src";
 
 await Effect.gen(function* () {
   const db = yield* DbEffect;

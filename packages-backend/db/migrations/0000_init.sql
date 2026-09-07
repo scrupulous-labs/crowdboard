@@ -96,7 +96,6 @@ create table public."userSessions" (
 	"activeWorkspaceId" text,
 	"activeTeamId" text,
 	"token" text not null unique,
-
 	"ipAddress" text,
 	"userAgent" text,
 	"expiresAt" timestamptz not null,

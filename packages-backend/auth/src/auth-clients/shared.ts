@@ -1,6 +1,5 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
-import { DbAsync } from "@crowdboard-backend/db";
-import { schema } from "@crowdboard-backend/db-schema";
+import { schema, DbAsync } from "@crowdboard-backend/db";
 import { type BetterAuthOptions } from "better-auth";
 import { organization as _organization } from "better-auth/plugins";
 import { Effect } from "effect";

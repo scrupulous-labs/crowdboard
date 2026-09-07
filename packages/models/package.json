@@ -6,7 +6,6 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@crowdboard-backend/db-schema": "workspace:*",
     "effect": "catalog:effect"
   },
   "devDependencies": {

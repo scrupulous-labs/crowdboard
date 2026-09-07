@@ -1,9 +1,9 @@
-import { Auth } from "@crowdboard-backend/auth";
+import { WorkspaceAuth } from "@crowdboard-backend/auth";
 import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
 import { Cause, Effect, Exit, identity } from "effect";
 
-export const auth = await Auth.pipe(
-  Effect.provide(Auth.layer),
+export const auth = await WorkspaceAuth.pipe(
+  Effect.provide(WorkspaceAuth.layer),
   Effect.provide(MigrationScriptConfigProvider.layer),
   Effect.runPromiseExit,
 ).then(

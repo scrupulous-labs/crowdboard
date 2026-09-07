@@ -6,7 +6,7 @@ import { Effect } from "effect";
 
 import { organization, SharedOptions } from "./shared";
 
-const _WorkspaceAuthClient = Effect.gen(function* () {
+const Client = Effect.gen(function* () {
   const env = yield* Env;
   const sharedOptions = yield* SharedOptions;
 
@@ -36,9 +36,9 @@ const _WorkspaceAuthClient = Effect.gen(function* () {
   });
 });
 
-export interface WorkspaceAuthClient extends Effect.Success<typeof _WorkspaceAuthClient> {}
+export interface WorkspaceAuthClient extends Effect.Success<typeof Client> {}
 export const WorkspaceAuthClient: Effect.Effect<
   WorkspaceAuthClient,
-  Effect.Error<typeof _WorkspaceAuthClient>,
-  Effect.Services<typeof _WorkspaceAuthClient>
-> = _WorkspaceAuthClient;
+  Effect.Error<typeof Client>,
+  Effect.Services<typeof Client>
+> = Client;

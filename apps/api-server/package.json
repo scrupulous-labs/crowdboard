@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@crowdboard-backend/auth": "workspace:*",
-    "@crowdboard-backend/db-migration": "workspace:*",
     "effect": "catalog:effect"
   },
   "devDependencies": {

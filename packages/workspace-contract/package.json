@@ -5,9 +5,7 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {
-    "@crowdboard-backend/db-schema": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*"
   },
