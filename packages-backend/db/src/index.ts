@@ -22,7 +22,7 @@ export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
       getClient: Effect.acquireRelease(
         Effect.tryPromise({
           try: () => pool.connect(),
-          catch: (cause) => cause,
+          catch: (cause) => new DbMigrationError({ cause }),
         }),
         (client) => Effect.sync(() => client.release()),
       ),
@@ -40,7 +40,6 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
       runMigrations: Effect.scoped(
         Effect.gen(function* () {
           const client = yield* getClient;
-          const enabled = Effect.succeed(pg.migrationsEnabled);
           return yield* Effect.tryPromise({
             try: () =>
               runner({
@@ -52,7 +51,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
                 migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
               }),
             catch: (cause) => new DbMigrationError({ cause }),
-          }).pipe(Effect.when(enabled));
+          }).pipe(Effect.when(Effect.succeed(pg.migrationsEnabled)));
         }),
       ),
     };
@@ -65,7 +64,10 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
 }
 
 export class DbEffect extends Context.Service<DbEffect>()("@app/db-effect", {
-  make: PgDrizzle.make({ relations }),
+  make: Effect.gen(function* () {
+    const db = yield* PgDrizzle.make({ relations });
+    return db;
+  }),
 }) {
   static readonly layer = Layer.provide(
     Layer.effect(this, this.make),
@@ -74,12 +76,13 @@ export class DbEffect extends Context.Service<DbEffect>()("@app/db-effect", {
       PgClient.layerFrom(
         Effect.gen(function* () {
           const { pool } = yield* PgPool;
-          const dontParse = [1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182];
           return yield* PgClient.fromPool({
             acquire: Effect.succeed(pool),
             types: {
               getTypeParser: (typeId, format) => {
-                return dontParse.includes(typeId) ? identity : types.getTypeParser(typeId, format);
+                return ![1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182].includes(typeId)
+                  ? types.getTypeParser(typeId, format)
+                  : identity;
               },
             },
           });
