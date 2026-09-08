@@ -5,7 +5,7 @@ import { PgClient } from "@effect/sql-pg";
 import * as PgDrizzle from "drizzle-orm/effect-postgres";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Context, Effect, Layer, Redacted, identity } from "effect";
-import { runner } from "node-pg-migrate";
+import { runner as pgMigrateRunner, RunnerOption } from "node-pg-migrate";
 import { Pool, types } from "pg";
 
 import { relations } from "./drizzle";
@@ -18,7 +18,7 @@ export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
     const env = yield* Env;
     const pool = new Pool({ connectionString: Redacted.value(env.pg.url) });
     return {
-      pool,
+      pool: pool,
       getClient: Effect.acquireRelease(
         Effect.tryPromise({
           try: () => pool.connect(),
@@ -36,24 +36,23 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
   make: Effect.gen(function* () {
     const { pg } = yield* Env;
     const { getClient } = yield* PgPool;
+    const migrationsEnabled = Effect.succeed(pg.migrationsEnabled);
     return {
-      runMigrations: Effect.scoped(
-        Effect.gen(function* () {
-          const client = yield* getClient;
-          return yield* Effect.tryPromise({
-            try: () =>
-              runner({
-                dbClient: client,
-                direction: "up",
-                dir: join(import.meta.dirname, "../migrations"),
-                migrationsTable: "migrations",
-                advisoryLockMode: "wait",
-                migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
-              }),
-            catch: (cause) => new DbMigrationError({ cause }),
-          }).pipe(Effect.when(Effect.succeed(pg.migrationsEnabled)));
-        }),
-      ),
+      runMigrations: Effect.gen(function* () {
+        const client = yield* getClient;
+        const runnerOpts: RunnerOption = {
+          dir: join(import.meta.dirname, "../migrations"),
+          dbClient: client,
+          direction: "up",
+          migrationsTable: "migrations",
+          advisoryLockMode: "wait",
+          migrationLoaderStrategies: [{ extensions: [".sql"], loader: "sql" }],
+        };
+        return yield* Effect.tryPromise({
+          try: () => pgMigrateRunner(runnerOpts),
+          catch: (cause) => new DbMigrationError({ cause }),
+        });
+      }).pipe(Effect.when(migrationsEnabled), Effect.scoped),
     };
   }),
 }) {
@@ -76,15 +75,13 @@ export class DbEffect extends Context.Service<DbEffect>()("@app/db-effect", {
       PgClient.layerFrom(
         Effect.gen(function* () {
           const { pool } = yield* PgPool;
+          const getTypeParser: typeof types.getTypeParser = (id, format) => {
+            const dontParse = [1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182];
+            return !dontParse.includes(id) ? types.getTypeParser(id, format) : identity;
+          };
           return yield* PgClient.fromPool({
             acquire: Effect.succeed(pool),
-            types: {
-              getTypeParser: (typeId, format) => {
-                return ![1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182].includes(typeId)
-                  ? types.getTypeParser(typeId, format)
-                  : identity;
-              },
-            },
+            types: { getTypeParser },
           });
         }),
       ).pipe(Layer.provide(PgPool.layer)),
