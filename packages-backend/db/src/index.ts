@@ -11,15 +11,13 @@ import { Pool, types } from "pg";
 import { relations } from "./drizzle";
 import { DbMigrationError } from "./errors";
 
-export { schema } from "./drizzle";
-
 export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
   make: Effect.gen(function* () {
     const env = yield* Env;
     const pool = new Pool({ connectionString: Redacted.value(env.pg.url) });
     return {
       pool: pool,
-      getClient: Effect.acquireRelease(
+      acquireClient: Effect.acquireRelease(
         Effect.tryPromise({
           try: () => pool.connect(),
           catch: (cause) => new DbMigrationError({ cause }),
@@ -35,11 +33,11 @@ export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
 export class DbMigration extends Context.Service<DbMigration>()("@app/db-migration", {
   make: Effect.gen(function* () {
     const { pg } = yield* Env;
-    const { getClient } = yield* PgPool;
+    const { acquireClient } = yield* PgPool;
     const migrationsEnabled = Effect.succeed(pg.migrationsEnabled);
     return {
       runMigrations: Effect.gen(function* () {
-        const client = yield* getClient;
+        const client = yield* acquireClient;
         const runnerOpts: RunnerOption = {
           dir: join(import.meta.dirname, "../migrations"),
           dbClient: client,
@@ -56,10 +54,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
     };
   }),
 }) {
-  static readonly layer = Layer.provide(
-    Layer.effect(this, this.make),
-    Layer.merge(Env.layer, PgPool.layer),
-  );
+  static readonly layer = Layer.provide(Layer.effect(this, this.make), Layer.merge(Env.layer, PgPool.layer));
 }
 
 export class DbEffect extends Context.Service<DbEffect>()("@app/db-effect", {

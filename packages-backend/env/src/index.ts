@@ -68,9 +68,7 @@ export class Env extends Context.Service<Env>()("@app/env", {
           },
         },
         pg: {
-          url: Redacted.make(
-            `postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`,
-          ),
+          url: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`),
           migrationsEnabled: pgMigrationsEnabled,
         },
       }),

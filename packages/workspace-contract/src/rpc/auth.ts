@@ -19,14 +19,11 @@ export class AuthGroup extends RpcGroup.make(
 
 export class Session extends Context.Service<Session, { loggedIn: boolean }>()("session") {}
 
-export class SessionMiddleware extends RpcMiddleware.Service<
-  SessionMiddleware,
-  { provides: Session }
->()("session-middleware") {
+export class SessionMiddleware extends RpcMiddleware.Service<SessionMiddleware, { provides: Session }>()(
+  "session-middleware",
+) {
   static readonly layer = Layer.succeed(
     SessionMiddleware,
-    SessionMiddleware.of((next, { headers }) =>
-      Effect.succeed({ loggedIn: headers.has("authorization") }),
-    ),
+    SessionMiddleware.of((next, { headers }) => Effect.succeed({ loggedIn: headers.has("authorization") })),
   );
 }
