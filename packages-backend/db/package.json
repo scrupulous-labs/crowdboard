@@ -24,6 +24,7 @@
     "@crowdboard-backend/auth": "workspace:*",
     "@crowdboard-tooling/tsconfig": "workspace:*",
     "@types/node": "catalog:types",
-    "@types/pg": "catalog:types"
+    "@types/pg": "catalog:types",
+    "auth": "catalog:better-auth"
   }
 }

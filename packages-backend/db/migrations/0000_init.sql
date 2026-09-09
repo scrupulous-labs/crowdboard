@@ -19,17 +19,6 @@ create table public."workspaces" (
 );
 
 
-create table public."teams" (
-	"id" text not null primary key,
-	"workspaceId" text not null references public."workspaces" ("id") on delete cascade,
-	"name" text not null,
-	"memberCount" integer not null,
-	"createdAt" timestamptz not null,
-	"updatedAt" timestamptz
-);
-create index "teams_workspaceId_idx" on public."teams" ("workspaceId");
-
-
 create table public."workspaceMembers" (
 	"id" text not null primary key,
 	"userId" text not null references public."users" ("id") on delete cascade,
@@ -42,6 +31,17 @@ create table public."workspaceMembers" (
 );
 create index "workspaceMembers_userId_idx" on public."workspaceMembers" ("userId");
 create index "workspaceMembers_workspaceId_idx" on public."workspaceMembers" ("workspaceId");
+
+
+create table public."teams" (
+	"id" text not null primary key,
+	"workspaceId" text not null references public."workspaces" ("id") on delete cascade,
+	"name" text not null,
+	"memberCount" integer not null,
+	"createdAt" timestamptz not null,
+	"updatedAt" timestamptz
+);
+create index "teams_workspaceId_idx" on public."teams" ("workspaceId");
 
 
 create table public."teamMembers" (

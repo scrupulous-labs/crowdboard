@@ -2,7 +2,7 @@ name: crowdboard-dev
 
 x-build: &build
   context: ../..
-  dockerfile: ./tooling/docker/Dockerfile.dev
+  dockerfile: ./tooling/docker-dev/Dockerfile.dev
   target: development
 
 x-develop: &develop

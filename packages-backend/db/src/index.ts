@@ -2,14 +2,17 @@ import { join } from "node:path";
 
 import { Env } from "@crowdboard-backend/env";
 import { PgClient } from "@effect/sql-pg";
+import { eq } from "drizzle-orm";
 import * as PgDrizzle from "drizzle-orm/effect-postgres";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Context, Effect, Layer, Redacted, identity } from "effect";
 import { runner as pgMigrateRunner, RunnerOption } from "node-pg-migrate";
 import { Pool, types } from "pg";
 
-import { relations } from "./drizzle";
+import { relations, teams, workspaces } from "./drizzle";
 import { DbMigrationError } from "./errors";
+
+export { schema } from "./drizzle";
 
 export class PgPool extends Context.Service<PgPool>()("@app/pg-pool", {
   make: Effect.gen(function* () {
@@ -54,7 +57,10 @@ export class DbMigration extends Context.Service<DbMigration>()("@app/db-migrati
     };
   }),
 }) {
-  static readonly layer = Layer.provide(Layer.effect(this, this.make), Layer.merge(Env.layer, PgPool.layer));
+  static readonly layer = Layer.provide(
+    Layer.effect(this, this.make),
+    Layer.merge(Env.layer, PgPool.layer),
+  );
 }
 
 export class DbEffect extends Context.Service<DbEffect>()("@app/db-effect", {

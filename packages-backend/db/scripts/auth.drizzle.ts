@@ -3,6 +3,7 @@ import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
 import { Cause, Effect, Exit, identity } from "effect";
 
 export const auth = await WorkspaceAuth.pipe(
+  Effect.map(({ client }) => client),
   Effect.provide(WorkspaceAuth.layer),
   Effect.provide(MigrationScriptConfigProvider.layer),
   Effect.runPromiseExit,

@@ -1,10 +1,9 @@
 import { defineRelationsPart, defineRelations } from "drizzle-orm";
 
 import { schema } from "./schema";
-
-const userRelations = defineRelationsPart(schema, (r) => ({
+export const authRelations = defineRelationsPart(schema, (r) => ({
   users: {
-    sessions: r.many.userSessions({
+    userSessions: r.many.userSessions({
       from: r.users.id,
       to: r.userSessions.userId,
     }),
@@ -12,20 +11,34 @@ const userRelations = defineRelationsPart(schema, (r) => ({
       from: r.users.id,
       to: r.accounts.userId,
     }),
-    workspaces: r.many.workspaces({
-      from: r.users.id.through(r.workspaceMembers.userId),
-      to: r.workspaces.id.through(r.workspaceMembers.workspaceId),
+    teamMembers: r.many.teamMembers({
+      from: r.users.id,
+      to: r.teamMembers.userId,
     }),
-    sentInvitations: r.many.invitations({
+
+    invitations: r.many.invitations({
       from: r.users.id,
       to: r.invitations.inviterId,
     }),
   },
-}));
-
-const workspaceRelations = defineRelationsPart(schema, (r) => ({
+  userSessions: {
+    users: r.one.users({
+      from: r.userSessions.userId,
+      to: r.users.id,
+    }),
+  },
+  accounts: {
+    users: r.one.users({
+      from: r.accounts.userId,
+      to: r.users.id,
+    }),
+  },
   workspaces: {
-    members: r.many.workspaceMembers({
+    teams: r.many.teams({
+      from: r.workspaces.id,
+      to: r.teams.workspaceId,
+    }),
+    workspaceMembers: r.many.workspaceMembers({
       from: r.workspaces.id,
       to: r.workspaceMembers.workspaceId,
     }),
@@ -34,47 +47,43 @@ const workspaceRelations = defineRelationsPart(schema, (r) => ({
       to: r.invitations.workspaceId,
     }),
   },
-}));
-
-const workspaceMemberRelations = defineRelationsPart(schema, (r) => ({
-  workspaceMembers: {
-    user: r.one.users({
-      from: r.workspaceMembers.userId,
+  teams: {
+    workspaces: r.one.workspaces({
+      from: r.teams.workspaceId,
+      to: r.workspaces.id,
+    }),
+    teamMembers: r.many.teamMembers({
+      from: r.teams.id,
+      to: r.teamMembers.teamId,
+    }),
+  },
+  teamMembers: {
+    teams: r.one.teams({
+      from: r.teamMembers.teamId,
+      to: r.teams.id,
+    }),
+    users: r.one.users({
+      from: r.teamMembers.userId,
       to: r.users.id,
     }),
-    workspace: r.one.workspaces({
+  },
+  workspaceMembers: {
+    workspaces: r.one.workspaces({
       from: r.workspaceMembers.workspaceId,
       to: r.workspaces.id,
     }),
-  },
-}));
-
-const accountRelations = defineRelationsPart(schema, (r) => ({
-  accounts: {
-    user: r.one.users({
-      from: r.accounts.userId,
+    users: r.one.users({
+      from: r.workspaceMembers.userId,
       to: r.users.id,
     }),
   },
-}));
-
-const invitationRelations = defineRelationsPart(schema, (r) => ({
   invitations: {
-    inviter: r.one.users({
-      from: r.invitations.inviterId,
-      to: r.users.id,
-    }),
-    workspace: r.one.workspaces({
+    workspaces: r.one.workspaces({
       from: r.invitations.workspaceId,
       to: r.workspaces.id,
     }),
-  },
-}));
-
-const userSessionRelations = defineRelationsPart(schema, (r) => ({
-  userSessions: {
-    user: r.one.users({
-      from: r.userSessions.userId,
+    users: r.one.users({
+      from: r.invitations.inviterId,
       to: r.users.id,
     }),
   },
@@ -82,10 +91,5 @@ const userSessionRelations = defineRelationsPart(schema, (r) => ({
 
 export const relations = {
   ...defineRelations(schema),
-  ...userRelations,
-  ...workspaceRelations,
-  ...workspaceMemberRelations,
-  ...accountRelations,
-  ...invitationRelations,
-  ...userSessionRelations,
+  ...authRelations,
 };
