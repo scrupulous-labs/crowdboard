@@ -1,15 +1,15 @@
-import { WorkspaceAuth } from "@crowdboard-backend/auth";
-import { MigrationScriptConfigProvider, Env } from "@crowdboard-backend/env";
-import { Cause, Effect, Exit, identity, Layer, Redacted } from "effect";
-import { Pool } from "pg";
+import { WorkspaceAuth } from "@crowdboard-backend/auth"
+import { MigrationScriptConfigProvider, Env } from "@crowdboard-backend/env"
+import { Cause, Effect, Exit, identity, Layer, Redacted } from "effect"
+import { Pool } from "pg"
 
 export const auth = await Effect.gen(function* () {
-  const { pg } = yield* Env;
-  const { client } = yield* WorkspaceAuth;
+  const { pg } = yield* Env
+  const { client } = yield* WorkspaceAuth
   client.options.database = new Pool({
     connectionString: Redacted.value(pg.url),
-  }) as any;
-  return client;
+  }) as any
+  return client
 })
   .pipe(
     Effect.provide(Layer.provideMerge(WorkspaceAuth.layer, Env.layer)),
@@ -20,8 +20,8 @@ export const auth = await Effect.gen(function* () {
     Exit.match({
       onSuccess: identity,
       onFailure: (cause) => {
-        console.log(Cause.pretty(cause));
-        process.exit(1);
+        console.log(Cause.pretty(cause))
+        process.exit(1)
       },
     }),
-  );
+  )

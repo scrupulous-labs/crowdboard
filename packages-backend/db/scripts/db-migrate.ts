@@ -1,11 +1,11 @@
-import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
-import { Cause, Effect, Exit, identity } from "effect";
+import { MigrationScriptConfigProvider } from "@crowdboard-backend/env"
+import { Cause, Effect, Exit, identity } from "effect"
 
-import { DbMigration } from "../src";
+import { DbMigration } from "../src"
 
-await Effect.gen(function* () {
-  const { runMigrations } = yield* DbMigration;
-  yield* runMigrations;
+Effect.gen(function* () {
+  const { runMigrations } = yield* DbMigration
+  yield* runMigrations
 })
   .pipe(
     Effect.provide(DbMigration.layer),
@@ -16,8 +16,8 @@ await Effect.gen(function* () {
     Exit.match({
       onSuccess: identity,
       onFailure: (cause) => {
-        console.log(Cause.pretty(cause));
-        process.exit(1);
+        console.log(Cause.pretty(cause))
+        process.exit(1)
       },
     }),
-  );
+  )

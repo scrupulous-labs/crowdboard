@@ -1,9 +1,9 @@
-import { Schema } from "effect";
+import { Schema } from "effect"
 
-import { Email } from "../utils";
+import { Email } from "../utils"
 
-export type UserId = typeof UserId.Type;
-export const UserId = Schema.String.pipe(Schema.brand("models/db/user_id"));
+export type UserId = typeof UserId.Type
+export const UserId = Schema.String.pipe(Schema.brand("models/db/user_id"))
 
 export class User extends Schema.Class<User, { readonly _: unique symbol }>("models/db/user")({
   id: UserId,

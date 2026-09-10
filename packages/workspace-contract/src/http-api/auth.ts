@@ -1,5 +1,5 @@
-import { Schema } from "effect";
-import { HttpApiEndpoint, HttpApiGroup } from "effect/unstable/httpapi";
+import { Schema } from "effect"
+import { HttpApiEndpoint, HttpApiGroup } from "effect/unstable/httpapi"
 
 export class AuthGroup extends HttpApiGroup.make("auth").add(
   HttpApiEndpoint.post("signUp", "/signUp", {}),

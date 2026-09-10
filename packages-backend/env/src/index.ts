@@ -1,6 +1,6 @@
-import { Config, Context, Layer, Redacted } from "effect";
+import { Config, Context, Layer, Redacted } from "effect"
 
-export * as MigrationScriptConfigProvider from "./config-providers/migration-script";
+export * as MigrationScriptConfigProvider from "./config-providers/migration-script"
 
 export class Env extends Context.Service<Env>()("@app/env", {
   make: Config.all([
@@ -49,7 +49,7 @@ export class Env extends Context.Service<Env>()("@app/env", {
         [appWorkspaceOrigin, appRootDomain],
         [serverPort, serverOrigin, serverOriginLocalhost],
         [[googleClientId, googleClientSecret, googleRedirectUri]],
-        [pgPort, pgHost, pgUser, pgPassword, pgDatabase, pgMigrationsEnabled],
+        [pgPort, pgHost, pgUser, pgPassword, pgDb, pgMigrationsEnabled],
       ]) => ({
         app: {
           rootDomain: appRootDomain,
@@ -68,18 +68,17 @@ export class Env extends Context.Service<Env>()("@app/env", {
           },
         },
         pg: {
-          url: Redacted.make(
-            `postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDatabase}`,
-          ),
+          url: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDb}`),
           migrationsEnabled: pgMigrationsEnabled,
         },
       }),
     ),
   ),
 }) {
-  static readonly layer = Layer.effect(this, this.make);
+  static readonly layer = Layer.effect(this, this.make)
 }
 
+// Utils
 function toHref(url: URL) {
-  return url.href;
+  return url.href
 }

@@ -1,6 +1,7 @@
-import { defineRelationsPart, defineRelations } from "drizzle-orm";
+import { defineRelationsPart, defineRelations } from "drizzle-orm"
 
-import { schema } from "./schema";
+import { schema } from "./schema"
+
 export const authRelations = defineRelationsPart(schema, (r) => ({
   users: {
     userSessions: r.many.userSessions({
@@ -15,7 +16,6 @@ export const authRelations = defineRelationsPart(schema, (r) => ({
       from: r.users.id,
       to: r.teamMembers.userId,
     }),
-
     invitations: r.many.invitations({
       from: r.users.id,
       to: r.invitations.inviterId,
@@ -87,9 +87,9 @@ export const authRelations = defineRelationsPart(schema, (r) => ({
       to: r.users.id,
     }),
   },
-}));
+}))
 
 export const relations = {
   ...defineRelations(schema),
   ...authRelations,
-};
+}

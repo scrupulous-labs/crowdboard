@@ -1,13 +1,13 @@
-import { MigrationScriptConfigProvider } from "@crowdboard-backend/env";
-import { sql } from "drizzle-orm";
-import { Cause, Effect, Exit, identity } from "effect";
+import { MigrationScriptConfigProvider } from "@crowdboard-backend/env"
+import { sql } from "drizzle-orm"
+import { Cause, Effect, Exit, identity } from "effect"
 
-import { DbEffect } from "../src";
+import { DbEffect } from "../src"
 
-await Effect.gen(function* () {
-  const db = yield* DbEffect;
-  yield* db.execute(sql`DROP SCHEMA public CASCADE`);
-  yield* db.execute(sql`CREATE SCHEMA public`);
+Effect.gen(function* () {
+  const db = yield* DbEffect
+  yield* db.execute(sql`DROP SCHEMA public CASCADE`)
+  yield* db.execute(sql`CREATE SCHEMA public`)
 })
   .pipe(
     Effect.provide(DbEffect.layer),
@@ -18,8 +18,8 @@ await Effect.gen(function* () {
     Exit.match({
       onSuccess: identity,
       onFailure: (cause) => {
-        console.log(Cause.pretty(cause));
-        process.exit(1);
+        console.log(Cause.pretty(cause))
+        process.exit(1)
       },
     }),
-  );
+  )

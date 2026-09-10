@@ -1,10 +1,10 @@
-import { Schema } from "effect";
+import { Schema } from "effect"
 
-import { UserId } from "./user";
-import { WorkspaceId } from "./workspace";
+import { UserId } from "./user"
+import { WorkspaceId } from "./workspace"
 
-export type WorkspaceMemberId = typeof WorkspaceMemberId.Type;
-export const WorkspaceMemberId = Schema.String.pipe(Schema.brand("models/db/workspace-member_id"));
+export type WorkspaceMemberId = typeof WorkspaceMemberId.Type
+export const WorkspaceMemberId = Schema.String.pipe(Schema.brand("models/db/workspace-member_id"))
 
 export enum WorkspaceMemberRole {
   Owner = "owner",

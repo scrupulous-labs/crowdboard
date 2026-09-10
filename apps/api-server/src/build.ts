@@ -1,17 +1,17 @@
-import { rmSync, cpSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { rmSync, cpSync } from "node:fs"
+import { join, dirname } from "node:path"
+import { fileURLToPath } from "node:url"
 
-import * as esbuild from "esbuild";
+import * as esbuild from "esbuild"
 
-const entryFile = join(import.meta.dirname, "./index.ts");
-const outputDir = join(import.meta.dirname, "../dist");
-const outputFile = join(outputDir, "./index.cjs");
-const migrationsOutputDir = join(outputDir, "./migrations");
+const entryFile = join(import.meta.dirname, "./index.ts")
+const outputDir = join(import.meta.dirname, "../dist")
+const outputFile = join(outputDir, "./index.cjs")
+const migrationsOutputDir = join(outputDir, "./migrations")
 const migrationsSourceDir = join(
   dirname(fileURLToPath(import.meta.resolve("@crowdboard-backend/db-migration"))),
   "./migrations",
-);
+)
 
 await esbuild.build({
   entryPoints: [entryFile],
@@ -30,17 +30,17 @@ await esbuild.build({
       name: "clear-output",
       setup(build) {
         build.onStart(() => {
-          rmSync(outputDir, { recursive: true, force: true });
-        });
+          rmSync(outputDir, { recursive: true, force: true })
+        })
       },
     },
     {
       name: "copy-migrations",
       setup(build) {
         build.onStart(() => {
-          cpSync(migrationsSourceDir, migrationsOutputDir, { recursive: true });
-        });
+          cpSync(migrationsSourceDir, migrationsOutputDir, { recursive: true })
+        })
       },
     },
   ],
-});
+})

@@ -1,14 +1,14 @@
-import { Env } from "@crowdboard-backend/env";
-import { createId } from "@paralleldrive/cuid2";
-import { betterAuth } from "better-auth";
-import { lastLoginMethod } from "better-auth/plugins";
-import { Effect } from "effect";
+import { Env } from "@crowdboard-backend/env"
+import { createId } from "@paralleldrive/cuid2"
+import { betterAuth } from "better-auth"
+import { lastLoginMethod } from "better-auth/plugins"
+import { Effect } from "effect"
 
-import { organization, SharedOptions } from "./shared";
+import { organization, SharedOptions } from "./shared"
 
 const Client = Effect.gen(function* () {
-  const env = yield* Env;
-  const sharedOptions = yield* SharedOptions;
+  const env = yield* Env
+  const sharedOptions = yield* SharedOptions
 
   return betterAuth({
     baseURL: env.server.origin,
@@ -33,12 +33,12 @@ const Client = Effect.gen(function* () {
     },
     plugins: [lastLoginMethod(), organization],
     ...sharedOptions,
-  });
-});
+  })
+})
 
 export interface WorkspaceAuthClient extends Effect.Success<typeof Client> {}
 export const WorkspaceAuthClient: Effect.Effect<
   WorkspaceAuthClient,
   Effect.Error<typeof Client>,
   Effect.Services<typeof Client>
-> = Client;
+> = Client

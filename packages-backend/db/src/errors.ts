@@ -1,5 +1,5 @@
-import { Data } from "effect";
+import { Data } from "effect"
 
 export class DbMigrationError extends Data.TaggedError("DbMigrationError")<{
-  readonly cause: unknown;
+  readonly cause: unknown
 }> {}

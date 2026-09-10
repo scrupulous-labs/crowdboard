@@ -34,9 +34,9 @@ catalogs:
   drizzle:
     "drizzle-orm": 1.0.0-rc.5-169397b
   effect:
-    "effect": 4.0.0-beta.105
-    "@effect/sql-pg": 4.0.0-beta.105
-    "@effect/platform-node": 4.0.0-beta.105
+    "effect": 4.0.0-rc.112
+    "@effect/sql-pg": 4.0.0-rc.112
+    "@effect/platform-node": 4.0.0-rc.112
   postgres:
     "pg": ^8.23.0
     "node-pg-migrate": ^9.0.0
@@ -61,5 +61,5 @@ catalogs:
     "@paralleldrive/cuid2": ^3.3.0
     "@sindresorhus/slugify": ^3.0.0
 
-patchedDependencies:
-  "@effect/sql-pg@4.0.0-beta.105": patches/@effect__sql-pg@4.0.0-beta.105.patch
+# patchedDependencies:
+#   "@effect/sql-pg@4.0.0-beta.105": patches/@effect__sql-pg@4.0.0-beta.105.patch

@@ -1,4 +1,4 @@
-import { Schema } from "effect";
+import { Schema } from "effect"
 
-export type Email = typeof Email.Type;
-export const Email = Schema.String.pipe(Schema.brand("email"));
+export type Email = typeof Email.Type
+export const Email = Schema.String.pipe(Schema.brand("email"))

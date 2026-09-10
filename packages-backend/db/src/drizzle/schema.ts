@@ -1,4 +1,4 @@
-import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
   id: text().primaryKey(),
@@ -8,7 +8,7 @@ export const users = pgTable("users", {
   avatarUrl: text(),
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().defaultNow().$onUpdate(date()).notNull(),
-});
+})
 
 export const workspaces = pgTable("workspaces", {
   id: text().primaryKey(),
@@ -17,7 +17,7 @@ export const workspaces = pgTable("workspaces", {
   logoUrl: text(),
   metadata: text(),
   createdAt: timestamp().notNull(),
-});
+})
 
 export const workspaceMembers = pgTable("workspaceMembers", {
   id: text().primaryKey(),
@@ -28,7 +28,7 @@ export const workspaceMembers = pgTable("workspaceMembers", {
   lastName: text(),
   avatarUrl: text(),
   createdAt: timestamp().notNull(),
-});
+})
 
 export const teams = pgTable("teams", {
   id: text().primaryKey(),
@@ -37,7 +37,7 @@ export const teams = pgTable("teams", {
   memberCount: integer().default(0).notNull(),
   createdAt: timestamp().notNull(),
   updatedAt: timestamp().$onUpdate(() => new Date()),
-});
+})
 
 export const teamMembers = pgTable("teamMembers", {
   id: text().primaryKey(),
@@ -45,7 +45,7 @@ export const teamMembers = pgTable("teamMembers", {
   teamId: text().notNull().references(teamsTable()),
   membershipKey: text(),
   createdAt: timestamp(),
-});
+})
 
 export const accounts = pgTable("accounts", {
   id: text().primaryKey(),
@@ -62,7 +62,7 @@ export const accounts = pgTable("accounts", {
   refreshTokenExpiresAt: timestamp(),
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().$onUpdate(date()).notNull(),
-});
+})
 
 export const invitations = pgTable("invitations", {
   id: text().primaryKey(),
@@ -74,7 +74,7 @@ export const invitations = pgTable("invitations", {
   status: text().default("pending").notNull(),
   expiresAt: timestamp().notNull(),
   createdAt: timestamp().defaultNow().notNull(),
-});
+})
 
 export const userSessions = pgTable("userSessions", {
   id: text().primaryKey(),
@@ -87,7 +87,7 @@ export const userSessions = pgTable("userSessions", {
   activeWorkspaceId: text(),
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().$onUpdate(date()).notNull(),
-});
+})
 
 export const verifications = pgTable("verifications", {
   id: text().primaryKey(),
@@ -96,7 +96,7 @@ export const verifications = pgTable("verifications", {
   expiresAt: timestamp().notNull(),
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().defaultNow().$onUpdate(date()).notNull(),
-});
+})
 
 export const schema = {
   users,
@@ -108,21 +108,21 @@ export const schema = {
   invitations,
   userSessions,
   verifications,
-};
+}
 
 // Utils
 function date() {
-  return () => new Date();
+  return () => new Date()
 }
 
 function usersTable() {
-  return () => users.id;
+  return () => users.id
 }
 
 function workspacesTable() {
-  return () => workspaces.id;
+  return () => workspaces.id
 }
 
 function teamsTable() {
-  return () => teams.id;
+  return () => teams.id
 }

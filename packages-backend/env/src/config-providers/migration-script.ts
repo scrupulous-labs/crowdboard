@@ -1,4 +1,4 @@
-import { ConfigProvider } from "effect";
+import { ConfigProvider } from "effect"
 
 const dotEnv = `
 APP_ROOT_DOMAIN=google.com
@@ -18,6 +18,6 @@ PG_USER=postgres
 PG_PASSWORD=postgres
 PG_DATABASE=crowdboard
 PG_MIGRATIONS_ENABLED=true
-`;
+`
 
-export const layer = ConfigProvider.layer(ConfigProvider.fromDotEnvContents(dotEnv));
+export const layer = ConfigProvider.layer(ConfigProvider.fromDotEnvContents(dotEnv))

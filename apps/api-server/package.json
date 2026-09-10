@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@crowdboard-backend/auth": "workspace:*",
+    "@crowdboard-backend/db": "workspace:*",
+    "@crowdboard-backend/env": "workspace:*",
     "effect": "catalog:effect"
   },
   "devDependencies": {
