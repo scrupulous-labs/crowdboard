@@ -1,0 +1,25 @@
+{
+  "name": "@crowdboard-backend/jobs",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {},
+  "dependencies": {
+    "@crowdboard-backend/db": "workspace:*",
+    "@crowdboard-backend/env": "workspace:*",
+    "@effect/sql-pg": "catalog:effect",
+    "drizzle-orm": "catalog:drizzle",
+    "effect": "catalog:effect",
+    "pg": "catalog:postgres",
+    "pg-boss": "catalog:postgres"
+  },
+  "devDependencies": {
+    "@crowdboard-backend/auth": "workspace:*",
+    "@crowdboard-tooling/tsconfig": "workspace:*",
+    "@types/node": "catalog:types",
+    "@types/pg": "catalog:types",
+    "tsx": "catalog:build"
+  }
+}

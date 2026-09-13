@@ -6,7 +6,7 @@ import { WidgetAuthClient } from "./auth-clients/widget"
 import { WorkspaceAuthClient } from "./auth-clients/workspace"
 import { makeGetSession } from "./auth/user"
 
-export class WorkspaceAuth extends Context.Service<WorkspaceAuth>()("@app/auth/services/workspace", {
+export class WorkspaceAuth extends Context.Service<WorkspaceAuth>()("@services/auth/workspace", {
   make: WorkspaceAuthClient.pipe(
     Effect.map((client) => ({
       client,
@@ -19,7 +19,7 @@ export class WorkspaceAuth extends Context.Service<WorkspaceAuth>()("@app/auth/s
   static readonly layer = Layer.provide(Layer.effect(this, this.make), Env.layer)
 }
 
-export class WidgetAuth extends Context.Service<WidgetAuth>()("@app/auth/services/widget", {
+export class WidgetAuth extends Context.Service<WidgetAuth>()("@services/auth/widget", {
   make: WidgetAuthClient.pipe(
     Effect.map((client) => ({
       client,
@@ -33,8 +33,8 @@ export class WidgetAuth extends Context.Service<WidgetAuth>()("@app/auth/service
 }
 
 export class MigrationScriptAuth extends Context.Service<MigrationScriptAuth>()(
-  "@app/auth/services/migration-script",
+  "@services/auth/migration-script",
   { make: MigrationScriptAuthClient },
 ) {
-  static readonly layer = Layer.effect(this, this.make)
+  static readonly layer = Layer.provide(Layer.effect(this, this.make), Env.layer)
 }

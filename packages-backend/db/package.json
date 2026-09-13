@@ -8,11 +8,11 @@
   "scripts": {
     "db:clear": "tsx ./scripts/db-clear.ts",
     "db:migrate": "tsx ./scripts/db-migrate.ts",
-    "generate:auth-migration": "auth generate --config ./scripts/auth-migration.ts --output ./tmp/AUTH-MIGRATIONS.sql --yes",
-    "generate:auth-schema": "auth generate --config ./scripts/auth-schema.ts --output ./tmp/AUTH-SCHEMA.ts --yes",
-    "generate:jobs-migration": "tsx ./scripts/jobs-migration.ts",
-    "generate:migrations": "rm -rf ./tmp && pnpm generate:jobs-migration && pnpm generate:auth-migration && pnpm generate:auth-schema",
-    "generate:schema": "rm -rf ./tmp && pnpm generate:auth-schema"
+    "generate:migration": "rm -rf ./tmp && pnpm generate:migration:auth && pnpm generate:migration:jobs",
+    "generate:migration:auth": "auth generate --config ./scripts/migration-auth.ts --output ./tmp/MIGRATIONS-AUTH.sql --yes",
+    "generate:migration:jobs": "tsx ./scripts/migration-jobs.ts",
+    "generate:schema": "rm -rf ./tmp && pnpm generate:schema:auth",
+    "generate:schema:auth": "auth generate --config ./scripts/schema-auth.ts --output ./tmp/SCHEMA-AUTH.ts --yes"
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
@@ -20,8 +20,7 @@
     "drizzle-orm": "catalog:drizzle",
     "effect": "catalog:effect",
     "node-pg-migrate": "catalog:postgres",
-    "pg": "catalog:postgres",
-    "pg-boss": "catalog:postgres"
+    "pg": "catalog:postgres"
   },
   "devDependencies": {
     "@crowdboard-backend/auth": "workspace:*",
@@ -29,6 +28,7 @@
     "@types/node": "catalog:types",
     "@types/pg": "catalog:types",
     "auth": "catalog:better-auth",
+    "pg-boss": "catalog:postgres",
     "tsx": "catalog:build"
   }
 }

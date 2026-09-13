@@ -1,3 +1,4 @@
+import { Env } from "@crowdboard-backend/env"
 import { createId } from "@paralleldrive/cuid2"
 import { betterAuth } from "better-auth"
 import { lastLoginMethod, anonymous, bearer } from "better-auth/plugins"
@@ -7,9 +8,11 @@ import { SharedOptions } from "./shared/options"
 import { organization } from "./shared/plugins"
 
 const Client = Effect.gen(function* () {
+  const env = yield* Env
   const sharedOptions = yield* SharedOptions
 
   return betterAuth({
+    baseURL: env.server.origin,
     emailAndPassword: { enabled: true },
     advanced: { database: { joins: true, generateId: createId } },
     plugins: [bearer(), anonymous(), lastLoginMethod(), organization],
