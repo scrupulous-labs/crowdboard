@@ -1,7 +1,7 @@
 import { Effect, Schema } from "effect"
 
-import { type WidgetAuthClient } from "../auth-clients/widget-auth-client"
-import { type WorkspaceAuthClient } from "../auth-clients/workspace-auth-client"
+import { type WidgetAuthClient } from "../auth-clients/widget"
+import { type WorkspaceAuthClient } from "../auth-clients/workspace"
 import { toAuthError } from "./error"
 
 export const makeGetSession = (c: WorkspaceAuthClient | WidgetAuthClient) =>
@@ -16,6 +16,3 @@ export const makeGetSession = (c: WorkspaceAuthClient | WidgetAuthClient) =>
     )
     return session
   })
-
-export const makeCreateEmailAccount = (c: WorkspaceAuthClient) =>
-  Effect.fn("@auth/createEmailAccount")(function* () {})

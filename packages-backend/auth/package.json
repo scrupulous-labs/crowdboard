@@ -11,9 +11,12 @@
     "@crowdboard-backend/env": "workspace:*",
     "@paralleldrive/cuid2": "catalog:utils",
     "better-auth": "catalog:better-auth",
-    "effect": "catalog:effect"
+    "drizzle-orm": "catalog:drizzle",
+    "effect": "catalog:effect",
+    "pg": "catalog:postgres"
   },
   "devDependencies": {
-    "@crowdboard-tooling/tsconfig": "workspace:*"
+    "@crowdboard-tooling/tsconfig": "workspace:*",
+    "@types/pg": "catalog:types"
   }
 }

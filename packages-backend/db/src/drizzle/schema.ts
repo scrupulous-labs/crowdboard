@@ -6,6 +6,7 @@ export const users = pgTable("users", {
   email: text().notNull().unique(),
   emailVerified: boolean().default(false).notNull(),
   avatarUrl: text(),
+  isAnonymous: boolean().default(false),
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().defaultNow().$onUpdate(date()).notNull(),
 })
@@ -36,7 +37,7 @@ export const teams = pgTable("teams", {
   name: text().notNull(),
   memberCount: integer().default(0).notNull(),
   createdAt: timestamp().notNull(),
-  updatedAt: timestamp().$onUpdate(() => new Date()),
+  updatedAt: timestamp().$onUpdate(date()),
 })
 
 export const teamMembers = pgTable("teamMembers", {

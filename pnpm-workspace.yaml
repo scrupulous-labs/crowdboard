@@ -32,13 +32,14 @@ catalogs:
     "typescript": ^7.0.2
     "@vitejs/plugin-react": ^6.0.5
   drizzle:
-    "drizzle-orm": 1.0.0-rc.5-169397b
+    "drizzle-orm": 1.0.0-rc.5-5935859
   effect:
-    "effect": 4.0.0-rc.112
-    "@effect/sql-pg": 4.0.0-rc.112
-    "@effect/platform-node": 4.0.0-rc.112
+    "effect": 4.0.0-rc.113
+    "@effect/sql-pg": 4.0.0-rc.113
+    "@effect/platform-node": 4.0.0-rc.113
   postgres:
     "pg": ^8.23.0
+    "pg-boss": ^12.30.0
     "node-pg-migrate": ^9.0.0
   react:
     "react": ^19.2.8
@@ -60,6 +61,3 @@ catalogs:
   utils:
     "@paralleldrive/cuid2": ^3.3.0
     "@sindresorhus/slugify": ^3.0.0
-
-# patchedDependencies:
-#   "@effect/sql-pg@4.0.0-beta.105": patches/@effect__sql-pg@4.0.0-beta.105.patch

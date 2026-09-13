@@ -1,9 +1,12 @@
 import { WorkspaceAuth } from "@crowdboard-backend/auth"
-import { DbEffect } from "@crowdboard-backend/db"
+import { DbEffect, DbMigration } from "@crowdboard-backend/db"
 import { MigrationScriptConfigProvider } from "@crowdboard-backend/env"
 import { Effect } from "effect"
 
 const program = Effect.gen(function* () {
+  const dbMigration = yield* DbMigration
+  yield* dbMigration.run
+
   const db = yield* DbEffect
   const result = yield* db.execute(`SELECT * from migrations`)
   const auth = yield* WorkspaceAuth
@@ -14,6 +17,7 @@ const program = Effect.gen(function* () {
   })
   yield* Effect.log(result, value)
 }).pipe(
+  Effect.provide(DbMigration.layer),
   Effect.provide(DbEffect.layer),
   Effect.provide(WorkspaceAuth.layer),
   Effect.provide(MigrationScriptConfigProvider.layer),

@@ -4,8 +4,8 @@ import { Cause, Effect, Exit, identity } from "effect"
 import { DbMigration } from "../src"
 
 Effect.gen(function* () {
-  const { runMigrations } = yield* DbMigration
-  yield* runMigrations
+  const dbMigration = yield* DbMigration
+  yield* dbMigration.run
 })
   .pipe(
     Effect.provide(DbMigration.layer),

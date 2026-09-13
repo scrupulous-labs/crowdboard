@@ -1,12 +1,12 @@
-import { DbAsync } from "@crowdboard-backend/db"
 import { Env } from "@crowdboard-backend/env"
 import { Effect, Context, Layer } from "effect"
 
-import { WidgetAuthClient } from "./auth-clients/widget-auth-client"
-import { WorkspaceAuthClient } from "./auth-clients/workspace-auth-client"
+import { MigrationScriptAuthClient } from "./auth-clients/migration-script"
+import { WidgetAuthClient } from "./auth-clients/widget"
+import { WorkspaceAuthClient } from "./auth-clients/workspace"
 import { makeGetSession } from "./auth/user"
 
-export class WorkspaceAuth extends Context.Service<WorkspaceAuth>()("@app/workspace-auth", {
+export class WorkspaceAuth extends Context.Service<WorkspaceAuth>()("@app/auth/services/workspace", {
   make: WorkspaceAuthClient.pipe(
     Effect.map((client) => ({
       client,
@@ -16,13 +16,10 @@ export class WorkspaceAuth extends Context.Service<WorkspaceAuth>()("@app/worksp
     })),
   ),
 }) {
-  static readonly layer = Layer.provide(
-    Layer.effect(this, this.make),
-    Layer.mergeAll(DbAsync.layer, Env.layer),
-  )
+  static readonly layer = Layer.provide(Layer.effect(this, this.make), Env.layer)
 }
 
-export class WidgetAuth extends Context.Service<WidgetAuth>()("@app/widget-auth", {
+export class WidgetAuth extends Context.Service<WidgetAuth>()("@app/auth/services/widget", {
   make: WidgetAuthClient.pipe(
     Effect.map((client) => ({
       client,
@@ -32,8 +29,12 @@ export class WidgetAuth extends Context.Service<WidgetAuth>()("@app/widget-auth"
     })),
   ),
 }) {
-  static readonly layer = Layer.provide(
-    Layer.effect(this, this.make),
-    Layer.mergeAll(DbAsync.layer, Env.layer),
-  )
+  static readonly layer = Layer.provide(Layer.effect(this, this.make), Env.layer)
+}
+
+export class MigrationScriptAuth extends Context.Service<MigrationScriptAuth>()(
+  "@app/auth/services/migration-script",
+  { make: MigrationScriptAuthClient },
+) {
+  static readonly layer = Layer.effect(this, this.make)
 }

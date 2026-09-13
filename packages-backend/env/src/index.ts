@@ -6,16 +6,16 @@ export class Env extends Context.Service<Env>()("@app/env", {
   make: Config.all([
     Config.nested(
       Config.all([
-        Config.url("WORKSPACE_ORIGIN").pipe(Config.map(toHref)),
-        Config.nonEmptyString("ROOT_DOMAIN"),
+        Config.URL("WORKSPACE_ORIGIN").pipe(Config.map(toHref)),
+        Config.NonEmptyString("ROOT_DOMAIN"),
       ]),
       "APP",
     ),
     Config.nested(
       Config.all([
-        Config.int("PORT"),
-        Config.url("ORIGIN").pipe(Config.map(toHref)),
-        Config.url("ORIGIN_LOCALHOST").pipe(Config.map(toHref)),
+        Config.Int("PORT"),
+        Config.URL("ORIGIN").pipe(Config.map(toHref)),
+        Config.URL("ORIGIN_LOCALHOST").pipe(Config.map(toHref)),
       ]),
       "SERVER",
     ),
@@ -23,9 +23,9 @@ export class Env extends Context.Service<Env>()("@app/env", {
       Config.all([
         Config.nested(
           Config.all([
-            Config.nonEmptyString("CLIENT_ID"),
-            Config.nonEmptyString("CLIENT_SECRET"),
-            Config.url("REDIRECT_URI").pipe(Config.map(toHref)),
+            Config.NonEmptyString("CLIENT_ID"),
+            Config.NonEmptyString("CLIENT_SECRET"),
+            Config.URL("REDIRECT_URI").pipe(Config.map(toHref)),
           ]),
           "GOOGLE",
         ),
@@ -34,12 +34,12 @@ export class Env extends Context.Service<Env>()("@app/env", {
     ),
     Config.nested(
       Config.all([
-        Config.int("PORT"),
-        Config.nonEmptyString("HOST"),
-        Config.nonEmptyString("USER"),
-        Config.nonEmptyString("PASSWORD"),
-        Config.nonEmptyString("DATABASE"),
-        Config.boolean("MIGRATIONS_ENABLED"),
+        Config.Int("PORT"),
+        Config.NonEmptyString("HOST"),
+        Config.NonEmptyString("USER"),
+        Config.NonEmptyString("PASSWORD"),
+        Config.NonEmptyString("DATABASE"),
+        Config.Boolean("MIGRATIONS_ENABLED"),
       ]),
       "PG",
     ),
@@ -79,6 +79,6 @@ export class Env extends Context.Service<Env>()("@app/env", {
 }
 
 // Utils
-function toHref(url: URL) {
-  return url.href
+function toHref(URL: URL) {
+  return URL.href
 }

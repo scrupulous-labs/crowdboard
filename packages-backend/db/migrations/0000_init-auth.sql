@@ -4,6 +4,7 @@ create table public."users" (
 	"email" text not null unique,
 	"avatarUrl" text,
 	"emailVerified" boolean not null,
+	"isAnonymous" boolean default false not null,
 	"createdAt" timestamptz default CURRENT_TIMESTAMP not null,
 	"updatedAt" timestamptz default CURRENT_TIMESTAMP not null
 );
@@ -79,7 +80,7 @@ create table public."invitations" (
 	"id" text not null primary key,
 	"inviterId" text not null references public."users" ("id") on delete cascade,
 	"workspaceId" text not null references public."workspaces" ("id") on delete cascade,
-	"teamId" text,
+	"teamId" text references public."teams" ("id") on delete set null,
 	"email" text not null,
 	"role" text,
 	"status" text not null,
@@ -93,8 +94,8 @@ create index "invitations_workspaceId_idx" on public."invitations" ("workspaceId
 create table public."userSessions" (
 	"id" text not null primary key,
 	"userId" text not null references public."users" ("id") on delete cascade,
-	"activeWorkspaceId" text,
-	"activeTeamId" text,
+	"activeWorkspaceId" text references public."workspaces" ("id") on delete set null,
+	"activeTeamId" text references public."teams" ("id") on delete set null,
 	"token" text not null unique,
 	"ipAddress" text,
 	"userAgent" text,
