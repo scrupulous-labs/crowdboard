@@ -23,10 +23,12 @@ export class Db extends Context.Service<Db>()("@services/db", {
     Layer.provide(PgDrizzle.DefaultServices),
     Layer.provide(
       Env.pipe(
-        Effect.map(({ pg }) => PgClient.layer({ url: pg.url, multiplex: true, maxConnections: 8 })),
+        Effect.map(({ pg: { url, maxConnections } }) =>
+          PgClient.layer({ url, multiplex: true, maxConnections: maxConnections.db }),
+        ),
         Layer.unwrap,
         Layer.provide(Env.layer),
-      )
+      ),
     ),
   )
 }

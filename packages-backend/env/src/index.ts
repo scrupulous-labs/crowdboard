@@ -13,7 +13,7 @@ export class Env extends Context.Service<Env>()("@app/env", {
     ),
     Config.nested(
       Config.all([
-        Config.Int("PORT"),
+        Config.Port("PORT"),
         Config.URL("ORIGIN").pipe(Config.map(toHref)),
         Config.URL("ORIGIN_LOCALHOST").pipe(Config.map(toHref)),
       ]),
@@ -34,12 +34,16 @@ export class Env extends Context.Service<Env>()("@app/env", {
     ),
     Config.nested(
       Config.all([
-        Config.Int("PORT"),
+        Config.Port("PORT"),
         Config.NonEmptyString("HOST"),
         Config.NonEmptyString("USER"),
         Config.NonEmptyString("PASSWORD"),
         Config.NonEmptyString("DATABASE"),
         Config.Boolean("MIGRATIONS_ENABLED"),
+        Config.nested(
+          Config.all([Config.Int("DB"), Config.Int("JOBS"), Config.Int("AUTH")]),
+          "MAX_CONNECTIONS",
+        ),
       ]),
       "PG",
     ),
@@ -49,7 +53,15 @@ export class Env extends Context.Service<Env>()("@app/env", {
         [appWorkspaceOrigin, appRootDomain],
         [serverPort, serverOrigin, serverOriginLocalhost],
         [[googleClientId, googleClientSecret, googleRedirectUri]],
-        [pgPort, pgHost, pgUser, pgPassword, pgDb, pgMigrationsEnabled],
+        [
+          pgPort,
+          pgHost,
+          pgUser,
+          pgPassword,
+          pgDb,
+          pgMigrationsEnabled,
+          [pgMaxConnDb, pgMaxConnJobs, pgMaxConnAuth],
+        ],
       ]) => ({
         app: {
           rootDomain: appRootDomain,
@@ -69,6 +81,7 @@ export class Env extends Context.Service<Env>()("@app/env", {
         },
         pg: {
           url: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDb}`),
+          maxConnections: { db: pgMaxConnDb, jobs: pgMaxConnJobs, auth: pgMaxConnAuth },
           migrationsEnabled: pgMigrationsEnabled,
         },
       }),

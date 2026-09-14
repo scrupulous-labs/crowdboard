@@ -9,8 +9,8 @@ import { Pool } from "pg"
 type SharedOptionFields = "database" | "user" | "account" | "session" | "verification"
 
 export const SharedOptions = Effect.gen(function* () {
-  const env = yield* Env
-  const pool = new Pool({ connectionString: Redacted.value(env.pg.url), max: 2 })
+  const { pg } = yield* Env
+  const pool = new Pool({ connectionString: Redacted.value(pg.url), max: pg.maxConnections.auth })
   const drizzleDb = drizzle({ client: pool, relations })
   const options: Pick<BetterAuthOptions, SharedOptionFields> = {
     database: drizzleAdapter(drizzleDb, { schema, provider: "pg", camelCase: true }),

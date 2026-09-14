@@ -48,12 +48,12 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   static readonly layer = Layer.effect(this, this.make).pipe(
     Layer.provide(
       Env.pipe(
-        Effect.map(({ pg }) => {
-          const poolConfig: PgPool.Config = { url: pg.url, maxConnections: 2, multiplex: true }
-          return Layer.effect(PgPool.PgPool, PgPool.make(poolConfig))
+        Effect.map(({ pg: { url, maxConnections } }) => {
+          const config: PgPool.Config = { url, maxConnections: maxConnections.jobs, multiplex: true }
+          return Layer.effect(PgPool.PgPool, PgPool.make(config))
         }),
         Layer.unwrap,
-        Layer.provide(Env.layer)
+        Layer.provide(Env.layer),
       ),
     ),
   )

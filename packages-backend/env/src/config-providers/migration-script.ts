@@ -18,6 +18,9 @@ PG_USER=postgres
 PG_PASSWORD=postgres
 PG_DATABASE=crowdboard
 PG_MIGRATIONS_ENABLED=true
+PG_MAX_CONNECTIONS_DB=2
+PG_MAX_CONNECTIONS_JOBS=2
+PG_MAX_CONNECTIONS_AUTH=2
 `
 
 export const layer = ConfigProvider.layer(ConfigProvider.fromDotEnvContents(dotEnv))
