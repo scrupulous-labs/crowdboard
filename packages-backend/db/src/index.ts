@@ -8,10 +8,10 @@ import { runner as pgMigrateRunner, RunnerOption } from "node-pg-migrate"
 import { Client } from "pg"
 
 import { relations } from "./drizzle"
-import { DbMigrationError } from "./errors"
+import { DbMigrationError } from "./error"
 
 export * from "./drizzle"
-export * from "./errors"
+export * from "./error"
 
 export class Db extends Context.Service<Db>()("@services/db", {
   make: Effect.gen(function* () {

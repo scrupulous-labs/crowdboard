@@ -1,7 +1,6 @@
-import { MigrationScriptConfigProvider } from "@crowdboard-backend/env"
+import { DbMigration } from "@crowdboard-backend/db"
+import { ConfigProviderForMigrationScript } from "@crowdboard-backend/env"
 import { Cause, Effect, Exit, identity } from "effect"
-
-import { DbMigration } from "../src"
 
 Effect.gen(function* () {
   const dbMigration = yield* DbMigration
@@ -9,7 +8,7 @@ Effect.gen(function* () {
 })
   .pipe(
     Effect.provide(DbMigration.layer),
-    Effect.provide(MigrationScriptConfigProvider.layer),
+    Effect.provide(ConfigProviderForMigrationScript.layer),
     Effect.runPromiseExit,
   )
   .then(

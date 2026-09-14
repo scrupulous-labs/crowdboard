@@ -6,11 +6,5 @@ export class AuthError extends Data.TaggedError("AuthError")<{
 }> {}
 
 export const toAuthError = (error: unknown) => {
-  if (!isAPIError(error)) {
-    return new AuthError({ cause: error })
-  }
-
-  return new AuthError({
-    cause: error.message,
-  })
+  return !isAPIError(error) ? new AuthError({ cause: error }) : new AuthError({ cause: error.message })
 }

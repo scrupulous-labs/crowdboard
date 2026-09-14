@@ -1,6 +1,6 @@
 import { Config, Context, Layer, Redacted } from "effect"
 
-export * as MigrationScriptConfigProvider from "./config-providers/migration-script"
+export * as ConfigProviderForMigrationScript from "./config-provider/migration-script"
 
 export class Env extends Context.Service<Env>()("@app/env", {
   make: Config.all([

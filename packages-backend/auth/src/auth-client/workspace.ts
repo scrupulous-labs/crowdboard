@@ -35,11 +35,11 @@ const Client = Effect.gen(function* () {
     plugins: [lastLoginMethod(), organization],
     ...sharedOptions,
   })
-})
+}).pipe(Effect.provide(Env.layer))
 
-export interface WorkspaceAuthClient extends Effect.Success<typeof Client> {}
-export const WorkspaceAuthClient: Effect.Effect<
-  WorkspaceAuthClient,
+export interface AuthClientForWorkspace extends Effect.Success<typeof Client> {}
+export const AuthClientForWorkspace: Effect.Effect<
+  AuthClientForWorkspace,
   Effect.Error<typeof Client>,
   Effect.Services<typeof Client>
 > = Client

@@ -3,7 +3,7 @@ import { relations, schema } from "@crowdboard-backend/db"
 import { Env } from "@crowdboard-backend/env"
 import { type BetterAuthOptions } from "better-auth"
 import { drizzle } from "drizzle-orm/node-postgres"
-import { Effect, Redacted } from "effect"
+import { Effect, identity, Redacted } from "effect"
 import { Pool } from "pg"
 
 type SharedOptionFields = "database" | "user" | "account" | "session" | "verification"
@@ -20,4 +20,4 @@ export const SharedOptions = Effect.gen(function* () {
     verification: { modelName: "verifications" },
   }
   return options
-}).pipe(Effect.provide(Env.layer), Effect.cached, Effect.runSync)
+}).pipe(Effect.cached, Effect.andThen(identity))

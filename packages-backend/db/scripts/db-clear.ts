@@ -1,17 +1,17 @@
-import { MigrationScriptConfigProvider } from "@crowdboard-backend/env"
+import { Db } from "@crowdboard-backend/db"
+import { ConfigProviderForMigrationScript } from "@crowdboard-backend/env"
 import { sql } from "drizzle-orm"
 import { Cause, Effect, Exit, identity } from "effect"
 
-import { Db } from "../src"
-
 Effect.gen(function* () {
   const db = yield* Db
+  yield* db.execute(sql`DROP SCHEMA jobs CASCADE`)
   yield* db.execute(sql`DROP SCHEMA public CASCADE`)
   yield* db.execute(sql`CREATE SCHEMA public`)
 })
   .pipe(
     Effect.provide(Db.layer),
-    Effect.provide(MigrationScriptConfigProvider.layer),
+    Effect.provide(ConfigProviderForMigrationScript.layer),
     Effect.runPromiseExit,
   )
   .then(

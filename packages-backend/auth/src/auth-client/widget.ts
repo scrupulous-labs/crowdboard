@@ -18,11 +18,11 @@ const Client = Effect.gen(function* () {
     plugins: [bearer(), anonymous(), organization],
     ...sharedOptions,
   })
-})
+}).pipe(Effect.provide(Env.layer))
 
-export interface WidgetAuthClient extends Effect.Success<typeof Client> {}
-export const WidgetAuthClient: Effect.Effect<
-  WidgetAuthClient,
+export interface AuthClientForWidget extends Effect.Success<typeof Client> {}
+export const AuthClientForWidget: Effect.Effect<
+  AuthClientForWidget,
   Effect.Error<typeof Client>,
   Effect.Services<typeof Client>
 > = Client

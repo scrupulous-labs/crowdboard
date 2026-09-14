@@ -32,7 +32,7 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
               Effect.retry({
                 times: 10,
                 while: (error) => error.isRetryable,
-                schedule: Schedule.exponential("1 second", 2),
+                schedule: Schedule.exponential("500 millis", 2),
               }),
             )
 
