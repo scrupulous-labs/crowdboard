@@ -1,2 +1,2 @@
-export * from "./auth-client"
+export * from "./service"
 export * from "./error"

@@ -1,13 +1,13 @@
-import { AuthClientForMigrationScript } from "@crowdboard-backend/auth"
+import { AuthForMigrationScript } from "@crowdboard-backend/auth"
 import { ConfigProviderForMigrationScript, Env } from "@crowdboard-backend/env"
 import { Cause, Effect, Exit, identity, Redacted } from "effect"
 import { Pool } from "pg"
 
 export const auth = await Effect.gen(function* () {
   const { pg } = yield* Env
-  const client = yield* AuthClientForMigrationScript
-  client.options.database = new Pool({ connectionString: Redacted.value(pg.url) })
-  return client
+  const auth = yield* AuthForMigrationScript
+  auth.options.database = new Pool({ connectionString: Redacted.value(pg.url) })
+  return auth
 })
   .pipe(
     Effect.provide(Env.layer),

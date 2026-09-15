@@ -1,6 +1,6 @@
 import { Config, Context, Layer, Redacted } from "effect"
 
-export class Env extends Context.Service<Env>()("@app/env", {
+export class Env extends Context.Service<Env>()("@services/env/env", {
   make: Config.all([
     Config.nested(
       Config.all([

@@ -7,22 +7,22 @@ import { Effect } from "effect"
 import { SharedOptions } from "./shared/options"
 import { organization } from "./shared/plugins"
 
-const Client = Effect.gen(function* () {
+const Auth = Effect.gen(function* () {
   const env = yield* Env
-  const sharedOptions = yield* SharedOptions
-
-  return betterAuth({
+  const auth = betterAuth({
     baseURL: env.server.origin,
     trustedOrigins: ["*"],
     advanced: { database: { joins: true, generateId: createId } },
     plugins: [bearer(), anonymous(), organization],
-    ...sharedOptions,
+    ...(yield* SharedOptions),
   })
+
+  return { _tag: "widget", ...auth } as const
 }).pipe(Effect.provide(Env.layer))
 
-export interface AuthClientForWidget extends Effect.Success<typeof Client> {}
-export const AuthClientForWidget: Effect.Effect<
-  AuthClientForWidget,
-  Effect.Error<typeof Client>,
-  Effect.Services<typeof Client>
-> = Client
+export interface AuthForWidget extends Effect.Success<typeof Auth> {}
+export const AuthForWidget: Effect.Effect<
+  AuthForWidget,
+  Effect.Error<typeof Auth>,
+  Effect.Services<typeof Auth>
+> = Auth

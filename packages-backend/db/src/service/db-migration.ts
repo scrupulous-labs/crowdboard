@@ -7,9 +7,6 @@ import { Client } from "pg"
 
 import { DbMigrationError } from "./error"
 
-export * from "./drizzle"
-export * from "./error"
-
 export class DbMigration extends Context.Service<DbMigration>()("@services/db/db-migration", {
   make: Effect.gen(function* () {
     const { pg } = yield* Env

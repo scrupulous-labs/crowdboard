@@ -7,11 +7,9 @@ import { Effect } from "effect"
 import { SharedOptions } from "./shared/options"
 import { organization } from "./shared/plugins"
 
-const Client = Effect.gen(function* () {
+const Auth = Effect.gen(function* () {
   const env = yield* Env
-  const sharedOptions = yield* SharedOptions
-
-  return betterAuth({
+  const auth = betterAuth({
     baseURL: env.server.origin,
     trustedOrigins: [env.app.workspaceOrigin, env.server.origin, env.server.originLocalhost],
     emailAndPassword: { enabled: true },
@@ -33,13 +31,15 @@ const Client = Effect.gen(function* () {
       },
     },
     plugins: [lastLoginMethod(), organization],
-    ...sharedOptions,
+    ...(yield* SharedOptions),
   })
+
+  return { _tag: "workspace", ...auth } as const
 }).pipe(Effect.provide(Env.layer))
 
-export interface AuthClientForWorkspace extends Effect.Success<typeof Client> {}
-export const AuthClientForWorkspace: Effect.Effect<
-  AuthClientForWorkspace,
-  Effect.Error<typeof Client>,
-  Effect.Services<typeof Client>
-> = Client
+export interface AuthForWorkspace extends Effect.Success<typeof Auth> {}
+export const AuthForWorkspace: Effect.Effect<
+  AuthForWorkspace,
+  Effect.Error<typeof Auth>,
+  Effect.Services<typeof Auth>
+> = Auth

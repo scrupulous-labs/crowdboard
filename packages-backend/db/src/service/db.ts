@@ -5,10 +5,7 @@ import { Context, Effect, Layer } from "effect"
 
 import { relations } from "./drizzle"
 
-export * from "./drizzle"
-export * from "./error"
-
-export class Db extends Context.Service<Db>()("@services/db", {
+export class Db extends Context.Service<Db>()("@services/db/db", {
   make: Effect.gen(function* () {
     const db = yield* PgDrizzle.make({ relations })
     return db

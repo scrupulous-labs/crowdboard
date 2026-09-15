@@ -1,12 +1,12 @@
 import { Effect, Schema } from "effect"
 
-import { AuthClient } from "../auth-client"
-import { toAuthError } from "../error"
+import { Auth } from "../service"
+import { toAuthError } from "./utils"
 
 const schema = Schema.Struct({ userId: Schema.String })
 
 export const getSession = Effect.fn("auth.getSession")(function* (headers: Headers) {
-  const auth = yield* AuthClient
+  const auth = yield* Auth
   const session = yield* Effect.tryPromise({
     try: () => auth.api.getSession({ headers }),
     catch: toAuthError,
