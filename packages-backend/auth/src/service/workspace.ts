@@ -31,7 +31,7 @@ const Auth = Effect.gen(function* () {
       },
     },
     plugins: [lastLoginMethod(), organization],
-    ...(yield* SharedOptions),
+    ...yield* SharedOptions,
   })
 
   return { _tag: "workspace", ...auth } as const

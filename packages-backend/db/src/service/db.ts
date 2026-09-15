@@ -3,7 +3,7 @@ import { PgClient } from "@effect/sql-pg"
 import * as PgDrizzle from "drizzle-orm/effect-postgres"
 import { Context, Effect, Layer } from "effect"
 
-import { relations } from "./drizzle"
+import { relations } from "../drizzle"
 
 export class Db extends Context.Service<Db>()("@services/db/db", {
   make: Effect.gen(function* () {

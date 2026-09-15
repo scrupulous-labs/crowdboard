@@ -15,10 +15,8 @@ export class Auth extends Context.Service<Auth, AuthForWidget | AuthForWorkspace
 ) {
   static readonly widget = "widget" satisfies AuthForWidget["_tag"]
   static readonly workspace = "workspace" satisfies AuthForWorkspace["_tag"]
-
   static readonly layerForWidget = Layer.effect(this, AuthForWidget)
   static readonly layerForWorkspace = Layer.effect(this, AuthForWorkspace)
-
   static readonly expect = <
     Tags extends NonEmptyArray<Context.Service.Shape<typeof Auth>["_tag"]>,
     Expected extends Extract<Context.Service.Shape<typeof Auth>, { _tag: Tags[number] }>,
@@ -32,7 +30,7 @@ export class Auth extends Context.Service<Auth, AuthForWidget | AuthForWorkspace
             (client): client is Expected => tags.includes(client._tag),
             (client) => Effect.succeed(client),
           ),
-          Match.orElse((_) => Effect.die("FAILEd")),
+          Match.orElse((_) => Effect.die("FAILED")),
         ),
       ),
     )
@@ -41,13 +39,11 @@ export class Auth extends Context.Service<Auth, AuthForWidget | AuthForWorkspace
 // Use this to generate sql migrations and drizzle schema
 export const AuthForMigrationScript = Effect.gen(function* () {
   const env = yield* Env
-  const sharedOptions = yield* SharedOptions
-
   return betterAuth({
     baseURL: env.server.origin,
     emailAndPassword: { enabled: true },
     advanced: { database: { joins: true, generateId: createId } },
     plugins: [bearer(), anonymous(), lastLoginMethod(), organization],
-    ...sharedOptions,
+    ...yield* SharedOptions,
   })
 }).pipe(Effect.provide(Env.layer))

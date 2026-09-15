@@ -5,7 +5,7 @@ import { Context, Effect, Layer, Redacted } from "effect"
 import { runner as pgMigrateRunner, RunnerOption } from "node-pg-migrate"
 import { Client } from "pg"
 
-import { DbMigrationError } from "./error"
+import { DbMigrationError } from "../error"
 
 export class DbMigration extends Context.Service<DbMigration>()("@services/db/db-migration", {
   make: Effect.gen(function* () {
