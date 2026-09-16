@@ -14,9 +14,8 @@ const InitializationMigration = Effect.gen(function* () {
 const VersionUpgradeMigration = Effect.gen(function* () {
   const env = yield* Env
   const jobs = yield* Jobs
-  const isInstalled = yield* jobs.isInstalled
   const existingVersion = yield* jobs.schemaVersion
-  return isInstalled && !!existingVersion
+  return !!existingVersion
     ? getMigrationPlans(env.jobs.pgSchema, existingVersion)
     : undefined
 })

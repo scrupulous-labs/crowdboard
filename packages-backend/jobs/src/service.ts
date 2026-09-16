@@ -4,13 +4,14 @@ import { Context, Effect, Fiber, Layer, Queue, Schedule } from "effect"
 import { PgBoss } from "pg-boss"
 
 import { JobsError } from "./error"
-import { isMultiStatement, splitMultiStatment, unwrapQueryResult } from "./utils"
+import { isMultiStatement, splitStatement, unwrapQueryResult } from "./utils"
 
 export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   make: Effect.gen(function* () {
+    const env = yield* Env
     const pool = yield* PgPool.PgPool
     const jobs = new PgBoss({
-      schema: "jobs",
+      schema: env.jobs.pgSchema,
       migrate: false,
       createSchema: false,
       useListenNotify: true,
@@ -23,7 +24,7 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
               })
             : Effect.gen(function* () {
                 const connection = yield* pool.reserve
-                return yield* Effect.forEach(splitMultiStatment(sql, values), (stmt) =>
+                return yield* Effect.forEach(splitStatement(sql, values), (stmt) =>
                   connection.query(stmt.sql, stmt.values),
                 )
               })
@@ -71,6 +72,7 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   }),
 }) {
   static readonly layer = Layer.effect(this, this.make).pipe(
+    Layer.provide(Env.layer),
     Layer.provide(
       Env.pipe(
         Effect.map(({ pg: { url, maxConnections } }) => {

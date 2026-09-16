@@ -13,14 +13,14 @@ export function unwrapQueryResult(result: PgConnection.Result | PgConnection.Res
     : ({ rows: result.rows } as { rows: any[] })
 }
 
-export function splitMultiStatment(multi: string, values: unknown[]) {
+export function splitStatement(stmt: string, values: unknown[]) {
   // Check if pg-boss provided a well formed query
-  if ([...multi.matchAll(/\$(\d+)/g)].length !== values.length) {
+  if ([...stmt.matchAll(/\$(\d+)/g)].length !== values.length) {
     process.exit(1)
   }
   // Re-number $N, $N+1, ... -> $1, $2, ... local to each statement
   // and assign corresponding values from the values array
-  return multi.split(";\n").map((sql) => {
+  return stmt.split(";\n").map((sql) => {
     const placeholders = [...sql.matchAll(/\$(\d+)/g)].map((match) => +match[1])
     return {
       sql: sql.replace(/\$(\d+)/g, (_, placeholder) => `$${placeholders.indexOf(+placeholder) + 1}`),
@@ -42,7 +42,7 @@ export function fromDrizzle(tx: DbTransaction) {
 
   return {
     executeSql: (sql: string, values: unknown[] = []) =>
-      Effect.forEach(splitMultiStatment(sql, values), (stmt) =>
+      Effect.forEach(splitStatement(sql, values), (stmt) =>
         tx.execute(toDrizzleQuery(stmt.sql, stmt.values), "objects"),
       ).pipe(
         Effect.map((rows) => ({ rows: rows.flatMap(identity) }) as { rows: any[] }),
