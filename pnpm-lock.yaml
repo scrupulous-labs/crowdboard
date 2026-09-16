@@ -310,25 +310,16 @@ importers:
       effect:
         specifier: catalog:effect
         version: 4.0.0-rc.113
-      pg:
-        specifier: catalog:postgres
-        version: 8.23.0
       pg-boss:
         specifier: catalog:postgres
         version: 12.30.0
     devDependencies:
-      '@crowdboard-backend/auth':
-        specifier: workspace:*
-        version: link:../auth
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/tsconfig
       '@types/node':
         specifier: catalog:types
         version: 26.2.0
-      '@types/pg':
-        specifier: catalog:types
-        version: 8.23.1
       tsx:
         specifier: catalog:build
         version: 4.23.12

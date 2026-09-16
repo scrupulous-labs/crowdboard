@@ -30,7 +30,7 @@ export class Auth extends Context.Service<Auth, AuthForWidget | AuthForWorkspace
             (client): client is Expected => tags.includes(client._tag),
             (client) => Effect.succeed(client),
           ),
-          Match.orElse((_) => Effect.die("FAILED")),
+          Match.orElse((_) => Effect.die("CHECK YOUR AUTH FUNCTIONS")),
         ),
       ),
     )

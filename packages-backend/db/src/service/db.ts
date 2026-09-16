@@ -5,6 +5,8 @@ import { Context, Effect, Layer } from "effect"
 
 import { relations } from "../drizzle"
 
+export type DbTransaction = Parameters<Parameters<Context.Service.Shape<typeof Db>["transaction"]>[0]>[0]
+
 export class Db extends Context.Service<Db>()("@services/db/db", {
   make: Effect.gen(function* () {
     const db = yield* PgDrizzle.make({ relations })
