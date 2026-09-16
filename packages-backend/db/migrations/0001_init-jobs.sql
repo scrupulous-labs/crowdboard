@@ -93,7 +93,6 @@ CREATE FUNCTION jobs.job_table_format(command text, table_name text) RETURNS tex
 		table_name
 	);
 $$ LANGUAGE sql IMMUTABLE;
-;
 
 CREATE FUNCTION jobs.job_table_run(command text, tbl_name text DEFAULT NULL, queue_name text DEFAULT NULL) RETURNS VOID AS $$
     DECLARE
@@ -114,7 +113,6 @@ CREATE FUNCTION jobs.job_table_run(command text, tbl_name text DEFAULT NULL, que
 		END LOOP;
     END;
 $$ LANGUAGE plpgsql;
-;
 
 CREATE FUNCTION jobs.job_table_run_async(command_name text, version int, command text, tbl_name text DEFAULT NULL, queue_name text DEFAULT NULL) RETURNS VOID AS $$
     BEGIN
@@ -136,7 +134,6 @@ CREATE FUNCTION jobs.job_table_run_async(command_name text, version int, command
       	FROM jobs.queue WHERE partition = true;
     END;
 $$ LANGUAGE plpgsql;
-;
 
 CREATE TABLE jobs.job (
 	id uuid not null default gen_random_uuid(),
@@ -192,7 +189,6 @@ SELECT jobs.job_table_run($cmd$CREATE INDEX job_i7 ON jobs.job (name, group_id) 
 SELECT jobs.job_table_run($cmd$CREATE INDEX job_i9 ON jobs.job (name, id) WHERE blocking AND state = 'completed'$cmd$, 'job_common');
 
 ALTER TABLE jobs.job ATTACH PARTITION jobs.job_common DEFAULT;
-;
 
 CREATE TABLE jobs.warning (
 	id uuid PRIMARY KEY default gen_random_uuid(),
@@ -287,11 +283,9 @@ CREATE FUNCTION jobs.create_queue(queue_name text, options jsonb) RETURNS VOID A
 		END IF;
 
 		EXECUTE format('CREATE TABLE jobs.%I (LIKE jobs.job INCLUDING DEFAULTS)', tablename);
-
 		EXECUTE jobs.job_table_format($cmd$ALTER TABLE jobs.job ADD PRIMARY KEY (name, id)$cmd$, tablename);
 		EXECUTE jobs.job_table_format($cmd$ALTER TABLE jobs.job ADD CONSTRAINT q_fkey FOREIGN KEY (name) REFERENCES jobs.queue (name) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED$cmd$, tablename);
 		EXECUTE jobs.job_table_format($cmd$ALTER TABLE jobs.job ADD CONSTRAINT dlq_fkey FOREIGN KEY (dead_letter) REFERENCES jobs.queue (name) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED$cmd$, tablename);
-
 		EXECUTE jobs.job_table_format($cmd$CREATE INDEX job_i11 ON jobs.job (name, priority DESC, created_on, start_after) WHERE state < 'active' AND NOT blocked$cmd$, tablename);
 		EXECUTE jobs.job_table_format($cmd$CREATE UNIQUE INDEX job_i4 ON jobs.job (name, singleton_on, COALESCE(singleton_key, '')) WHERE state <> 'cancelled' AND singleton_on IS NOT NULL$cmd$, tablename);
 		EXECUTE jobs.job_table_format($cmd$CREATE INDEX job_i7 ON jobs.job (name, group_id) WHERE state = 'active' AND group_id IS NOT NULL$cmd$, tablename);
@@ -315,7 +309,6 @@ CREATE FUNCTION jobs.create_queue(queue_name text, options jsonb) RETURNS VOID A
 		EXECUTE format('ALTER TABLE jobs.job ATTACH PARTITION jobs.%I FOR VALUES IN (%L)', tablename, queue_name);
     END;
 $$ LANGUAGE plpgsql;
-;
 
 CREATE FUNCTION jobs.delete_queue(queue_name text) RETURNS VOID AS $$
     DECLARE
@@ -332,6 +325,5 @@ CREATE FUNCTION jobs.delete_queue(queue_name text) RETURNS VOID AS $$
 		DELETE FROM jobs.queue WHERE name = queue_name;
     END;
 $$ LANGUAGE plpgsql;
-;
 
 INSERT INTO jobs.version(version) VALUES ('40');

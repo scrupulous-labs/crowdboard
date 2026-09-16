@@ -12,6 +12,8 @@ AUTH_GOOGLE_CLIENT_ID=google
 AUTH_GOOGLE_CLIENT_SECRET=google
 AUTH_GOOGLE_REDIRECT_URI=https://google.com
 
+JOBS_PG_SCHEMA=jobs
+
 PG_HOST=localhost
 PG_PORT=5433
 PG_USER=postgres

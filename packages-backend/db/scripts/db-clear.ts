@@ -3,7 +3,7 @@ import { ConfigProviderForMigrationScript } from "@crowdboard-backend/env"
 import { sql } from "drizzle-orm"
 import { Cause, Effect, Exit, identity } from "effect"
 
-Effect.gen(function* () {
+await Effect.gen(function* () {
   const db = yield* Db
   yield* db.execute(sql`DROP SCHEMA jobs CASCADE`)
   yield* db.execute(sql`DROP SCHEMA public CASCADE`)

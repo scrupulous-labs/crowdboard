@@ -1,27 +1,19 @@
-import { WorkspaceAuth } from "@crowdboard-backend/auth"
-import { DbEffect, DbMigration } from "@crowdboard-backend/db"
-import { MigrationScriptConfigProvider } from "@crowdboard-backend/env"
-import { Effect } from "effect"
+import { DbMigration } from "@crowdboard-backend/db"
+import { ConfigProviderForMigrationScript } from "@crowdboard-backend/env"
+import { Jobs } from "@crowdboard-backend/jobs"
+import { Console, Effect } from "effect"
 
 const program = Effect.gen(function* () {
   const dbMigration = yield* DbMigration
   yield* dbMigration.run
-
-  const db = yield* DbEffect
-  const result = yield* db.execute(`SELECT * from migrations`)
-  const auth = yield* WorkspaceAuth
-  const value = yield* Effect.promise(async () => {
-    return auth.client.api.signInSocial({
-      body: { provider: "google" },
-    })
-  })
-  yield* Effect.log(result, value)
+  const { start } = yield* Jobs
+  yield* start
 }).pipe(
   Effect.provide(DbMigration.layer),
-  Effect.provide(DbEffect.layer),
-  Effect.provide(WorkspaceAuth.layer),
-  Effect.provide(MigrationScriptConfigProvider.layer),
+  Effect.provide(Jobs.layer),
+  Effect.provide(ConfigProviderForMigrationScript.layer),
   Effect.catch(Effect.logError),
+  Effect.catchDefect((x) => Console.log(JSON.stringify(x))),
 )
 
-void Effect.runPromise(program)
+await Effect.runPromise(program)

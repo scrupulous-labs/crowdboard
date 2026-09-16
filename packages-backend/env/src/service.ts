@@ -30,6 +30,7 @@ export class Env extends Context.Service<Env>()("@services/env/env", {
       ]),
       "AUTH",
     ),
+    Config.nested(Config.all([Config.NonEmptyString("PG_SCHEMA")]), "JOBS"),
     Config.nested(
       Config.all([
         Config.Port("PORT"),
@@ -51,6 +52,7 @@ export class Env extends Context.Service<Env>()("@services/env/env", {
         [appWorkspaceOrigin, appRootDomain],
         [serverPort, serverOrigin, serverOriginLocalhost],
         [[googleClientId, googleClientSecret, googleRedirectUri]],
+        [jobsPgSchema],
         [
           pgPort,
           pgHost,
@@ -76,6 +78,9 @@ export class Env extends Context.Service<Env>()("@services/env/env", {
             clientSecret: googleClientSecret,
             redirectUri: googleRedirectUri,
           },
+        },
+        jobs: {
+          pgSchema: jobsPgSchema,
         },
         pg: {
           url: Redacted.make(`postgresql://${pgUser}:${pgPassword}@${pgHost}:${pgPort}/${pgDb}`),

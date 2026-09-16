@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@crowdboard-backend/auth": "workspace:*",
+    "@crowdboard-backend/jobs": "workspace:*",
     "@crowdboard-tooling/tsconfig": "workspace:*",
     "@types/node": "catalog:types",
     "@types/pg": "catalog:types",

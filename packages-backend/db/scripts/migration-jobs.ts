@@ -1,21 +1,48 @@
 import { writeFileSync, mkdirSync } from "node:fs"
 import { join } from "node:path"
 
-import { getMigrationPlans } from "pg-boss"
+import { ConfigProviderForMigrationScript, Env } from "@crowdboard-backend/env"
+import { Jobs } from "@crowdboard-backend/jobs"
+import { Effect, Layer } from "effect"
+import { getConstructionPlans, getMigrationPlans } from "pg-boss"
 
-const schemaName = "jobs"
-const existingVersion = 40
+const InitializationMigration = Effect.gen(function* () {
+  const env = yield* Env
+  return getConstructionPlans(env.jobs.pgSchema)
+})
+
+const VersionUpgradeMigration = Effect.gen(function* () {
+  const env = yield* Env
+  const jobs = yield* Jobs
+  const isInstalled = yield* jobs.isInstalled
+  const existingVersion = yield* jobs.schemaVersion
+  return isInstalled && !!existingVersion
+    ? getMigrationPlans(env.jobs.pgSchema, existingVersion)
+    : undefined
+})
+
+const Migration = Effect.gen(function* () {
+  const jobs = yield* Jobs
+  const isInstalled = yield* jobs.isInstalled
+  return yield* isInstalled ? VersionUpgradeMigration : InitializationMigration
+}).pipe(
+  Effect.provide(Layer.merge(Env.layer, Jobs.layer)),
+  Effect.provide(ConfigProviderForMigrationScript.layer),
+  Effect.runPromise,
+)
+
 try {
-  const sql = getMigrationPlans(schemaName, existingVersion)
-  const outputDir = join(import.meta.dirname, "../tmp")
-  const outputFile = join(outputDir, "MIGRATION-JOBS.sql")
-
-  mkdirSync(outputDir, { recursive: true })
-  writeFileSync(outputFile, sql)
+  const migration = await Migration
+  if (!!migration) {
+    const outputDir = join(import.meta.dirname, "../tmp")
+    const outputFile = join(outputDir, "MIGRATION-JOBS.sql")
+    mkdirSync(outputDir, { recursive: true })
+    writeFileSync(outputFile, migration)
+  }
 } catch (err) {
-  if (String(err).includes(`Version ${existingVersion} not found`)) {
+  if (/Version \d+ not found/.test(String(err))) {
     console.info("Schema up to date. No migrations generated.")
   } else {
-    console.error(err)
+    console.error(JSON.stringify(err, null, 2))
   }
 }

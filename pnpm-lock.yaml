@@ -128,6 +128,9 @@ importers:
       '@crowdboard-backend/env':
         specifier: workspace:*
         version: link:../../packages-backend/env
+      '@crowdboard-backend/jobs':
+        specifier: workspace:*
+        version: link:../../packages-backend/jobs
       effect:
         specifier: catalog:effect
         version: 4.0.0-rc.113
@@ -258,6 +261,9 @@ importers:
       '@crowdboard-backend/auth':
         specifier: workspace:*
         version: link:../auth
+      '@crowdboard-backend/jobs':
+        specifier: workspace:*
+        version: link:../jobs
       '@crowdboard-tooling/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/tsconfig

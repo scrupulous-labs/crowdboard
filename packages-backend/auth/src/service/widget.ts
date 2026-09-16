@@ -14,7 +14,7 @@ const Auth = Effect.gen(function* () {
     trustedOrigins: ["*"],
     advanced: { database: { joins: true, generateId: createId } },
     plugins: [bearer(), anonymous(), organization],
-    ...yield* SharedOptions,
+    ...(yield* SharedOptions),
   })
 
   return { _tag: "widget", ...auth } as const

@@ -23,7 +23,7 @@ export class DbMigration extends Context.Service<DbMigration>()("@services/db/db
       run: Effect.gen(function* () {
         const client = yield* acquireClient
         const runnerOpts: RunnerOption = {
-          dir: join(import.meta.dirname, "../migrations"),
+          dir: join(import.meta.dirname, "../../migrations"),
           dbClient: client,
           direction: "up",
           migrationsTable: "migrations",

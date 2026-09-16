@@ -2,7 +2,7 @@ import { DbMigration } from "@crowdboard-backend/db"
 import { ConfigProviderForMigrationScript } from "@crowdboard-backend/env"
 import { Cause, Effect, Exit, identity } from "effect"
 
-Effect.gen(function* () {
+await Effect.gen(function* () {
   const dbMigration = yield* DbMigration
   yield* dbMigration.run
 })

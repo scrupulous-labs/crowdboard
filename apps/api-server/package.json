@@ -4,13 +4,14 @@
   "type": "module",
   "scripts": {
     "build": "tsx ./src/build.ts",
-    "dev": "tsx watch ./src/index.ts",
+    "dev": "tsx ./src/index.ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@crowdboard-backend/auth": "workspace:*",
     "@crowdboard-backend/db": "workspace:*",
     "@crowdboard-backend/env": "workspace:*",
+    "@crowdboard-backend/jobs": "workspace:*",
     "effect": "catalog:effect"
   },
   "devDependencies": {

@@ -44,6 +44,6 @@ export const AuthForMigrationScript = Effect.gen(function* () {
     emailAndPassword: { enabled: true },
     advanced: { database: { joins: true, generateId: createId } },
     plugins: [bearer(), anonymous(), lastLoginMethod(), organization],
-    ...yield* SharedOptions,
+    ...(yield* SharedOptions),
   })
 }).pipe(Effect.provide(Env.layer))
