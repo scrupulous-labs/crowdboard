@@ -4,7 +4,7 @@ import { Context, Effect, Fiber, Layer, Queue, Schedule } from "effect"
 import { PgBoss } from "pg-boss"
 
 import { JobsError } from "./error"
-import { isMultiStatement, splitStatement, unwrapQueryResult } from "./utils"
+import { isMultiStatement, splitMultiStatement, unwrapQueryResult } from "./utils"
 
 export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   make: Effect.gen(function* () {
@@ -24,7 +24,7 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
               })
             : Effect.gen(function* () {
                 const connection = yield* pool.reserve
-                return yield* Effect.forEach(splitStatement(sql, values), (stmt) =>
+                return yield* Effect.forEach(splitMultiStatement(sql, values), (stmt) =>
                   connection.query(stmt.sql, stmt.values),
                 )
               })

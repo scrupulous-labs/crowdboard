@@ -13,24 +13,25 @@ export function unwrapQueryResult(result: PgConnection.Result | PgConnection.Res
     : ({ rows: result.rows } as { rows: any[] })
 }
 
-export function splitStatement(stmt: string, values: unknown[]) {
+export function splitMultiStatement(stmt: string, values: unknown[]) {
+  const regex = /\$(\d+)/g
   // Check if pg-boss provided a well formed query
-  if ([...stmt.matchAll(/\$(\d+)/g)].length !== values.length) {
+  if ([...stmt.matchAll(regex)].length !== values.length) {
     process.exit(1)
   }
   // Re-number $N, $N+1, ... -> $1, $2, ... local to each statement
   // and assign corresponding values from the values array
   return stmt.split(";\n").map((sql) => {
-    const placeholders = [...sql.matchAll(/\$(\d+)/g)].map((match) => +match[1])
+    const posParams = [...sql.matchAll(regex)].map((match) => +match[1])
     return {
-      sql: sql.replace(/\$(\d+)/g, (_, placeholder) => `$${placeholders.indexOf(+placeholder) + 1}`),
-      values: placeholders.map((placeholder) => values[placeholder - 1]),
+      sql: sql.replace(regex, (_, posParam) => `$${posParams.indexOf(+posParam) + 1}`),
+      values: posParams.map((posParam) => values[posParam - 1]),
     } as const
   })
 }
 
 export function fromDrizzle(tx: DbTransaction) {
-  // Drizzle only support templated queries, so convert to it
+  // Drizzle only support templated queries
   const toDrizzleQuery = (query: string, values: unknown[]) => {
     const isEven = (n: number) => n % 2 === 0
     return sql.join(
@@ -39,10 +40,9 @@ export function fromDrizzle(tx: DbTransaction) {
       }, [] as SQL[]),
     )
   }
-
   return {
     executeSql: (sql: string, values: unknown[] = []) =>
-      Effect.forEach(splitStatement(sql, values), (stmt) =>
+      Effect.forEach(splitMultiStatement(sql, values), (stmt) =>
         tx.execute(toDrizzleQuery(stmt.sql, stmt.values), "objects"),
       ).pipe(
         Effect.map((rows) => ({ rows: rows.flatMap(identity) }) as { rows: any[] }),
