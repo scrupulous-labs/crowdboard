@@ -9,6 +9,7 @@
     "@better-auth/drizzle-adapter": "catalog:better-auth",
     "@crowdboard-backend/db": "workspace:*",
     "@crowdboard-backend/env": "workspace:*",
+    "@crowdboard/models": "workspace:*",
     "@paralleldrive/cuid2": "catalog:utils",
     "better-auth": "catalog:better-auth",
     "drizzle-orm": "catalog:drizzle",

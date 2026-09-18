@@ -72,7 +72,6 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   }),
 }) {
   static readonly layer = Layer.effect(this, this.make).pipe(
-    Layer.provide(Env.layer),
     Layer.provide(
       Env.pipe(
         Effect.map(({ pg: { url, maxConnections } }) => {
@@ -80,8 +79,8 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
           return Layer.effect(PgPool.PgPool, PgPool.make(config))
         }),
         Layer.unwrap,
-        Layer.provide(Env.layer),
       ),
     ),
+    Layer.provideMerge(Env.layer),
   )
 }

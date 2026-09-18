@@ -214,6 +214,9 @@ importers:
       '@crowdboard-backend/env':
         specifier: workspace:*
         version: link:../env
+      '@crowdboard/models':
+        specifier: workspace:*
+        version: link:../../packages/models
       '@paralleldrive/cuid2':
         specifier: catalog:utils
         version: 3.3.0

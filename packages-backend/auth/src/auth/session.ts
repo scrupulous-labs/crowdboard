@@ -1,9 +1,8 @@
-import { Effect, Schema } from "effect"
+import { API } from "@crowdboard/models"
+import { Effect } from "effect"
 
 import { Auth } from "../service"
 import { toAuthError } from "./utils"
-
-const schema = Schema.Struct({ userId: Schema.String })
 
 export const getSession = Effect.fn("auth.getSession")(function* (headers: Headers) {
   const auth = yield* Auth
@@ -12,7 +11,7 @@ export const getSession = Effect.fn("auth.getSession")(function* (headers: Heade
     catch: toAuthError,
   }).pipe(
     Effect.map((res) => res && { ...res.session, ...res.user }),
-    Effect.andThen(Schema.decodeEffect(Schema.OptionFromNullishOr(schema))),
+    Effect.andThen(API.Session.decodeFromAuth),
   )
   return session
 })
