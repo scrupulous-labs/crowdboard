@@ -5,7 +5,7 @@ import { anonymous, bearer, lastLoginMethod } from "better-auth/plugins"
 import { Context, Effect, Layer, Match } from "effect"
 import { NonEmptyArray } from "effect/Array"
 
-import { AuthInvalidLayerError } from "../error"
+import { InvalidAuthLayerError } from "../error"
 import { SharedOptions } from "./shared/options"
 import { organization } from "./shared/plugins"
 import { AuthForWidget } from "./widget"
@@ -32,8 +32,8 @@ export class Auth extends Context.Service<Auth, AuthForWidget | AuthForWorkspace
             (auth) => Effect.succeed(auth),
           ),
           Match.orElse((layer) =>
-            Effect.fail(
-              new AuthInvalidLayerError({
+            Effect.die(
+              new InvalidAuthLayerError({
                 expected: tags,
                 provided: layer._tag,
               }),

@@ -3,8 +3,7 @@ import { PgPool } from "@effect/sql-pg"
 import { Context, Effect, Fiber, Layer, Queue, Schedule } from "effect"
 import { PgBoss } from "pg-boss"
 
-import { JobsError } from "./error"
-import { isMultiStatement, splitMultiStatement, unwrapQueryResult } from "./utils"
+import { isMultiStatement, splitMultiStatement, toJobsError, unwrapQueryResult } from "./utils"
 
 export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   make: Effect.gen(function* () {
@@ -58,15 +57,15 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
     return {
       start: Effect.tryPromise({
         try: () => jobs.start(),
-        catch: (cause) => new JobsError({ cause, operation: "start" }),
+        catch: toJobsError("start"),
       }),
       isInstalled: Effect.tryPromise({
         try: () => jobs.isInstalled(),
-        catch: (cause) => new JobsError({ cause, operation: "isInstalled" }),
+        catch: toJobsError("isInstalled"),
       }),
       schemaVersion: Effect.tryPromise({
         try: () => jobs.schemaVersion(),
-        catch: (cause) => new JobsError({ cause, operation: "schemaVersion" }),
+        catch: toJobsError("schemaVersion"),
       }),
     }
   }),
@@ -74,10 +73,17 @@ export class Jobs extends Context.Service<Jobs>()("@services/jobs", {
   static readonly layer = Layer.effect(this, this.make).pipe(
     Layer.provide(
       Env.pipe(
-        Effect.map(({ pg: { url, maxConnections } }) => {
-          const config: PgPool.Config = { url, maxConnections: maxConnections.jobs, multiplex: true }
-          return Layer.effect(PgPool.PgPool, PgPool.make(config))
-        }),
+        Effect.map(
+          ({
+            pg: {
+              url,
+              maxConnections: { jobs },
+            },
+          }) => {
+            const config: PgPool.Config = { url, maxConnections: jobs, multiplex: true }
+            return Layer.effect(PgPool.PgPool, PgPool.make(config))
+          },
+        ),
         Layer.unwrap,
       ),
     ),

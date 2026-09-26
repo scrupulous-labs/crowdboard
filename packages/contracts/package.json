@@ -1,5 +1,5 @@
 {
-  "name": "@crowdboard/models",
+  "name": "@crowdboard/contracts",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -7,6 +7,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@crowdboard/models": "workspace:*",
     "effect": "catalog:effect"
   },
   "devDependencies": {

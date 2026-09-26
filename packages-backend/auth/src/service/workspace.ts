@@ -12,7 +12,7 @@ const Auth = Effect.gen(function* () {
   const auth = betterAuth({
     baseURL: env.server.origin,
     trustedOrigins: [env.app.workspaceOrigin, env.server.origin, env.server.originLocalhost],
-    emailAndPassword: { enabled: true },
+    emailAndPassword: { enabled: true, autoSignIn: true },
     socialProviders: {
       google: {
         clientId: env.auth.google.clientId,

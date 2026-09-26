@@ -1,24 +1,23 @@
 {
-  "name": "@crowdboard-backend/auth",
+  "name": "@crowdboard-backend/contract-impl",
   "private": true,
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {},
   "dependencies": {
-    "@better-auth/drizzle-adapter": "catalog:better-auth",
+    "@crowdboard-backend/auth": "workspace:*",
     "@crowdboard-backend/db": "workspace:*",
     "@crowdboard-backend/env": "workspace:*",
+    "@crowdboard/contracts": "workspace:*",
     "@crowdboard/effect-extra": "workspace:*",
     "@crowdboard/models": "workspace:*",
-    "@paralleldrive/cuid2": "catalog:utils",
-    "better-auth": "catalog:better-auth",
     "drizzle-orm": "catalog:drizzle",
-    "effect": "catalog:effect",
-    "pg": "catalog:postgres"
+    "effect": "catalog:effect"
   },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*",
-    "@types/pg": "catalog:types"
+    "@types/node": "catalog:types"
   }
 }

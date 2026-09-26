@@ -1,10 +1,6 @@
-import { Data } from "effect"
+import * as Data from "effect/Data"
 
-export class AuthError extends Data.TaggedError("AuthError")<{
-  readonly cause: unknown
-}> {}
-
-export class AuthInvalidLayerError extends Data.TaggedError("AuthInvalidLayerError")<{
+export class InvalidAuthLayerError extends Data.TaggedError("InvalidAuthLayerError")<{
   readonly expected: string[]
   readonly provided: string
 }> {}

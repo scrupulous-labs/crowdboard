@@ -214,6 +214,9 @@ importers:
       '@crowdboard-backend/env':
         specifier: workspace:*
         version: link:../env
+      '@crowdboard/effect-extra':
+        specifier: workspace:*
+        version: link:../../packages/effect-extra
       '@crowdboard/models':
         specifier: workspace:*
         version: link:../../packages/models
@@ -240,11 +243,48 @@ importers:
         specifier: catalog:types
         version: 8.23.1
 
+  packages-backend/contract-impl:
+    dependencies:
+      '@crowdboard-backend/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@crowdboard-backend/db':
+        specifier: workspace:*
+        version: link:../db
+      '@crowdboard-backend/env':
+        specifier: workspace:*
+        version: link:../env
+      '@crowdboard/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@crowdboard/effect-extra':
+        specifier: workspace:*
+        version: link:../../packages/effect-extra
+      '@crowdboard/models':
+        specifier: workspace:*
+        version: link:../../packages/models
+      drizzle-orm:
+        specifier: catalog:drizzle
+        version: 1.0.0-rc.5-5935859(@effect/sql-pg@4.0.0-rc.113(effect@4.0.0-rc.113))(@types/pg@8.23.1)(effect@4.0.0-rc.113)(pg@8.23.0)(zod@4.4.3)
+      effect:
+        specifier: catalog:effect
+        version: 4.0.0-rc.113
+    devDependencies:
+      '@crowdboard-tooling/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/tsconfig
+      '@types/node':
+        specifier: catalog:types
+        version: 26.2.0
+
   packages-backend/db:
     dependencies:
       '@crowdboard-backend/env':
         specifier: workspace:*
         version: link:../env
+      '@crowdboard/models':
+        specifier: workspace:*
+        version: link:../../packages/models
       '@effect/sql-pg':
         specifier: catalog:effect
         version: 4.0.0-rc.113(effect@4.0.0-rc.113)
@@ -327,7 +367,20 @@ importers:
         specifier: catalog:build
         version: 4.23.12
 
-  packages/models:
+  packages/contracts:
+    dependencies:
+      '@crowdboard/models':
+        specifier: workspace:*
+        version: link:../models
+      effect:
+        specifier: catalog:effect
+        version: 4.0.0-rc.113
+    devDependencies:
+      '@crowdboard-tooling/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/tsconfig
+
+  packages/effect-extra:
     dependencies:
       effect:
         specifier: catalog:effect
@@ -337,7 +390,7 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/tsconfig
 
-  packages/workspace-contract:
+  packages/models:
     dependencies:
       effect:
         specifier: catalog:effect

@@ -1,15 +1,15 @@
 {
-  "name": "@crowdboard/workspace-contract",
+  "name": "@crowdboard/effect-extra",
   "private": true,
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "effect": "catalog:effect"
+  },
   "devDependencies": {
     "@crowdboard-tooling/tsconfig": "workspace:*"
-  },
-  "peerDependencies": {
-    "effect": "catalog:effect"
   }
 }

@@ -1,4 +1,4 @@
-import { Schema } from "effect"
+import { pipe, Schema } from "effect"
 
 import { Email } from "../../utils"
 
@@ -15,3 +15,5 @@ export class User extends Schema.Class<User>("User")({
   createdAt: Schema.DateTimeUtcFromDate,
   updatedAt: Schema.DateTimeUtcFromDate,
 }) {}
+
+export const decodeFromDb = pipe(User, Schema.OptionFromNullishOr, Schema.decodeUnknownEffect)

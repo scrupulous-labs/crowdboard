@@ -6,21 +6,17 @@ import { Jobs } from "@crowdboard-backend/jobs"
 import { Effect, Layer } from "effect"
 import { getConstructionPlans, getMigrationPlans } from "pg-boss"
 
-const InitializationMigration = Effect.gen(function* () {
-  const env = yield* Env
-  return getConstructionPlans(env.jobs.pgSchema)
-})
-
-const VersionUpgradeMigration = Effect.gen(function* () {
-  const env = yield* Env
-  const jobs = yield* Jobs
-  const existingVersion = yield* jobs.schemaVersion
-  return !!existingVersion && getMigrationPlans(env.jobs.pgSchema, existingVersion)
-})
-
 const Migration = Effect.gen(function* () {
+  const env = yield* Env
   const jobs = yield* Jobs
   const isInstalled = yield* jobs.isInstalled
+  const InitializationMigration = Effect.sync(function () {
+    return getConstructionPlans(env.jobs.pgSchema)
+  })
+  const VersionUpgradeMigration = Effect.gen(function* () {
+    const existingVersion = yield* jobs.schemaVersion
+    return !!existingVersion && getMigrationPlans(env.jobs.pgSchema, existingVersion)
+  })
   return yield* isInstalled ? VersionUpgradeMigration : InitializationMigration
 }).pipe(
   Effect.provide(Layer.merge(Env.layer, Jobs.layer)),
@@ -37,9 +33,7 @@ try {
     writeFileSync(outputFile, migration)
   }
 } catch (err) {
-  if (/Version \d+ not found/.test(String(err))) {
-    console.info("Schema up to date. No migrations generated.")
-  } else {
-    console.error(JSON.stringify(err, null, 2))
-  }
+  ;/Version \d+ not found/.test(String(err))
+    ? console.info("Schema up to date. No migrations generated.")
+    : console.error(JSON.stringify(err, null, 2))
 }
