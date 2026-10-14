@@ -7,6 +7,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@crowdboard/effect-extra": "workspace:*",
     "@crowdboard/models": "workspace:*",
     "effect": "catalog:effect"
   },

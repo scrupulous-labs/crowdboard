@@ -2,9 +2,13 @@ import { organization as organizationPlugin } from "better-auth/plugins"
 
 export const organization = organizationPlugin({
   creatorRole: "owner",
+  organizationLimit: 10,
   teams: {
     enabled: true,
     allowRemovingAllTeams: false,
+    defaultTeam: {
+      enabled: false,
+    },
   },
   schema: {
     session: {

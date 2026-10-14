@@ -1,10 +1,11 @@
+import * as HttpApiSchema from "@crowdboard/effect-extra/httpapi/HttpApiSchema"
 import * as Model from "@crowdboard/models"
 import { Schema, Option, Context } from "effect"
 import { HttpApi, HttpApiEndpoint, HttpApiGroup, HttpApiMiddleware } from "effect/unstable/httpapi"
 
 export class UserSession extends Context.Service<
   UserSession,
-  Option.Option<Model.Api.Workspace.UserSession>
+  Option.Option<Model.Api.UserSession.UserSession>
 >()("@services/contract/workspace/api/user-session") {}
 
 export class UserSessionMiddleware extends HttpApiMiddleware.Service<
@@ -18,8 +19,13 @@ export class AuthApiGroup extends HttpApiGroup.make("auth")
   .add(
     HttpApiEndpoint.post("signUpWithEmail", "/signup/email", {
       payload: Schema.Struct({ email: Model.Email, password: Model.Password }),
-      success: Schema.Union([Model.Api.Workspace.RedirectToOnboarding]),
-      error: Schema.Union([Model.Api.Workspace.FormValidationError]),
+      success: Model.Api.Workspace.RedirectToOnboarding.pipe(
+        HttpApiSchema.status("Created"),
+        HttpApiSchema.headers({
+          "set-cookie": Schema.String,
+        }),
+      ),
+      error: Model.Api.Workspace.FormValidationError,
     }),
 
     HttpApiEndpoint.post("loginWithEmail", "/login/email", {
@@ -27,17 +33,18 @@ export class AuthApiGroup extends HttpApiGroup.make("auth")
       success: Schema.Union([
         Model.Api.Workspace.RedirectToOnboarding,
         Model.Api.Workspace.RedirectToApp,
-      ]),
-      error: Schema.Any,
+      ]).pipe(
+        HttpApiSchema.status("Ok"),
+        HttpApiSchema.headers({
+          "set-cookie": Schema.String.pipe(Schema.optional),
+        }),
+      ),
+      error: Model.Api.Workspace.FormValidationError.pipe(HttpApiSchema.status("BadRequest")),
     }),
 
     HttpApiEndpoint.post("loginWithGoogle", "/login/google", {
       payload: Schema.Struct({}),
       success: Model.Api.Workspace.RedirectToUrl,
-    }),
-
-    HttpApiEndpoint.get("loginWithGoogle", "/login/google", {
-      query: Schema.Record(Schema.String, Schema.String),
     }),
 
     HttpApiEndpoint.post("logout", "/logout", {

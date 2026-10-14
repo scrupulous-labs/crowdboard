@@ -16,5 +16,5 @@ export class RedirectToOnboarding extends Schema.TaggedClass<RedirectToOnboardin
 // Errors
 export class FormValidationError extends Schema.TaggedError<FormValidationError>()(
   "FormValidationError",
-  {},
+  { error: Schema.String },
 ) {}

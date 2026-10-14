@@ -16,4 +16,4 @@ export class User extends Schema.Class<User>("User")({
   updatedAt: Schema.DateTimeUtcFromDate,
 }) {}
 
-export const decodeFromDb = pipe(User, Schema.OptionFromNullishOr, Schema.decodeUnknownEffect)
+export const decodeFromAuth = pipe(User, Schema.decodeUnknownSync)

@@ -1,14 +1,19 @@
+import { APIError as _APIError } from "better-auth"
 import { pipe } from "effect"
 import * as F from "effect/Function"
 import * as M from "effect/Match"
 import * as O from "effect/Option"
 import * as P from "effect/Predicate"
+import * as S from "effect/Schema"
 
 export * from "effect/Match"
 
 export const APIError = {
   code: <T extends { code: string }>(key: T) => {
-    return { body: (body: any) => key.code === body.code }
+    return { body: (body: _APIError["body"]) => key.code === body?.code }
+  },
+  status: (key: _APIError["status"]) => {
+    return { status: (status: _APIError["status"]) => key === status }
   },
 }
 
@@ -35,19 +40,19 @@ export const Option = {
   },
 }
 
-export const Schema = <Class extends new (params: any) => any>(schema: Class) => {
+export const Schema = <Schema extends S.Top & (new (params: any) => any)>(schema: Schema) => {
   return <
     Match extends Partial<{
-      [K in keyof InstanceType<Class>]:
-        | InstanceType<Class>[K]
-        | P.Refinement<unknown, InstanceType<Class>[K]>
-        | M.SafeRefinement<unknown, InstanceType<Class>[K]>
+      [K in keyof InstanceType<Schema>]:
+        | InstanceType<Schema>[K]
+        | P.Refinement<unknown, InstanceType<Schema>[K]>
+        | M.SafeRefinement<unknown, InstanceType<Schema>[K]>
     }>,
     Result extends {
-      [K in keyof Match]: Match[K] extends M.SafeRefinement<unknown, infer Narrowed>
-        ? Narrowed
-        : Match[K] extends P.Refinement<unknown, infer Narrowed>
-          ? Narrowed
+      [K in keyof Match]: Match[K] extends M.SafeRefinement<unknown, infer Refined>
+        ? Refined
+        : Match[K] extends P.Refinement<unknown, infer Refined>
+          ? Refined
           : Match[K]
     },
   >(

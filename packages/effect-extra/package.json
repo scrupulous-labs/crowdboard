@@ -4,9 +4,11 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
   },
   "dependencies": {
+    "better-auth": "catalog:better-auth",
     "effect": "catalog:effect"
   },
   "devDependencies": {

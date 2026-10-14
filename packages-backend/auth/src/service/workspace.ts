@@ -4,20 +4,22 @@ import { betterAuth } from "better-auth"
 import { lastLoginMethod } from "better-auth/plugins"
 import { Effect } from "effect"
 
-import { SharedOptions } from "./shared/options"
-import { organization } from "./shared/plugins"
+import { SharedOptions } from "./shared/shared-options"
+import { organization } from "./shared/organization-plugin"
 
 const Auth = Effect.gen(function* () {
   const env = yield* Env
   const auth = betterAuth({
     baseURL: env.server.origin,
     trustedOrigins: [env.app.workspaceOrigin, env.server.origin, env.server.originLocalhost],
-    emailAndPassword: { enabled: true, autoSignIn: true },
+    emailAndPassword: { enabled: true, autoSignIn: true, minPasswordLength: 8, maxPasswordLength: 32 },
     socialProviders: {
       google: {
         clientId: env.auth.google.clientId,
         clientSecret: env.auth.google.clientSecret,
         redirectURI: env.auth.google.redirectUri,
+        disableSignUp: false,
+        disableImplicitSignUp: false,
       },
     },
     advanced: {
