@@ -3,8 +3,14 @@ import { PgConnection } from "@effect/sql-pg"
 import { SQL, sql } from "drizzle-orm"
 import { Effect, identity } from "effect"
 
+import { JobsError } from "./error"
+
 export function isMultiStatement(sql: string) {
   return sql.includes(";\n")
+}
+
+export function toJobsError(operation: JobsError["operation"]) {
+  return (cause: unknown) => new JobsError({ cause, operation })
 }
 
 export function unwrapQueryResult(result: PgConnection.Result | PgConnection.Result[]) {

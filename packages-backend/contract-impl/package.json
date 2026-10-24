@@ -1,0 +1,23 @@
+{
+  "name": "@crowdboard-backend/contract-impl",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {},
+  "dependencies": {
+    "@crowdboard-backend/auth": "workspace:*",
+    "@crowdboard-backend/db": "workspace:*",
+    "@crowdboard-backend/env": "workspace:*",
+    "@crowdboard/contracts": "workspace:*",
+    "@crowdboard/effect-extra": "workspace:*",
+    "@crowdboard/models": "workspace:*",
+    "drizzle-orm": "catalog:drizzle",
+    "effect": "catalog:effect"
+  },
+  "devDependencies": {
+    "@crowdboard-tooling/tsconfig": "workspace:*",
+    "@types/node": "catalog:types"
+  }
+}

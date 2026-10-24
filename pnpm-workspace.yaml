@@ -8,17 +8,11 @@ packages:
 blockExoticSubdeps: true
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
-  - "effect"
-  - "@effect/*"
   - "drizzle-orm"
-  - "auth"
-  - "better-auth"
-  - "@better-auth/*"
 
 allowBuilds:
   "esbuild": true
   "lightningcss": true
-  "msgpackr-extract": false
 
 catalogs:
   better-auth:
@@ -34,9 +28,9 @@ catalogs:
   drizzle:
     "drizzle-orm": 1.0.0-rc.5-5935859
   effect:
-    "effect": 4.0.0-rc.113
-    "@effect/sql-pg": 4.0.0-rc.113
-    "@effect/platform-node": 4.0.0-rc.113
+    "effect": 4.0.0
+    "@effect/sql-pg": 4.0.0
+    "@effect/platform-node": 4.0.0
   postgres:
     "pg": ^8.23.0
     "pg-boss": ^12.30.0
@@ -45,8 +39,8 @@ catalogs:
     "react": ^19.2.8
     "react-dom": ^19.2.8
   tailwindcss:
-    "@tailwindcss/vite": ^4.3.3
     "tailwindcss": ^4.3.3
+    "@tailwindcss/vite": ^4.3.3
   tanstack:
     "@tanstack/react-router": ^1.170.30
     "@tanstack/devtools-vite": ^0.8.3

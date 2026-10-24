@@ -1,4 +1,4 @@
-import { Schema } from "effect"
+import { pipe, Schema } from "effect"
 
 export type WorkspaceId = typeof WorkspaceId.Type
 export const WorkspaceId = Schema.String.pipe(Schema.brand("WorkspaceId"))
@@ -11,3 +11,5 @@ export class Workspace extends Schema.Class<Workspace>("Workspace")({
   metadata: Schema.String.pipe(Schema.OptionFromNullOr),
   createdAt: Schema.DateTimeUtcFromDate,
 }) {}
+
+export const decode = pipe(Workspace, Schema.decodeUnknownSync)

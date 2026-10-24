@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@crowdboard-backend/env": "workspace:*",
+    "@crowdboard/models": "workspace:*",
     "@effect/sql-pg": "catalog:effect",
     "drizzle-orm": "catalog:drizzle",
     "effect": "catalog:effect",

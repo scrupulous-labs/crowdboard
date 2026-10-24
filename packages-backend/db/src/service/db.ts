@@ -8,10 +8,7 @@ import { relations } from "../drizzle"
 export type DbTransaction = Parameters<Parameters<Context.Service.Shape<typeof Db>["transaction"]>[0]>[0]
 
 export class Db extends Context.Service<Db>()("@services/db/db", {
-  make: Effect.gen(function* () {
-    const db = yield* PgDrizzle.make({ relations })
-    return db
-  }),
+  make: PgDrizzle.make({ relations }),
 }) {
   static readonly layer = Layer.effect(this, this.make).pipe(
     Layer.provide(PgDrizzle.DefaultServices),
