@@ -16,10 +16,8 @@ export class Auth extends Context.Service<Auth, AuthForWidget | AuthForWorkspace
 ) {
   static readonly widget = "widget" satisfies AuthForWidget["_tag"]
   static readonly workspace = "workspace" satisfies AuthForWorkspace["_tag"]
-
   static readonly layerForWidget = Layer.effect(this, AuthForWidget)
   static readonly layerForWorkspace = Layer.effect(this, AuthForWorkspace)
-
   static readonly expect = <
     Tags extends NonEmptyArray<Context.Service.Shape<typeof Auth>["_tag"]>,
     Expected extends Extract<Context.Service.Shape<typeof Auth>, { _tag: Tags[number] }>,

@@ -4,8 +4,8 @@ import { betterAuth } from "better-auth"
 import { lastLoginMethod } from "better-auth/plugins"
 import { Effect } from "effect"
 
-import { SharedOptions } from "./shared/shared-options"
 import { organization } from "./shared/organization-plugin"
+import { SharedOptions } from "./shared/shared-options"
 
 const Auth = Effect.gen(function* () {
   const env = yield* Env

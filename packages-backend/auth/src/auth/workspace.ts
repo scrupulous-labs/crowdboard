@@ -41,10 +41,6 @@ export const createWorkspace = Effect.fn(function* (params: { name: string; slug
     Effect.catchChain(
       toAPIErrorOrDie,
       Match.type<APIError>().pipe(
-        Match.when(Match.APIError.status("UNAUTHORIZED"), () => {
-          const message = "Your session expired. Log in to create a workspace."
-          return Effect.fail(new Model.Error.Unauthorized({ message }))
-        }),
         Match.when(Match.APIError.code(e.ORGANIZATION_ALREADY_EXISTS), () => {
           const message = "This slug is already in use. Try with a new one."
           return Effect.fail(new Model.Error.UnprocessableEntity({ message }))
@@ -80,10 +76,6 @@ export const deleteWorkspace = Effect.fn(function* (params: {
     Effect.catchChain(
       toAPIErrorOrDie,
       Match.type<APIError>().pipe(
-        Match.when(Match.APIError.status("UNAUTHORIZED"), () => {
-          const message = "Your session expired. Log in to delete this workspace."
-          return Effect.fail(new Model.Error.Unauthorized({ message }))
-        }),
         Match.when(Match.APIError.code(e.ORGANIZATION_NOT_FOUND), () => {
           const message = "This workspace does not exist."
           return Effect.fail(new Model.Error.NotFound({ message }))

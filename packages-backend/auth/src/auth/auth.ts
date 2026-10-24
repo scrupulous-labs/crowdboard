@@ -105,9 +105,7 @@ export const logInWithGoogle = Effect.fn(function* () {
       ...defaultAuthOpts,
       body: { provider: "google", disableRedirect: true },
     }),
-  ).pipe(
-    Effect.catch(toAPIErrorAndDie)
-  )
+  ).pipe(Effect.catch(toAPIErrorAndDie))
 })
 
 export const logOut = Effect.fn(function* () {

@@ -8,12 +8,7 @@ packages:
 blockExoticSubdeps: true
 minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
-  - "effect"
-  - "@effect/*"
   - "drizzle-orm"
-  - "auth"
-  - "better-auth"
-  - "@better-auth/*"
 
 allowBuilds:
   "esbuild": true
